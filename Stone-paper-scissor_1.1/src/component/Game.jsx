@@ -42,10 +42,12 @@ export default function Game() {
             setUserScore((prevScore) => prevScore + 1);
             setMessage(`You win! ${userChoice} beats ${comChoice}`);
             setBgColor("green");
+            setTextColor("white");
         } else {
             setComScore((prevScore) => prevScore + 1);
             setMessage(`Computer wins! ${comChoice} beats ${userChoice}`);
             setBgColor("red");
+            setTextColor("white");
         }
     };
 
