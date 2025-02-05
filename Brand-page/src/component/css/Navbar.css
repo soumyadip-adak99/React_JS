@@ -3,10 +3,13 @@
 :root {
     --red: #d01c28;
     --gray: #2e2e2e;
+    --white: #fff;
 }
 
 * {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -20,12 +23,57 @@ nav {
     margin: 0 auto;
     height: 72px;
     align-items: center;
+    padding: 0 20px;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeIn 0.8s ease-in-out forwards;
+    transition: all 0.3s ease-in-out;
+}
+
+nav.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    height: 64px;
+    transition: all 0.3s ease-in-out;
 }
 
 nav ul {
     display: flex;
     list-style: none;
     gap: 24px;
+    cursor: pointer;
+}
+
+nav ul li {
+    position: relative;
+    display: inline-block;
+    padding: 5px 0;
+    overflow: hidden;
+    font-weight: 500;
+    transition: color 0.3s ease-in-out;
+}
+
+nav ul li::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: var(--red);
+    transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+nav ul li:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+nav ul li:hover {
+    color: var(--red);
 }
 
 .my-btn {
@@ -36,4 +84,25 @@ nav ul {
     color: white;
     font-weight: 500;
     border-radius: 2rem;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.my-btn:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

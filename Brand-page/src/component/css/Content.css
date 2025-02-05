@@ -1,63 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
+:root {
+    --red: #d01c28;
+    --gray: #2e2e2e;
+    --white: #fff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .content {
     margin: 0 auto;
     max-width: 1280px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: calc(100vh - 72px);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease-in-out forwards;
 }
+
 
 .content-text {
     display: flex;
     flex-direction: column;
     gap: 36px;
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideInLeft 1s ease-in-out forwards 0.5s;
 }
 
 .content h1 {
     font-weight: 800;
     line-height: 102px;
-    font-size: 108px;
+    font-size: 72px;
+    color: var(--gray);
 }
 
 .content p {
     font-weight: 600;
     color: var(--gray);
     max-width: 400px;
+    font-size: 16px;
 }
 
 .content-btn {
     display: flex;
-    gap: 40px;
+    gap: 20px;
 }
 
 .content-btn button {
-    font-size: 24px;
+    font-size: 20px;
     height: 3rem;
+    padding: 10px 24px;
+    font-weight: 600;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
 }
+
 
 .primary-btn {
     border: none;
     background: var(--red);
     color: white;
-    border-radius: 1rem;
+    display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0px 5px 15px rgba(208, 28, 40, 0.4);
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    background: #b01722;
 }
 
 .secondary-btn {
     background: transparent;
     color: var(--gray);
     border: 1px solid gray;
-    border-radius: 1rem;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.secondary-btn:hover {
+    transform: translateY(-2px);
+    background: var(--gray);
+    color: white;
+}
+
+
 .shopping p {
     font-size: 14px;
     margin-bottom: 8px;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeInUp 0.8s ease-in-out forwards 1s;
 }
 
 .brand-icons {
     display: flex;
     gap: 16px;
+}
+
+.brand-icons img {
+    width: 50px;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+.brand-icons img:hover {
+    transform: scale(1.1);
+}
+
+
+.content-image {
+    opacity: 0;
+    transform: translateX(50px);
+    animation: slideInRight 1s ease-in-out forwards 0.5s;
+}
+
+.content-image img {
+    max-width: 500px;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+.content-image img:hover {
+    transform: scale(1.05);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .content h1 {
+        font-size: 48px;
+        line-height: 60px;
+    }
+
+    .content-text {
+        align-items: center;
+    }
+
+    .content-btn {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .content-image img {
+        max-width: 100%;
+    }
 }
