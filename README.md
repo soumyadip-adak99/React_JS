@@ -4,12 +4,17 @@ This repository showcases my React projects, built with modern front-end technol
 
 ## 🏆 Completed Projects
 
-### 1. Stone Paper Scissor 🎮
+### 1. Simple Brand Page Desgin 🖌️
+
+- **Live Demo:** [Brand Page](https://brand-page-flame.vercel.app/)
+- **Description:** A Brand Advertisement Webpage
+
+### 2. Stone Paper Scissor 🎮
 
 - **Live Demo:** [MyGame11](https://mygame11.vercel.app/)
 - **Description:** A gaming application built with React.
 
-### 2. Tic-Tac-Toe ❌⭕
+### 3. Tic-Tac-Toe ❌⭕
 
 - **Live Demo:** [Tic-Tac-Toe](https://tic-tac-toe-12.vercel.app/)
 - **Description:** A classic Tic-Tac-Toe game built with React for an interactive gaming experience.
