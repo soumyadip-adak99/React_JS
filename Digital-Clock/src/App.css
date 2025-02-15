@@ -1,0 +1,164 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+.hero {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(45deg, #08001f, #30197d);
+    color: #fff;
+    position: relative;
+}
+
+.container {
+    width: 90%;
+    /* Adjusted for responsiveness */
+    max-width: 800px;
+    /* Maximum width */
+    height: 180px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.clock {
+    width: 100%;
+    height: 100%;
+    background: rgba(235, 0, 255, 0.11);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(40px);
+}
+
+.container::before {
+    content: '';
+    width: 120px;
+    /* Adjusted for responsiveness */
+    height: 120px;
+    /* Adjusted for responsiveness */
+    background: #f41b75;
+    border-radius: 5px;
+    position: absolute;
+    left: -30px;
+    /* Adjusted for responsiveness */
+    top: -30px;
+    /* Adjusted for responsiveness */
+    z-index: -1;
+}
+
+.container::after {
+    content: '';
+    width: 120px;
+    /* Adjusted for responsiveness */
+    height: 120px;
+    /* Adjusted for responsiveness */
+    background: #419aff;
+    border-radius: 50%;
+    position: absolute;
+    right: -20px;
+    /* Adjusted for responsiveness */
+    bottom: -30px;
+    /* Adjusted for responsiveness */
+    z-index: -1;
+}
+
+.clock span {
+    font-size: 60px;
+    /* Adjusted for responsiveness */
+    width: 90px;
+    /* Adjusted for responsiveness */
+    display: inline-block;
+    text-align: center;
+    position: relative;
+}
+
+.clock span::after {
+    font-size: 14px;
+    /* Adjusted for responsiveness */
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#hrs::after {
+    content: 'HOURS';
+}
+
+#min::after {
+    content: 'MINUTES';
+}
+
+#sec::after {
+    content: 'SECONDS';
+}
+
+@media (max-width: 768px) {
+    .container {
+        height: 140px;
+    }
+
+    .clock span {
+        font-size: 50px;
+        width: 80px;
+    }
+
+    .clock span::after {
+        font-size: 12px;
+        bottom: -10px;
+    }
+
+    .container::before,
+    .container::after {
+        width: 100px;
+        height: 100px;
+    }
+
+    .container::before {
+        left: -20px;
+        top: -20px;
+    }
+
+    .container::after {
+        right: -15px;
+        bottom: -20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        height: 120px;
+    }
+
+    .clock span {
+        font-size: 40px;
+        width: 60px;
+    }
+
+    .clock span::after {
+        font-size: 10px;
+        bottom: -8px;
+    }
+
+    .container::before,
+    .container::after {
+        width: 80px;
+        height: 80px;
+    }
+
+    .container::before {
+        left: -15px;
+        top: -15px;
+    }
+
+    .container::after {
+        right: -10px;
+        bottom: -15px;
+    }
+}
