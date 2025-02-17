@@ -4,10 +4,12 @@ import './App.css';
 const App = () => {
     const [birthDate, setBirthDate] = useState("");
     const [age, setAge] = useState("");
+    const [textColor, setTextColor] = useState("white");
 
     const calculateAge = () => {
         if (!birthDate) {
-            alert("Please enter your age.");
+            setAge("Please enter your birth date.");
+            setTextColor("red");
             return;
         }
 
@@ -50,6 +52,7 @@ const App = () => {
     const clearAll = () => {
         setAge("");
         setBirthDate("");
+        setTextColor("white");
     }
 
     return (
@@ -67,7 +70,7 @@ const App = () => {
                     <button className='calculate-btn' onClick={calculateAge}><span>Calculate</span></button>
                     <button className='clear-btn' onClick={clearAll}><span>Clear</span></button>
                 </div>
-                <p id="result">{age}</p>
+                <p id="result" style={{ color: textColor }}>{age}</p>
             </div>
         </div>
     );

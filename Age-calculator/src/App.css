@@ -94,6 +94,6 @@
     color: white;
 }
 
-.result {
-    font-size: 30px;
+#result {
+    font-size: 25px;
 }
