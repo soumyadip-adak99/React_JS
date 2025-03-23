@@ -42,11 +42,6 @@ body {
     border-radius: 5px;
 }
 
-.container input.error {
-    animation: shake 0.1s linear 10;
-    border-color: red;
-}
-
 .container button {
     width: 100%;
     height: 50px;
@@ -67,7 +62,6 @@ body {
     max-height: 0;
     overflow: hidden;
     transition: max-height 1s;
-    margin: 0 auto;
 }
 
 #imgBox img {
@@ -75,16 +69,14 @@ body {
     padding: 10px;
 }
 
-.show-img {
-    max-height: 300px !important;
+#imgBox.show-img {
+    max-height: 300px;
     margin: 10px auto;
     border: 1px solid #d1d1d1;
 }
 
-#errorMsg {
-    color: red;
-    font-size: 14px;
-    margin-top: -15px;
+.error {
+    animation: shake 0.1s linear 10;
 }
 
 @keyframes shake {
