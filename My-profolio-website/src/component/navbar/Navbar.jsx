@@ -4,7 +4,6 @@ import { RiCloseLine } from "react-icons/ri"
 import { RiMenuLine } from "react-icons/ri"
 import { useState } from 'react'
 import './navbar.css'
-import './dev.css'
 
 const Navbar = () => {
     const [showmenu, setShowMenu] = useState(false);
