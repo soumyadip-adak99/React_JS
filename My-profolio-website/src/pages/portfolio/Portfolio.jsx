@@ -1,6 +1,6 @@
 import { portfolio } from "../../Data"
 import { RiLink } from "react-icons/ri";
-import './portfolio.css'
+import './Portfolio.css'
 
 const Portfolio = () => {
     return (
@@ -26,7 +26,7 @@ const Portfolio = () => {
                                 })}
                             </div>
 
-                            <a href={link} className="portfolio-link">
+                            <a href={link} className="portfolio-link" target="_blank" rel="noopener noreferrer">
                                 <RiLink className="link-icon" />
                                 Visit Project
                             </a>

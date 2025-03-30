@@ -52,4 +52,157 @@
     z-index: -1;
 }
 
-/*  */
+.social-icons {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.social-icons a {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: var(--first-color);
+    color: var(--body-color);
+    font-size: 2rem;
+    transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+    background-color: var(--first-color);
+    color: var(--white-color);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* I notice you're having an issue with the social icons alignment in the responsive layout. Let me provide a CSS fix that will center-align the social icons with respect to the page while maintaining proper alignment with the paragraph.
+ Here's the updated CSS for your social icons that will fix the alignment issues:
+ cssCopy */
+
+/* Social Icons - Base Styling */
+.social-icons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    /* Align with paragraph on desktop */
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: var(--first-color);
+    color: var(--body-color);
+    font-size: 2rem;
+    transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+    background-color: var(--first-color);
+    color: var(--white-color);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Home content center alignment for better overall layout */
+/* .home-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+} */
+
+/* Responsive adjustments */
+@media screen and (max-width: 1200px) {
+    .social-icons {
+        gap: 1.25rem;
+    }
+
+    .social-icons a {
+        width: 2.75rem;
+        height: 2.75rem;
+        font-size: 1.75rem;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .home-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .home-content {
+        align-items: center;
+        margin: 0 auto;
+        max-width: 650px;
+    }
+
+    .home-title {
+        padding-left: 0;
+    }
+
+    .home-title::before {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .home-description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .social-icons {
+        justify-content: center;
+        gap: 1rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .social-icons {
+        gap: 1rem;
+        padding-bottom: 1.25rem;
+    }
+
+    .social-icons a {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .social-icons {
+        gap: 0.75rem;
+        padding-bottom: 1rem;
+    }
+
+    .social-icons a {
+        width: 2.25rem;
+        height: 2.25rem;
+        font-size: 1.25rem;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .social-icons {
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .social-icons a {
+        width: 2rem;
+        height: 2rem;
+        font-size: 1rem;
+    }
+}
