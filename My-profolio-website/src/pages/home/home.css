@@ -55,42 +55,7 @@
 .social-icons {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    padding-bottom: 1.5rem;
-}
-
-.social-icons a {
-    width: 16px;
-    height: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    background-color: var(--first-color);
-    color: var(--body-color);
-    font-size: 2rem;
-    transition: all 0.3s ease;
-}
-
-.social-icons a:hover {
-    background-color: var(--first-color);
-    color: var(--white-color);
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* I notice you're having an issue with the social icons alignment in the responsive layout. Let me provide a CSS fix that will center-align the social icons with respect to the page while maintaining proper alignment with the paragraph.
- Here's the updated CSS for your social icons that will fix the alignment issues:
- cssCopy */
-
-/* Social Icons - Base Styling */
-.social-icons {
-    display: flex;
-    align-items: center;
     justify-content: flex-start;
-    /* Align with paragraph on desktop */
     gap: 1.5rem;
     padding-bottom: 1.5rem;
     flex-wrap: wrap;
@@ -103,10 +68,11 @@
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
-    background-color: var(--first-color);
-    color: var(--body-color);
+    background-color: var(--container-color);
+    color: var(--title-color);
     font-size: 2rem;
     transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .social-icons a:hover {
@@ -116,14 +82,6 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Home content center alignment for better overall layout */
-/* .home-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-} */
-
-/* Responsive adjustments */
 @media screen and (max-width: 1200px) {
     .social-icons {
         gap: 1.25rem;
