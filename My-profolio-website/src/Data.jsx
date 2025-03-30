@@ -232,7 +232,7 @@ export const portfolio = [
         description:
             "Built a full-stack web application for school database management, handling both frontend and backend development.",
         skills: [reactLogo, springBootLogo, mongodbLogo],
-        link: ""
+        link: "https://github.com/soumyadip-adak99/Spring_Boot_Mini_Project/tree/main/SpringMangoProjectDB"
     },
     {
         id: 3,

@@ -13,6 +13,7 @@
     --container-color: hsl(var(--hue), 4%, 95%);
     --border-color: hsl(var(--hue), 4%, 91%);
     --white-color: hsl(var(--hue), 4%, 100%);
+    --nav-name-color: white;
 
 
     /*========font family=======*/
@@ -45,6 +46,7 @@
     --body-color: hsl(var(--hue), 4%, 8%);
     --container-color: hsl(var(--hue), 4%, 12%);
     --border-color: hsl(var(--hue), 4%, 16%);
+    --nav-name-color: hsl(var(--hue), 4%, 100%);
 }
 
 /*Responsive typography*/
@@ -189,8 +191,8 @@ img {
 
 /*============Breakpoints================*/
 @media screen and (max-width: 1208px),
-screen and(max-width:1024px),
-screen and(max-width:768px),
+screen and (max-width: 1024px),
+screen and (max-width: 768px),
 screen and (max-width: 600px),
 screen and (max-width: 480px) {
     .nav {
@@ -270,6 +272,7 @@ screen and (max-width: 480px) {
         padding: 0.75rem 1.25rem;
     }
 
+    /* Fix for nav-name */
     .nav-name {
         all: unset;
         display: block;
@@ -279,27 +282,30 @@ screen and (max-width: 480px) {
         font-size: 1rem;
         font-weight: var(--weight-600);
         margin-left: 1rem;
-        transition: color 0.3s ease;
+        /* Default color state */
         color: var(--title-color);
     }
 
+    /* Fixed color states for nav links and names */
+    .nav-link .nav-name {
+        color: var(--title-color);
+        /* Default state */
+    }
+
+    .nav-link:hover .nav-name,
+    .active-nav .nav-name {
+        color: var(--white-color);
+        /* Hover and active state */
+    }
+
+    /* Remove the problematic selectors that were causing issues */
+    /* 
     .nav-link,
     .nav-link:focus .nav-name,
-    .active-nav .nav-name {
-        color: var(--body-color);
+    .active-nav .nav-name:focus {
+        color: var(--nav-name-color);
     }
-
-    /* .nav-name:hover {
-        color: var(--first-color);
-    }
-
-    .nav-link:focus .nav-name {
-        color: var(--first-color);
-    }
-
-    .active-nav .nav-name {
-        color: var(--title-color);
-    } */
+    */
 
     .nav-close {
         display: block;
@@ -326,6 +332,17 @@ screen and (max-width: 480px) {
 
     .show-menu~.nav-toggle {
         display: none;
+    }
+
+    /* Fix for hover state in responsive mode */
+    .nav-link:hover,
+    .active-nav {
+        background-color: var(--first-color);
+    }
+
+    .nav-link:hover .nav-icon,
+    .active-nav .nav-icon {
+        color: var(--white-color);
     }
 }
 
@@ -380,6 +397,9 @@ screen and (max-width: 480px) {
 
 /* Small tablets and large phones (up to 768px) */
 @media screen and (max-width: 768px) {
+    .color-block {
+        display: none;
+    }
 
     .about-container,
     .resume-container,
@@ -395,6 +415,10 @@ screen and (max-width: 480px) {
 
 /* Mobile devices (up to 600px) */
 @media screen and (max-width: 600px) {
+    .color-block {
+        display: none;
+    }
+
     /* body {
         --title-color: hsl(var(--hue), 4%, 100%);
         --text-color: hsl(var(--hue), 4%, 80%);
@@ -437,6 +461,10 @@ screen and (max-width: 480px) {
         --border-color: hsl(var(--hue), 4%, 16%);
     } */
 
+    .color-block {
+        display: none;
+    }
+
     .style-switcher {
         display: none;
     }
@@ -463,3 +491,18 @@ screen and (max-width: 480px) {
         padding-left: 2.5rem;
     }
 }
+
+/* colro block */
+
+/* @media screen and (max-width: 927px),
+screen and (max-width: 671px),
+screen and (max-width: 620px),
+screen and (max-width: 580px),
+screen and (max-width: 500px),
+screen and (max-width: 480px),
+screen and (max-width: 450px),
+screen and (max-width: 400px) {
+    .color-block {
+        display: none;
+    }
+} */
