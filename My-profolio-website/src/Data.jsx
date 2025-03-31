@@ -241,7 +241,7 @@ export const portfolio = [
         description:
             "Developed a product management system with features to add, edit, and delete products efficiently.",
         skills: [reactLogo, springBootLogo, mongodbLogo],
-        link: ""
+        link: "/"
     },
     {
         id: 4,
@@ -250,7 +250,7 @@ export const portfolio = [
         description:
             "Created an interactive Tic-Tac-Toe game with a responsive UI using HTML, CSS, and JavaScript.",
         skills: [htmlLogo, cssLogo, javascriptLogo],
-        link: ""
+        link: "https://tic-tac-toe-12.vercel.app/"
     },
     {
         id: 5,
@@ -259,7 +259,7 @@ export const portfolio = [
         description:
             "Developed a sleek and modern website for brand promotion, enhancing online visibility and engagement.",
         skills: [reactLogo, cssLogo],
-        link: ""
+        link: "https://brand-page-flame.vercel.app/"
     },
     {
         id: 6,
@@ -268,7 +268,7 @@ export const portfolio = [
         description:
             "Developed a web-based age calculator to determine age accurately based on user input.",
         skills: [reactLogo, cssLogo],
-        link: ""
+        link: "https://age-calculator23-adakspages.vercel.app/"
     },
     {
         id: 7,
@@ -277,7 +277,7 @@ export const portfolio = [
         description:
             "Created a real-time digital clock with a sleek and responsive interface using React and CSS.",
         skills: [reactLogo, cssLogo],
-        link: ""
+        link: "https://digitalclock-inky.vercel.app/"
     },
     {
         id: 8,
@@ -286,7 +286,7 @@ export const portfolio = [
         description:
             "Built a web application that generates QR codes dynamically based on user input.",
         skills: [htmlLogo, cssLogo, javascriptLogo],
-        link: ""
+        link: "https://qr-code-generator-phi-plum.vercel.app/"
     }
 ];
 
