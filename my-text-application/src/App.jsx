@@ -62,9 +62,8 @@ export default function App() {
     if (text.trim() === "") {
       return 0;
     }
-    // Count sentences by splitting on '.', '!', '?' followed by space or end of text
-    const sentences = text.split(/[.!?]+(?:\s|$)/);
-    // Filter out empty strings that might occur with multiple delimiters
+    // Support Bengali '।' along with English '.', '!', '?'
+    const sentences = text.split(/[.!?।]+(?:\s|$)/);
     return sentences.filter(sentence => sentence.trim().length > 0).length;
   };
 
