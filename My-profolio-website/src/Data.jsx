@@ -222,7 +222,7 @@ export const portfolio = [
         title: "Journal Application with Secure Backend",
         description:
             "Designed and developed a journal application with robust backend architecture using Spring Security and MongoDB.",
-        skills: [springBootLogo, mongodbLogo],
+        skills: [springBootLogo, mongodbLogo, mySqlLogo],
         link: "https://github.com/soumyadip-adak99/Spring_Boot_Mini_Project/tree/main/Learning%20path/Spring%20boot"
     },
     {
