@@ -9,6 +9,7 @@ import javaLogo from './assets/java-logo.svg'
 import pythonLogo from './assets/python-logo.svg'
 import springBootLogo from './assets/spring-boot.svg'
 import mySqlLogo from './assets/mysql-logo.svg'
+import postgresql from './assets/postgresql.svg'
 import mongodbLogo from './assets/mongodb-logo.png'
 
 import tictactoe from './assets/tic-tac-toe.jpeg'
@@ -170,6 +171,13 @@ export const skill = [
     },
     {
         id: 9,
+        img: postgresql,
+        title: 'PostgreSQL',
+        level: 'Intermediate',
+        category: 'backend',
+    },
+    {
+        id: 10,
         img: mongodbLogo,
         title: 'Mongo DB',
         level: 'Intermediate',
