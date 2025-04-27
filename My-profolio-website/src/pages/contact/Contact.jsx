@@ -4,7 +4,6 @@ import { useState } from "react";
 import emailjs from '@emailjs/browser';
 
 const Contact = () => {
-
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -14,6 +13,7 @@ const Contact = () => {
 
     const [feedbackMessage, setFeedbackMessage] = useState('');
     const [messageColor, setMessageColor] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,15 +30,18 @@ const Contact = () => {
             return;
         }
 
+        setIsLoading(true);
         emailjs.sendForm('service_4e99jc1', 'template_eobzool', e.target, '8rGQ5Vx8_FKWoZMtZ')
             .then(() => {
                 setMessageColor('color-first');
                 setFeedbackMessage('Message sent successfully!');
+                setIsLoading(false);
 
                 setTimeout(() => setFeedbackMessage(''), 3000);
                 setFormData({ name: '', email: '', subject: '', message: '' });
             })
             .catch((error) => {
+                setIsLoading(false);
                 alert('Oops! Something went wrong.', error);
             });
     };
@@ -143,8 +146,8 @@ const Contact = () => {
                         </div>
 
                         <div className="contact-button">
-                            <button type="submit" className="button">
-                                Send Message
+                            <button type="submit" className="button" disabled={isLoading}>
+                                {isLoading ? 'Sending...' : 'Send Message'}
                                 <span className="button-icon">
                                     <RiSendPlaneLine />
                                 </span>
