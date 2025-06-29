@@ -2,7 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { FaFacebook } from "react-icons/fa6";
 import { GrInstagram } from "react-icons/gr";
 import { FaDiscord } from "react-icons/fa6";
+import { FaArrowRight } from "react-icons/fa";
+import Cards from "./Cards";
 import './LandingPage.css'
+
 
 function LandingPage() {
     const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
@@ -190,7 +193,7 @@ function LandingPage() {
 
                     {/* Buttons */}
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-md px-4">
-                        <button className="relative group bg-gradient-to-r from-[#c00197] via-[#804ef5] to-[#011699] text-white py-3 md:py-4 px-6 md:px-8 rounded-full text-base md:text-lg font-medium cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] hover:from-[#e817b9] hover:via-[#a855f7] hover:to-[#1a2bff] transform-gpu hover:shadow-[0_10px_30px_-5px_rgba(219,2,172,0.4)] overflow-hidden hover:-translate-y-1 border border-transparent hover:border-indigo-300/30 active:scale-95 flex-1 sm:flex-none">
+                        <button className="relative group bg-gradient-to-r from-[#c00197] via-[#804ef5] to-[#011699] text-white py-3 md:py-4 px-6 md:px-8 rounded-full text-base md:text-lg font-medium cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] hover:from-[#c00197] hover:via-[#804ef5] hover:to-[#011699] transform-gpu hover:shadow-[0_10px_30px_-5px_rgba(219,2,172,0.4)] overflow-hidden hover:-translate-y-1 border border-transparent hover:border-indigo-300/30 active:scale-95 flex-1 sm:flex-none">
                             <span className="relative z-10 flex items-center justify-center font-bold">
                                 Create your blog
                                 <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-4 w-4 md:h-5 md:w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -241,91 +244,17 @@ function LandingPage() {
                     </div>
                 </div>
 
-                {/* Cards section - appears on scroll */}
-                {/* Cards section - appears on scroll */}
                 <div className={`w-full max-w-6xl py-16 px-4 mx-auto transition-all duration-700 ease-out ${showCards ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-12 text-center bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">
-                        Featured Blog Templates
-                    </h2>
+                    <Cards />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {/* Card 1 */}
-                        <div className="group relative overflow-hidden rounded-2xl border border-gray-800/50 hover:border-indigo-500/50 transition-all duration-500 hover:shadow-xl hover:shadow-indigo-500/20">
-                            <div className="h-80 w-full overflow-hidden">
-                                <img
-                                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                                    src="https://i.pinimg.com/736x/4c/78/3a/4c783a3af9cba10e85f7e7b148b4503b.jpg"
-                                    alt="Beauty Blog"
-                                />
-                            </div>
-                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/90 group-hover:from-black/80 group-hover:via-black/70 group-hover:to-black/90 transition-all duration-500">
-                                <div className="absolute inset-0 flex flex-col justify-end px-6 pb-6 text-center">
-                                    <div className="w-full transform translate-y-6 group-hover:translate-y-0 transition-all duration-500">
-                                        <h3 className="text-2xl font-bold text-white mb-2">Beauty & Wellness</h3>
-                                        <p className="text-gray-300 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                                            Discover the latest trends in beauty and self-care with our expertly curated content.
-                                        </p>
-                                        <div className="flex justify-center">
-                                            <button className="px-5 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium hover:from-indigo-600 hover:to-purple-600 transition-all duration-300 transform group-hover:scale-105 shadow-lg shadow-indigo-500/20">
-                                                Explore Template
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div className="text-white flex items-center align-center justify-center py-9">
+                        <button className="relative group bg-transparent border border-indigo-500/40 text-white py-3 md:py-4 px-6 md:px-8 rounded-full text-base md:text-lg font-medium cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] hover:bg-indigo-500/10 hover:border-indigo-400/60 hover:text-indigo-100 transform-gpu hover:shadow-[0_10px_30px_-5px_rgba(67,56,202,0.3)] hover:-translate-y-1 active:scale-95 flex-1 sm:flex-none">
+                            <span className="relative z-10 flex items-center justify-center">
+                                Explore More Blogs <FaArrowRight className="pl-2 text-xl" />
+                            </span>
+                        </button>
 
-                        {/* Card 2 */}
-                        <div className="group relative overflow-hidden rounded-2xl border border-gray-800/50 hover:border-pink-500/50 transition-all duration-500 hover:shadow-xl hover:shadow-pink-500/20">
-                            <div className="h-80 w-full overflow-hidden">
-                                <img
-                                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                                    src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                                    alt="Tech Blog"
-                                />
-                            </div>
-                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/90 group-hover:from-black/80 group-hover:via-black/70 group-hover:to-black/90 transition-all duration-500">
-                                <div className="absolute inset-0 flex flex-col justify-end px-6 pb-6 text-center">
-                                    <div className="w-full transform translate-y-6 group-hover:translate-y-0 transition-all duration-500">
-                                        <h3 className="text-2xl font-bold text-white mb-2">Tech Innovations</h3>
-                                        <p className="text-gray-300 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                                            Cutting-edge technology insights and reviews for the modern digital enthusiast.
-                                        </p>
-                                        <div className="flex justify-center">
-                                            <button className="px-5 py-2 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-medium hover:from-pink-600 hover:to-rose-600 transition-all duration-300 transform group-hover:scale-105 shadow-lg shadow-pink-500/20">
-                                                Explore Template
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        {/* Card 3 */}
-                        <div className="group relative overflow-hidden rounded-2xl border border-gray-800/50 hover:border-emerald-500/50 transition-all duration-500 hover:shadow-xl hover:shadow-emerald-500/20">
-                            <div className="h-80 w-full overflow-hidden">
-                                <img
-                                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                                    src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80"
-                                    alt="Food Blog"
-                                />
-                            </div>
-                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/90 group-hover:from-black/80 group-hover:via-black/70 group-hover:to-black/90 transition-all duration-500">
-                                <div className="absolute inset-0 flex flex-col justify-end px-6 pb-6 text-center">
-                                    <div className="w-full transform translate-y-6 group-hover:translate-y-0 transition-all duration-500">
-                                        <h3 className="text-2xl font-bold text-white mb-2">Culinary Delights</h3>
-                                        <p className="text-gray-300 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                                            Mouth-watering recipes and culinary adventures from around the world.
-                                        </p>
-                                        <div className="flex justify-center">
-                                            <button className="px-5 py-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-medium hover:from-emerald-600 hover:to-teal-600 transition-all duration-300 transform group-hover:scale-105 shadow-lg shadow-emerald-500/20">
-                                                Explore Template
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
