@@ -1,32 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router";
+import Animation from "../animation/Animation";
+import LandingHeader from "./LandingHeader";
 
 function Login() {
-    const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
     const [isShowRagistration, setIsShowRagistration] = useState(false)
-
-    useEffect(() => {
-        const handleMouseMove = (e) => {
-            const { clientX, clientY } = e;
-            const x = clientX / window.innerWidth;
-            const y = clientY / window.innerHeight;
-
-            setMousePos({ x, y });
-
-            document.documentElement.style.setProperty('--mouse-x', x);
-            document.documentElement.style.setProperty('--mouse-y', y);
-
-            const cursorFollower = document.querySelector('.cursor-follower');
-            if (cursorFollower) {
-                cursorFollower.style.transform = `translate(${clientX - 128}px, ${clientY - 128}px)`;
-            }
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
-
 
     const handleChangeFrom = () => {
         setIsShowRagistration((prev) => !prev)
@@ -36,58 +15,12 @@ function Login() {
     return (
         <div className="min-h-screen bg-black relative ">
             {/* Background elements */}
-            <div className="cursor-follower fixed w-64 h-64 rounded-full pointer-events-none transition-transform duration-300 ease-out z-0"
-                style={{
-                    background: 'radial-gradient(circle, rgba(219,2,172,0.08) 0%, rgba(219,2,172,0.02) 50%, transparent 70%)',
-                    filter: 'blur(40px)'
-                }} />
-
-            <div className="fixed inset-0 pointer-events-none opacity-5 animate-pulse"
-                style={{
-                    backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-                    backgroundSize: '50px 50px',
-                    animationDuration: '4s'
-                }} />
-
-            <div className="fixed inset-0 overflow-hidden pointer-events-none">
-                <div
-                    className="absolute top-0 left-0 w-full h-full transition-all duration-1000 ease-out"
-                    style={{
-                        background: `radial-gradient(circle at ${mousePos.x * 100}% ${mousePos.y * 100}%, rgba(219,2,172,0.06) 0%, rgba(219,2,172,0.02) 40%, transparent 70%)`
-                    }}
-                />
-                <div
-                    className="absolute top-0 left-0 w-full h-full transition-all duration-1200 ease-out"
-                    style={{
-                        background: `radial-gradient(circle at ${(1 - mousePos.x) * 100}% ${(1 - mousePos.y) * 100}%, rgba(1,26,189,0.04) 0%, rgba(67,56,202,0.02) 40%, transparent 70%)`
-                    }}
-                />
-                <div
-                    className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-5 transition-all duration-2000 ease-out"
-                    style={{
-                        background: 'radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%)',
-                        filter: 'blur(60px)',
-                        transform: `translate(${mousePos.x * 50}px, ${mousePos.y * 50}px)`
-                    }}
-                />
-            </div>
+            <Animation />
 
             {/* Main content */}
-            <div className="fixed top-0 left-0 right-0 py-4 bg-black/30 backdrop-blur-sm z-50">
-                <div className="container mx-auto px-4">
-                    <div className="flex justify-center md:justify-start">
-                        <Link to={"/"}>
-                            <h2 className="text-white text-3xl font-bold tracking-tight">
-                                CodeScribe
-                                <span className="ml-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 animate-pulse">
-                                    AI
-                                </span>
-                            </h2>
-                        </Link>
 
-                    </div>
-                </div>
-            </div>
+            {/* navbar */}
+            <LandingHeader />
 
             <div className="flex items-center justify-center min-h-screen relative z-10 px-4">
 
@@ -132,9 +65,9 @@ function Login() {
                             </a>
                             <p className="text-gray-500 text-sm mt-4">
                                 Don't have an account?{' '}
-                                <a href="#" className="text-indigo-400 hover:text-indigo-300 transition-colors duration-300" onClick={handleChangeFrom}>
+                                <Link to={'/auth/registration'} className="text-indigo-400 hover:text-indigo-300 transition-colors duration-300" onClick={handleChangeFrom}>
                                     Sign up
-                                </a>
+                                </Link>
                             </p>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import Login from './components/Login';
+import Register from "./components/Register";
 
 function App() {
 
@@ -8,8 +9,9 @@ function App() {
         createRoutesFromElements(
             <Route>
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/login" element={<Login />} />
-            </Route>
+                <Route path="/auth/sing-in" element={<Login />} />
+                <Route path='/auth/registration' element={<Register />} />
+            </Route >
         )
     )
 

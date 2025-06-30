@@ -7,10 +7,10 @@ import { FaArrowDownLong } from "react-icons/fa6"
 import { Link } from "react-router-dom";
 import Cards from "./Cards";
 import './LandingPage.css'
+import Animation from "../../animation/Animation";
 
 
 function LandingPage() {
-    const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
     const tagsRef = useRef(null);
     const [showCards, setShowCards] = useState(false);
     const mainContentRef = useRef(null);
@@ -52,27 +52,6 @@ function LandingPage() {
     }, []);
 
     useEffect(() => {
-        const handleMouseMove = (e) => {
-            const { clientX, clientY } = e;
-            const x = clientX / window.innerWidth;
-            const y = clientY / window.innerHeight;
-
-            setMousePos({ x, y });
-
-            document.documentElement.style.setProperty('--mouse-x', x);
-            document.documentElement.style.setProperty('--mouse-y', y);
-
-            const cursorFollower = document.querySelector('.cursor-follower');
-            if (cursorFollower) {
-                cursorFollower.style.transform = `translate(${clientX - 128}px, ${clientY - 128}px)`;
-            }
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
-
-    useEffect(() => {
         const tagsContainer = tagsRef.current;
         if (!tagsContainer) return;
 
@@ -110,42 +89,8 @@ function LandingPage() {
     return (
         <div className="min-h-screen bg-black overflow-hidden relative">
 
-            {/* Background elements */}
-            <div className="cursor-follower fixed w-64 h-64 rounded-full pointer-events-none transition-transform duration-300 ease-out z-0"
-                style={{
-                    background: 'radial-gradient(circle, rgba(219,2,172,0.08) 0%, rgba(219,2,172,0.02) 50%, transparent 70%)',
-                    filter: 'blur(40px)'
-                }} />
-
-            <div className="fixed inset-0 pointer-events-none opacity-5 animate-pulse"
-                style={{
-                    backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-                    backgroundSize: '50px 50px',
-                    animationDuration: '4s'
-                }} />
-
-            <div className="fixed inset-0 overflow-hidden pointer-events-none">
-                <div
-                    className="absolute top-0 left-0 w-full h-full transition-all duration-1000 ease-out"
-                    style={{
-                        background: `radial-gradient(circle at ${mousePos.x * 100}% ${mousePos.y * 100}%, rgba(219,2,172,0.06) 0%, rgba(219,2,172,0.02) 40%, transparent 70%)`
-                    }}
-                />
-                <div
-                    className="absolute top-0 left-0 w-full h-full transition-all duration-1200 ease-out"
-                    style={{
-                        background: `radial-gradient(circle at ${(1 - mousePos.x) * 100}% ${(1 - mousePos.y) * 100}%, rgba(1,26,189,0.04) 0%, rgba(67,56,202,0.02) 40%, transparent 70%)`
-                    }}
-                />
-                <div
-                    className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-5 transition-all duration-2000 ease-out"
-                    style={{
-                        background: 'radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%)',
-                        filter: 'blur(60px)',
-                        transform: `translate(${mousePos.x * 50}px, ${mousePos.y * 50}px)`
-                    }}
-                />
-            </div>
+            {/* background animation */}
+            <Animation />
 
             {/* Main content */}
             <div className="relative z-10">
@@ -209,10 +154,10 @@ function LandingPage() {
                         </button>
 
                         {/* Login button */}
-                        <Link to="/login" className="flex-1">
+                        <Link to="/auth/sing-in" className="flex-1">
                             <button className="relative group w-full bg-transparent border border-indigo-500/40 text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-full text-sm sm:text-base font-medium cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] hover:bg-indigo-500/10 hover:border-indigo-400/60 hover:text-indigo-100 transform-gpu hover:shadow-[0_10px_30px_-5px_rgba(67,56,202,0.3)] hover:-translate-y-1 active:scale-95">
                                 <span className="relative z-10 flex items-center justify-center whitespace-nowrap">
-                                    Log in
+                                    Sing in
                                     <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                                     </svg>
