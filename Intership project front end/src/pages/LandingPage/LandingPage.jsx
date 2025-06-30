@@ -3,6 +3,8 @@ import { FaFacebook } from "react-icons/fa6";
 import { GrInstagram } from "react-icons/gr";
 import { FaDiscord } from "react-icons/fa6";
 import { FaArrowRight } from "react-icons/fa";
+import { FaArrowDownLong } from "react-icons/fa6"
+import { Link } from "react-router-dom";
 import Cards from "./Cards";
 import './LandingPage.css'
 
@@ -107,6 +109,7 @@ function LandingPage() {
 
     return (
         <div className="min-h-screen bg-black overflow-hidden relative">
+
             {/* Background elements */}
             <div className="cursor-follower fixed w-64 h-64 rounded-full pointer-events-none transition-transform duration-300 ease-out z-0"
                 style={{
@@ -192,25 +195,30 @@ function LandingPage() {
                     </div>
 
                     {/* Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-md px-4">
-                        <button className="relative group bg-gradient-to-r from-[#c00197] via-[#804ef5] to-[#011699] text-white py-3 md:py-4 px-6 md:px-8 rounded-full text-base md:text-lg font-medium cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] hover:from-[#c00197] hover:via-[#804ef5] hover:to-[#011699] transform-gpu hover:shadow-[0_10px_30px_-5px_rgba(219,2,172,0.4)] overflow-hidden hover:-translate-y-1 border border-transparent hover:border-indigo-300/30 active:scale-95 flex-1 sm:flex-none">
-                            <span className="relative z-10 flex items-center justify-center font-bold">
+                    {/* Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-md px-4">
+                        {/* Create your blog button */}
+                        <button className="relative group bg-gradient-to-r from-[#c00197] via-[#804ef5] to-[#011699] text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-full text-sm sm:text-base font-medium cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] hover:from-[#c00197] hover:via-[#804ef5] hover:to-[#011699] transform-gpu hover:shadow-[0_10px_30px_-5px_rgba(219,2,172,0.4)] overflow-hidden hover:-translate-y-1 border border-transparent hover:border-indigo-300/30 active:scale-95 flex-1">
+                            <span className="relative z-10 flex items-center justify-center font-bold whitespace-nowrap">
                                 Create your blog
-                                <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-4 w-4 md:h-5 md:w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                 </svg>
                             </span>
                             <span className="absolute inset-0 bg-gradient-to-r from-[#e817b9] via-[#a855f7] to-[#1a2bff] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                         </button>
 
-                        <button className="relative group bg-transparent border border-indigo-500/40 text-white py-3 md:py-4 px-6 md:px-8 rounded-full text-base md:text-lg font-medium cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] hover:bg-indigo-500/10 hover:border-indigo-400/60 hover:text-indigo-100 transform-gpu hover:shadow-[0_10px_30px_-5px_rgba(67,56,202,0.3)] hover:-translate-y-1 active:scale-95 flex-1 sm:flex-none">
-                            <span className="relative z-10 flex items-center justify-center">
-                                Log in
-                                <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-4 w-4 md:h-5 md:w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                                </svg>
-                            </span>
-                        </button>
+                        {/* Login button */}
+                        <Link to="/login" className="flex-1">
+                            <button className="relative group w-full bg-transparent border border-indigo-500/40 text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-full text-sm sm:text-base font-medium cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] hover:bg-indigo-500/10 hover:border-indigo-400/60 hover:text-indigo-100 transform-gpu hover:shadow-[0_10px_30px_-5px_rgba(67,56,202,0.3)] hover:-translate-y-1 active:scale-95">
+                                <span className="relative z-10 flex items-center justify-center whitespace-nowrap">
+                                    Log in
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                                    </svg>
+                                </span>
+                            </button>
+                        </Link>
                     </div>
 
                     {/* Social links */}
@@ -244,6 +252,13 @@ function LandingPage() {
                     </div>
                 </div>
 
+                {!showCards && (
+                    <div className="flex items-center justify-center animate-bounce">
+                        <FaArrowDownLong className="text-indigo-500 text-2xl" />
+                    </div>
+                )}
+
+
                 <div className={`w-full max-w-6xl py-16 px-4 mx-auto transition-all duration-700 ease-out ${showCards ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     <Cards />
 
@@ -261,7 +276,7 @@ function LandingPage() {
                 {/* Fixed bottom spacing */}
                 <div className="h-16"></div>
             </div>
-        </div>
+        </div >
     )
 }
 

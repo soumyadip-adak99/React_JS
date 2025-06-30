@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function Cards() {
     return (
         <>
@@ -24,8 +22,8 @@ export default function Cards() {
                                     Discover the latest trends in beauty and self-care with our expertly curated content.
                                 </p>
                                 <div className="flex justify-center">
-                                    <button className="px-5 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium hover:from-indigo-600 hover:to-purple-600 transition-all duration-300 transform group-hover:scale-105 shadow-lg shadow-indigo-500/20">
-                                        Explore Template
+                                    <button className="px-5 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium hover:from-indigo-600 hover:to-purple-600 transition-all duration-300 transform group-hover:scale-105 shadow-lg shadow-indigo-500/20 cursor-pointer">
+                                        Explore
                                     </button>
                                 </div>
                             </div>
@@ -50,8 +48,8 @@ export default function Cards() {
                                     Cutting-edge technology insights and reviews for the modern digital enthusiast.
                                 </p>
                                 <div className="flex justify-center">
-                                    <button className="px-5 py-2 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-medium hover:from-pink-600 hover:to-rose-600 transition-all duration-300 transform group-hover:scale-105 shadow-lg shadow-pink-500/20">
-                                        Explore Template
+                                    <button className="px-5 py-2 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-medium hover:from-pink-600 hover:to-rose-600 transition-all duration-300 transform group-hover:scale-105 shadow-lg shadow-pink-500/20 cursor-pointer">
+                                        Explore
                                     </button>
                                 </div>
                             </div>
@@ -76,8 +74,8 @@ export default function Cards() {
                                     Mouth-watering recipes and culinary adventures from around the world.
                                 </p>
                                 <div className="flex justify-center">
-                                    <button className="px-5 py-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-medium hover:from-emerald-600 hover:to-teal-600 transition-all duration-300 transform group-hover:scale-105 shadow-lg shadow-emerald-500/20">
-                                        Explore Template
+                                    <button className="px-5 py-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-medium hover:from-emerald-600 hover:to-teal-600 transition-all duration-300 transform group-hover:scale-105 shadow-lg shadow-emerald-500/20 cursor-pointer">
+                                        Explore
                                     </button>
                                 </div>
                             </div>

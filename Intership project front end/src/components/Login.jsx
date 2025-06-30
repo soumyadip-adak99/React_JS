@@ -1,8 +1,12 @@
-import React from 'react'
-
 function Login() {
+
+
     return (
-        <div>Login</div>
+        <div className='min-h-screen bg-black relative'>
+            <div className='text-white text-2xl'>
+                Login
+            </div>
+        </div>
     )
 }
 
