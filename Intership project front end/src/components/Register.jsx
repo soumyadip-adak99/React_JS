@@ -160,11 +160,16 @@ function Register() {
                         </div>
 
                         {/* Mobile Number Field */}
-                        <div>
-                            <label className="block text-gray-300 mb-1.5 ml-1 text-sm font-medium">Mobile Number</label>
-                            <div className="flex flex-col sm:flex-row gap-3">
-                                <div className="relative w-full">
-                                    <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                        <div className="mb-4">
+                            <label className="block text-gray-300 mb-2 text-sm font-medium">
+                                Mobile Number
+                            </label>
+
+                            {/* Input + Button Container */}
+                            <div className="flex flex-col sm:flex-row gap-3 w-full">
+                                {/* Input with icon */}
+                                <div className="relative flex-grow w-full">
+                                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                         <FaMobileAlt className="text-gray-400 text-sm" />
                                     </div>
                                     <input
@@ -173,29 +178,33 @@ function Register() {
                                         value={formData.mobile}
                                         onChange={handleChange}
                                         placeholder="Enter mobile number"
-                                        className="w-full pl-10 pr-4 py-2.5 bg-gray-800/50 border border-gray-700/50 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300"
+                                        className="w-full pl-10 pr-4 py-3 bg-gray-800/70 border border-gray-700/50 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300"
                                         required
                                     />
                                 </div>
 
+                                {/* OTP Button - responsive */}
                                 <button
                                     type="button"
                                     onClick={handleSendOtp}
                                     disabled={countdown > 0}
-                                    className={`px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-300 sm:w-auto w-full ${countdown > 0
-                                            ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                                            : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                                    className={`flex-shrink-0 w-full sm:w-auto py-3 px-4 rounded-lg font-medium text-sm transition-all duration-300 ${countdown > 0
+                                            ? 'bg-gray-700/80 text-gray-400 cursor-not-allowed'
+                                            : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-md hover:shadow-indigo-500/30'
                                         }`}
                                 >
-                                    {countdown > 0 ? `${countdown}s` : 'Send OTP'}
+                                    {countdown > 0 ? `Resend in ${countdown}s` : 'Send OTP'}
                                 </button>
                             </div>
-                            <div>
-                                {errorMessage && (
-                                    <p className="text-red-500 pl-3 py-0.5 text-sm">{errorMessage}</p>
-                                )}
-                            </div>
+
+                            {/* Error message */}
+                            {errorMessage && (
+                                <p className="mt-1.5 text-red-400 text-xs animate-fadeIn">
+                                    {errorMessage}
+                                </p>
+                            )}
                         </div>
+
 
                         {/* OTP Field */}
                         {otpSent && (
