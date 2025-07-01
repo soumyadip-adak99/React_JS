@@ -2,8 +2,18 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import LandingPage from "./pages/LandingPage/LandingPage";
 import Login from './components/Login';
 import Register from "./components/Register";
+import { useEffect } from "react";
+import AOS from "aos";
+import 'aos/dist/aos.css';
 
 function App() {
+
+    useEffect(() => {
+        AOS.init({
+            duration: 1000,
+            once: true
+        })
+    }, [])
 
     const router = createBrowserRouter(
         createRoutesFromElements(

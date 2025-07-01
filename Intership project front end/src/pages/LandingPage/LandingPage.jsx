@@ -98,6 +98,7 @@ function LandingPage() {
                 <div
                     ref={mainContentRef}
                     className="flex flex-col items-center justify-center w-full px-4 py-8 transition-all duration-300"
+                    data-aos="fade-down"
                 >
                     <div className="text-center mb-8 md:mb-12 group max-w-4xl w-full">
                         <div className="mb-4 md:mb-6">
