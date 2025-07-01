@@ -6,7 +6,7 @@ export default function Cards() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {/* Card 1 */}
-                <div className="group relative overflow-hidden rounded-2xl border border-gray-800/50 hover:border-indigo-500/50 transition-all duration-500 hover:shadow-xl hover:shadow-indigo-500/20">
+                <div data-aos="fade-left" className="group relative overflow-hidden rounded-2xl border border-gray-800/50 hover:border-indigo-500/50 transition-all duration-500 hover:shadow-xl hover:shadow-indigo-500/20">
                     <div className="h-80 w-full overflow-hidden">
                         <img
                             className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
@@ -32,7 +32,7 @@ export default function Cards() {
                 </div>
 
                 {/* Card 2 */}
-                <div className="group relative overflow-hidden rounded-2xl border border-gray-800/50 hover:border-pink-500/50 transition-all duration-500 hover:shadow-xl hover:shadow-pink-500/20">
+                <div data-aos="fade-left" className="group relative overflow-hidden rounded-2xl border border-gray-800/50 hover:border-pink-500/50 transition-all duration-500 hover:shadow-xl hover:shadow-pink-500/20">
                     <div className="h-80 w-full overflow-hidden">
                         <img
                             className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
@@ -58,7 +58,7 @@ export default function Cards() {
                 </div>
 
                 {/* Card 3 */}
-                <div className="group relative overflow-hidden rounded-2xl border border-gray-800/50 hover:border-emerald-500/50 transition-all duration-500 hover:shadow-xl hover:shadow-emerald-500/20">
+                <div data-aos='fade-left' className="group relative overflow-hidden rounded-2xl border border-gray-800/50 hover:border-emerald-500/50 transition-all duration-500 hover:shadow-xl hover:shadow-emerald-500/20">
                     <div className="h-80 w-full overflow-hidden">
                         <img
                             className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"

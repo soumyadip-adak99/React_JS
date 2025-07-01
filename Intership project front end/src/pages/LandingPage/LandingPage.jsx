@@ -1,13 +1,16 @@
 import { useState, useEffect, useRef } from "react";
-import { FaFacebook } from "react-icons/fa6";
-import { GrInstagram } from "react-icons/gr";
-import { FaDiscord } from "react-icons/fa6";
+import { FaFacebook, FaDiscord, FaArrowDownLong } from "react-icons/fa6";
 import { FaArrowRight } from "react-icons/fa";
-import { FaArrowDownLong } from "react-icons/fa6"
+import { GrInstagram } from "react-icons/gr";
 import { Link } from "react-router-dom";
-import Cards from "./Cards";
-import './LandingPage.css'
+import Cards from "./sections/Cards";
 import Animation from "../../animation/Animation";
+import FeaturesSection from "./sections/FeaturesSection";
+import AboutSection from "./sections/AboutSection";
+import TeamSection from "./sections/TeamSection";
+import DividerLine from "../../constants/DeviderLine";
+import Footer from "../../components/Footer";
+import './LandingPage.css'
 
 
 function LandingPage() {
@@ -29,7 +32,6 @@ function LandingPage() {
     }, []);
 
     useEffect(() => {
-        // Center main content on initial load
         if (mainContentRef.current) {
             const viewportHeight = window.innerHeight;
             const contentHeight = mainContentRef.current.offsetHeight;
@@ -37,7 +39,6 @@ function LandingPage() {
             mainContentRef.current.style.marginTop = `${topMargin}px`;
         }
 
-        // Adjust on resize
         const handleResize = () => {
             if (mainContentRef.current) {
                 const viewportHeight = window.innerHeight;
@@ -206,6 +207,9 @@ function LandingPage() {
 
 
                 <div className={`w-full max-w-6xl py-16 px-4 mx-auto transition-all duration-700 ease-out ${showCards ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+
+                    <DividerLine />
+
                     <Cards />
 
                     <div className="text-white flex items-center align-center justify-center py-9">
@@ -214,15 +218,30 @@ function LandingPage() {
                                 Explore More Blogs <FaArrowRight className="pl-2 text-xl" />
                             </span>
                         </button>
-
-
                     </div>
+
+                    <DividerLine />
+
+                    {/* feture section */}
+                    <FeaturesSection />
+
+                    <DividerLine />
+
+                    {/* aboutsection */}
+                    <AboutSection />
+
+                    <DividerLine />
+
+                    <TeamSection />
+
+
                 </div>
 
-                {/* Fixed bottom spacing */}
-                <div className="h-16"></div>
+                <div className={`w-full ${showCards ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                    <Footer />
+                </div>
             </div>
-        </div >
+        </div>
     )
 }
 
