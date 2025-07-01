@@ -17,7 +17,7 @@ function Login() {
             {/* Background elements */}
             <Animation />
 
-            {/* Main content */}
+            {/* main content */}
 
             {/* navbar */}
             <LandingHeader />

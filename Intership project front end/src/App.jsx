@@ -5,6 +5,7 @@ import Register from "./components/Register";
 import { useEffect } from "react";
 import AOS from "aos";
 import 'aos/dist/aos.css';
+import { Toaster } from "react-hot-toast";
 
 function App() {
 
@@ -28,6 +29,10 @@ function App() {
 
     return (
         <>
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
             <RouterProvider router={router} />
         </>
     );

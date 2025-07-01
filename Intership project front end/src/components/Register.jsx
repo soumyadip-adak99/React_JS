@@ -3,6 +3,7 @@ import { FaArrowRight, FaMobileAlt, FaEnvelope, FaUser, FaLock } from "react-ico
 import { Link } from "react-router-dom";
 import Animation from "../animation/Animation";
 import LandingHeader from "./LandingHeader";
+import toast from "react-hot-toast";
 
 function Register() {
     const [otpSent, setOtpSent] = useState(false);
@@ -52,7 +53,7 @@ function Register() {
         }
         setOtpSent(true);
         setCountdown(30);
-        alert(`OTP sent to ${formData.mobile}`);
+        toast.success(`OTP sent to ${formData.mobile}`);
     };
 
     const handleSubmit = (e) => {
@@ -66,14 +67,12 @@ function Register() {
 
     return (
 
-
-
         <div className="min-h-screen bg-black relative overflow-hidden">
 
             {/* bakground animation */}
             <Animation />
 
-            {/* Main content */}
+            {/* main content */}
             <LandingHeader />
 
             <div className="flex items-center justify-center min-h-screen relative z-10 px-4 py-12">
@@ -83,7 +82,7 @@ function Register() {
                     </h2>
 
                     <div className="space-y-5">
-                        {/* Name Fields */}
+                        {/* name fields */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-gray-300 mb-1.5 ml-1 text-sm font-medium">First Name</label>
@@ -121,7 +120,7 @@ function Register() {
                             </div>
                         </div>
 
-                        {/* Email Field */}
+                        {/* email field */}
                         <div>
                             <label className="block text-gray-300 mb-1.5 ml-1 text-sm font-medium">Email</label>
                             <div className="relative">
@@ -140,7 +139,7 @@ function Register() {
                             </div>
                         </div>
 
-                        {/* Password Field */}
+                        {/* password field */}
                         <div>
                             <label className="block text-gray-300 mb-1.5 ml-1 text-sm font-medium">Password</label>
                             <div className="relative">
@@ -159,15 +158,15 @@ function Register() {
                             </div>
                         </div>
 
-                        {/* Mobile Number Field */}
+                        {/* mobile number field */}
                         <div className="mb-4">
                             <label className="block text-gray-300 mb-2 text-sm font-medium">
                                 Mobile Number
                             </label>
 
-                            {/* Input + Button Container */}
+                            {/* input fields */}
                             <div className="flex flex-col sm:flex-row gap-3 w-full">
-                                {/* Input with icon */}
+                                {/* input sections */}
                                 <div className="relative flex-grow w-full">
                                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                         <FaMobileAlt className="text-gray-400 text-sm" />
@@ -183,21 +182,21 @@ function Register() {
                                     />
                                 </div>
 
-                                {/* OTP Button - responsive */}
+                                {/* OTP button */}
                                 <button
                                     type="button"
                                     onClick={handleSendOtp}
                                     disabled={countdown > 0}
                                     className={`flex-shrink-0 w-full sm:w-auto py-3 px-4 rounded-lg font-medium text-sm transition-all duration-300 ${countdown > 0
-                                            ? 'bg-gray-700/80 text-gray-400 cursor-not-allowed'
-                                            : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-md hover:shadow-indigo-500/30'
+                                        ? 'bg-gray-700/80 text-gray-400 cursor-not-allowed'
+                                        : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-md hover:shadow-indigo-500/30'
                                         }`}
                                 >
                                     {countdown > 0 ? `Resend in ${countdown}s` : 'Send OTP'}
                                 </button>
                             </div>
 
-                            {/* Error message */}
+                            {/*error message*/}
                             {errorMessage && (
                                 <p className="mt-1.5 text-red-400 text-xs animate-fadeIn">
                                     {errorMessage}
@@ -206,7 +205,7 @@ function Register() {
                         </div>
 
 
-                        {/* OTP Field */}
+                        {/* OTP field */}
                         {otpSent && (
                             <div>
                                 <label className="block text-gray-300 mb-1.5 ml-1 text-sm font-medium">OTP Verification</label>
@@ -222,7 +221,7 @@ function Register() {
                             </div>
                         )}
 
-                        {/* Register Button */}
+                        {/* register button */}
                         <button
                             type="submit"
                             className="w-full relative group bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3 px-6 rounded-lg font-medium cursor-pointer transition-all duration-300 hover:from-indigo-600 hover:to-purple-700 transform-gpu hover:shadow-[0_10px_20px_-5px_rgba(124,58,237,0.4)] hover:-translate-y-1 active:scale-95 mt-2"
@@ -233,7 +232,7 @@ function Register() {
                             </span>
                         </button>
 
-                        {/* Login Link */}
+                        {/* login link */}
                         <div className="text-center pt-1">
                             <p className="text-gray-400 text-sm">
                                 Already have an account?{' '}

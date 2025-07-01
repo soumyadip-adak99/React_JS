@@ -200,9 +200,11 @@ function LandingPage() {
                 </div>
 
                 {!showCards && (
+
                     <div className="flex items-center justify-center animate-bounce">
                         <FaArrowDownLong className="text-indigo-500 text-2xl" />
                     </div>
+
                 )}
 
 
