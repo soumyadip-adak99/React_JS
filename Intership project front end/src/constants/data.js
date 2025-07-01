@@ -53,7 +53,7 @@ export const teamMembers = [
     {
         name: "Soumita Paul",
         role: "Backend Enginner",
-        image: assets.demoProfileImage,
+        image: assets.shoumitaPaulImage,
         gitHub: 'https://guthub.com',
         linkdin: 'https://linkedin.com',
         discord: 'https://discord.com'

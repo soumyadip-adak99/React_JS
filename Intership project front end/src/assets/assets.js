@@ -4,6 +4,7 @@ import demoProfileImage from '../assets/demo.jpg'
 import arindomPaulImage from '../assets/Arindom-paul.jpg'
 import aritraDasImage from '../assets/Aritra-Das.jpg'
 import soumyadipAdakImage from '../assets/Soumyadip-adak.jpg'
+import shoumitaPaulImage from '../assets/ShoumitaPaul.jpg'
 
 export const assets = {
     loginPic,
@@ -11,5 +12,6 @@ export const assets = {
     demoProfileImage,
     arindomPaulImage,
     aritraDasImage,
-    soumyadipAdakImage
+    soumyadipAdakImage,
+    shoumitaPaulImage
 }
