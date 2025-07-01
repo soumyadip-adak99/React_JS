@@ -75,8 +75,8 @@ export const teamMembers = [
         name: "Aritra Das",
         role: "Backend Engineer",
         image: assets.aritraDasImage,
-        gitHub: 'https://guthub.com',
-        linkdin: 'https://linkedin.com',
+        gitHub: 'https://github.com/Aritra7636',
+        linkdin: 'https://www.linkedin.com/in/aritra-das-a69897212?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
     },
     {
         name: "Aritra Naskar",
