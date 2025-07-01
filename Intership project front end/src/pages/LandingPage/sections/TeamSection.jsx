@@ -6,7 +6,7 @@ const TeamSection = () => {
     const [hoveredMember, setHoveredMember] = useState(null);
 
     return (
-        <div className="relative py-20 px-4 sm:px-6 lg:px-8 bg-transperent overflow-hidden">
+        <div className="relative pb-30 px-4 sm:px-6 lg:px-8 bg-transperent overflow-hidden">
             {/* Background elements */}
             <div className="absolute inset-0 pointer-events-none opacity-10">
                 <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-purple-500 blur-[80px]"></div>

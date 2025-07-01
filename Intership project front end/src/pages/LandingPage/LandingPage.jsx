@@ -232,12 +232,15 @@ function LandingPage() {
 
                     <DividerLine />
 
-                    <TeamSection />
 
 
                 </div>
+                <div className={`w-full ${showCards ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                    <TeamSection />
+                </div>
 
                 <div className={`w-full ${showCards ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+
                     <Footer />
                 </div>
             </div>
