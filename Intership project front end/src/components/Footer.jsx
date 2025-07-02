@@ -2,7 +2,7 @@ const Footer = () => {
     return (
         <footer className="bg-gray-900  border-gray-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                {/* Main footer content */}
+                {/* content */}
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12">
                     {/* Logo and description */}
                     <div className="lg:col-span-1">
@@ -16,7 +16,7 @@ const Footer = () => {
                         </p>
                     </div>
 
-                    {/* Product links */}
+                    {/* product links */}
                     <div>
                         <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
                             Product
@@ -32,7 +32,7 @@ const Footer = () => {
                         </ul>
                     </div>
 
-                    {/* Resources links */}
+                    {/* resource links */}
                     <div>
                         <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
                             Resources
@@ -48,7 +48,7 @@ const Footer = () => {
                         </ul>
                     </div>
 
-                    {/* Company links */}
+                    {/* company links */}
                     <div>
                         <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
                             Company
@@ -65,12 +65,12 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* Divider */}
+                {/* divider */}
                 <div className="border-t border-gray-800 my-12"></div>
 
-                {/* Bottom section */}
+                {/* bottom section */}
                 <div className="md:flex md:items-center md:justify-between">
-                    {/* Contact info */}
+                    {/* contact info */}
                     <div className="mb-6 md:mb-0">
                         <h3 className="text-lg font-medium text-white mb-3">Get in Touch</h3>
                         <p className="text-gray-400 mb-4">Have questions? We'd love to hear from you.</p>
@@ -93,7 +93,7 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* Copyright */}
+                {/* copyright */}
                 <div className="mt-12 text-center text-gray-500 text-sm">
                     © 2025 CodeScribe AI. All rights reserved. Made with ❤️ by the CodeScribe team.
                 </div>

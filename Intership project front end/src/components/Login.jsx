@@ -30,6 +30,8 @@ function Login() {
         }
     };
 
+    const isFormValid = formData.email.trim() !== '' && formData.password.trim() !== '';
+
     return (
         <div className="min-h-screen bg-black relative overflow-hidden">
             <Animation />
@@ -84,12 +86,17 @@ function Login() {
 
                         <button
                             type="submit"
-                            disabled={loading}
-                            className={`w-full relative group bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3 px-6 rounded-lg font-medium cursor-pointer transition-all duration-300 hover:from-indigo-600 hover:to-purple-700 transform-gpu hover:shadow-[0_10px_20px_-5px_rgba(124,58,237,0.4)] hover:-translate-y-1 active:scale-95 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            disabled={!isFormValid || loading}
+                            className={`w-full relative group py-3 px-6 rounded-lg font-medium transition-all duration-300 transform-gpu ${!isFormValid || loading
+                                ? 'bg-[#3A4359] text-gray-400 cursor-not-allowed'
+                                : 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 hover:shadow-[0_10px_20px_-5px_rgba(124,58,237,0.4)] hover:-translate-y-1 active:scale-95'
+                                }`}
                         >
                             <span className="relative z-10 flex items-center justify-center">
                                 {loading ? 'Signing In...' : 'Sign In'}
-                                {!loading && <FaArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />}
+                                {(!loading && isFormValid) && (
+                                    <FaArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                                )}
                             </span>
                         </button>
 

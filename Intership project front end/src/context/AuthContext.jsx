@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    // Helper function to extract roles from JWT token
+    // helper function to extract roles from JWT token
     const extractRolesFromToken = (token) => {
         try {
             const decoded = jwtDecode(token);
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Check if token is valid
+    // check if token is valid
     const isTokenValid = (token) => {
         try {
             const decoded = jwtDecode(token);
@@ -62,10 +62,10 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Clear error state
+    // clear error state
     const clearError = useCallback(() => setError(null), []);
 
-    // Fetch user details from API
+    // fetch user details from API
     const fetchUserDetails = useCallback(async () => {
         try {
             setLoading(true);
@@ -79,13 +79,12 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
-    // Handle successful authentication response
+    // handle successful authentication response
     const handleAuthResponse = useCallback(async (response, shouldRedirect = true) => {
         if (response.data?.token) {
             localStorage.setItem('authToken', response.data.token);
 
             try {
-                // Get fresh user details from API
                 const userDetails = await fetchUserDetails();
                 const roles = extractRolesFromToken(response.data.token);
 
@@ -111,7 +110,7 @@ export const AuthProvider = ({ children }) => {
         return null;
     }, [fetchUserDetails, navigate]);
 
-    // Initialize user state
+    // initialize user state
     useEffect(() => {
         const initializeAuth = async () => {
             const token = localStorage.getItem("authToken");
@@ -119,7 +118,6 @@ export const AuthProvider = ({ children }) => {
 
             if (token && isTokenValid(token)) {
                 try {
-                    // Get fresh user details on app load
                     const userDetails = await fetchUserDetails();
                     const roles = extractRolesFromToken(token);
 
@@ -141,7 +139,7 @@ export const AuthProvider = ({ children }) => {
         initializeAuth();
     }, [fetchUserDetails]);
 
-    // Login method
+    // login method
     const login = async (email, password) => {
         try {
             setLoading(true);
@@ -164,7 +162,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Register method
+    // register method
     const register = async (userData) => {
         try {
             setLoading(true);
@@ -178,7 +176,7 @@ export const AuthProvider = ({ children }) => {
                 otp: userData.otp
             });
 
-            // Don't redirect automatically after registration
+
             return await handleAuthResponse(response, false);
         } catch (err) {
             const errorData = err.response?.data || {};
@@ -192,7 +190,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Logout method
+    // logout method
     const logout = useCallback(async () => {
         try {
             await api.post("/api/public/logout");
@@ -206,23 +204,23 @@ export const AuthProvider = ({ children }) => {
         }
     }, [navigate]);
 
-    // Check authentication status
+    // check authentication status
     const isAuthenticated = useCallback(() => {
         const token = localStorage.getItem('authToken');
         return !!user && !!token && isTokenValid(token);
     }, [user]);
 
-    // Check if user is admin
+    // check if user is admin
     const isAdmin = useCallback(() => {
         return user?.roles?.includes("ROLE_ADMIN");
     }, [user]);
 
-    // Check if user is regular user
+    // check if user is regular user
     const isUser = useCallback(() => {
         return user?.roles?.includes("ROLE_USER");
     }, [user]);
 
-    // Set up axios interceptors
+    // set up axios interceptors
     useEffect(() => {
         const requestInterceptor = api.interceptors.request.use(
             async (config) => {

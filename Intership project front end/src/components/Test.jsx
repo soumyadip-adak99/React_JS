@@ -18,8 +18,8 @@ function Test() {
             }
         };
 
-        apiCall(); // Call the async function immediately
-    }, []); // Empty dependency array means this runs once on mount
+        apiCall();
+    }, []);
 
     return (
         <div className='text-red-500 text-2xl p-4'>

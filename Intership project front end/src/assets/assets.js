@@ -5,6 +5,9 @@ import arindomPaulImage from '../assets/Arindom-paul.jpg'
 import aritraDasImage from '../assets/Aritra-Das.jpg'
 import soumyadipAdakImage from '../assets/Soumyadip-adak.jpg'
 import shoumitaPaulImage from '../assets/ShoumitaPaul.jpg'
+import sectionMainCard1st from '../assets/main_card_1st.jpg'
+import sectionMainCard2nd from '../assets/main_card_2nd.jpg'
+import sectionMainCard3rd from '../assets/main_card_3rd.jpg'
 
 export const assets = {
     loginPic,
@@ -13,5 +16,8 @@ export const assets = {
     arindomPaulImage,
     aritraDasImage,
     soumyadipAdakImage,
-    shoumitaPaulImage
+    shoumitaPaulImage,
+    sectionMainCard1st,
+    sectionMainCard2nd,
+    sectionMainCard3rd
 }
