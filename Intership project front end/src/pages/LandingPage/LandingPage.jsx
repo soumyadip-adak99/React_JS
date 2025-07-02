@@ -142,18 +142,57 @@ function LandingPage() {
                     </div>
 
                     {/* Buttons */}
-                    {/* Buttons */}
                     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-md px-4">
                         {/* Create your blog button */}
-                        <button className="relative group bg-gradient-to-r from-[#c00197] via-[#804ef5] to-[#011699] text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-full text-sm sm:text-base font-medium cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] hover:from-[#c00197] hover:via-[#804ef5] hover:to-[#011699] transform-gpu hover:shadow-[0_10px_30px_-5px_rgba(219,2,172,0.4)] overflow-hidden hover:-translate-y-1 border border-transparent hover:border-indigo-300/30 active:scale-95 flex-1">
-                            <span className="relative z-10 flex items-center justify-center font-bold whitespace-nowrap">
-                                Create your blog
-                                <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                            </span>
-                            <span className="absolute inset-0 bg-gradient-to-r from-[#e817b9] via-[#a855f7] to-[#1a2bff] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        </button>
+                        <Link to='/auth/register' className="flex-1 min-w-[180px] sm:min-w-[220px]">
+                            <button className="
+                                                relative 
+                                                group 
+                                                w-full
+                                                bg-gradient-to-r 
+                                                from-[#c00197] via-[#804ef5] to-[#011699] 
+                                                text-white 
+                                                py-2.5 sm:py-3 
+                                                px-4 sm:px-6 
+                                                rounded-full 
+                                                text-sm sm:text-base 
+                                                font-medium 
+                                                cursor-pointer 
+                                                transition-all 
+                                                duration-300 
+                                                ease-[cubic-bezier(0.25,1,0.5,1)] 
+                                                hover:from-[#c00197] 
+                                                hover:via-[#804ef5] 
+                                                hover:to-[#011699] 
+                                                transform-gpu 
+                                                hover:shadow-[0_10px_30px_-5px_rgba(219,2,172,0.4)] 
+                                                overflow-hidden 
+                                                hover:-translate-y-1 
+                                                border 
+                                                border-transparent 
+                                                hover:border-indigo-300/30 
+                                                active:scale-95
+                                ">
+                                <span className="relative z-10 flex items-center justify-center font-bold whitespace-nowrap">
+                                    Create your blog
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="ml-2 h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M14 5l7 7m0 0l-7 7m7-7H3"
+                                        />
+                                    </svg>
+                                </span>
+                                <span className="absolute inset-0 bg-gradient-to-r from-[#e817b9] via-[#a855f7] to-[#1a2bff] opacity-0 group-hover:opacity-100 transition-opacity  duration-500" />
+                            </button>
+                        </Link>
 
                         {/* Login button */}
                         <Link to="/auth/sing-in" className="flex-1">
