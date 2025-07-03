@@ -64,7 +64,7 @@ export default function Cards() {
                     <div className="h-80 w-full overflow-hidden">
                         <img
                             className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                            src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80"
+                            src={assets.sectionMainCard3rd}
                             alt="Food Blog"
                         />
                     </div>

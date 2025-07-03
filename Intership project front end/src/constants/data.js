@@ -81,7 +81,7 @@ export const teamMembers = [
     {
         name: "Aritra Naskar",
         role: "Backend Enginner",
-        image: assets.demoProfileImage,
+        image: assets.aritraNaskarImage,
         gitHub: 'https://guthub.com',
         linkdin: 'https://linkedin.com',
     }

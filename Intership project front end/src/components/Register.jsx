@@ -7,10 +7,12 @@ import Animation from "../animation/Animation";
 import LandingHeader from "./LandingHeader";
 
 function Register() {
-    const { sendOTP, register, loading, error, clearError } = useAuth();
+    const { registration, sentOTP } = useAuth();
     const navigate = useNavigate();
     const [otpSent, setOtpSent] = useState(false);
     const [countdown, setCountdown] = useState(0);
+    const [loading, setLoading] = useState(false);
+
     const [formData, setFormData] = useState({
         firstname: '',
         lastname: '',
@@ -21,18 +23,18 @@ function Register() {
     });
 
     useEffect(() => {
-        clearError();
-    }, [clearError]);
-
-    useEffect(() => {
-        const timer = countdown > 0 && setTimeout(() => setCountdown(countdown - 1), 1000);
-        return () => timer && clearTimeout(timer);
+        let timer;
+        if (countdown > 0) {
+            timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+        }
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
     }, [countdown]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
-        if (error) clearError();
     };
 
     const validateField = (name, value) => {
@@ -45,8 +47,11 @@ function Register() {
                 return value.length >= 6;
             case 'otp':
                 return /^\d{6}$/.test(value);
-            default:
+            case 'firstname':
+            case 'lastname':
                 return value.trim().length > 0;
+            default:
+                return true;
         }
     };
 
@@ -56,39 +61,48 @@ function Register() {
             return;
         }
 
+        setLoading(true);
         try {
-            await sendOTP(formData.phone_number);
+            await sentOTP(formData.phone_number);
             setOtpSent(true);
             setCountdown(30);
-            toast.success(`OTP sent to ${formData.phone_number}`);
-        } catch (err) {
-            toast.error(err.message || 'Failed to send OTP');
+            toast.success('OTP sent successfully');
+        } catch (error) {
+            toast.error(error.message || 'Failed to send OTP');
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const validations = {
-            firstname: validateField('firstname', formData.firstname),
-            lastname: validateField('lastname', formData.lastname),
-            email: validateField('email', formData.email),
-            password: validateField('password', formData.password),
-            phone_number: validateField('phone_number', formData.phone_number),
-            otp: otpSent ? validateField('otp', formData.otp) : true
-        };
+        // Validate all fields
+        const requiredFields = ['firstname', 'lastname', 'email', 'password', 'phone_number'];
+        const isValid = requiredFields.every(field => {
+            const valid = validateField(field, formData[field]);
+            if (!valid) {
+                toast.error(`Please enter a valid ${field.replace('_', ' ')}`);
+            }
+            return valid;
+        });
 
-        if (!Object.values(validations).every(Boolean)) {
-            toast.error('Please fill all fields correctly');
+        if (!isValid) return;
+
+        if (!otpSent || !validateField('otp', formData.otp)) {
+            toast.error('Please verify your mobile number with OTP first');
             return;
         }
 
+        setLoading(true);
         try {
-            await register(formData);
-            toast.success('Registration successful!');
-            navigate('/auth/sing-in');
-        } catch (err) {
-            toast.error(err.message || 'Registration failed');
+            await registration(formData);
+            //toast.success('Registration successful! Please login.');
+            // navigate('/auth/sign-in');
+        } catch (error) {
+            toast.error(error.message || 'Registration failed');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -104,11 +118,9 @@ function Register() {
                     </h2>
 
                     <div className="space-y-5">
-                        {/* name fields */}
+                        {/* Name fields */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-
-                                {/* first name */}
                                 <label className="block text-gray-300 mb-1.5 ml-1 text-sm font-medium">First Name</label>
                                 <div className="relative">
                                     <FaUser className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm" />
@@ -125,8 +137,6 @@ function Register() {
                                 </div>
                             </div>
                             <div>
-                                {/* last name */}
-
                                 <label className="block text-gray-300 mb-1.5 ml-1 text-sm font-medium">Last Name</label>
                                 <div className="relative">
                                     <FaUser className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm" />
@@ -144,7 +154,7 @@ function Register() {
                             </div>
                         </div>
 
-                        {/* email */}
+                        {/* Email */}
                         <div>
                             <label className="block text-gray-300 mb-1.5 ml-1 text-sm font-medium">Email</label>
                             <div className="relative">
@@ -162,7 +172,7 @@ function Register() {
                             </div>
                         </div>
 
-                        {/* passowrd */}
+                        {/* Password */}
                         <div>
                             <label className="block text-gray-300 mb-1.5 ml-1 text-sm font-medium">Password</label>
                             <div className="relative">
@@ -181,7 +191,7 @@ function Register() {
                             </div>
                         </div>
 
-                        {/* phone number and otp */}
+                        {/* Phone number and OTP */}
                         <div>
                             <label className="block text-gray-300 mb-1.5 ml-1 text-sm font-medium">Mobile Number</label>
                             <div className="flex gap-3">
@@ -204,7 +214,7 @@ function Register() {
                                     type="button"
                                     onClick={handleSendOtp}
                                     disabled={loading || countdown > 0 || !validateField('phone_number', formData.phone_number)}
-                                    className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm transition-all duration-300 disabled:bg-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                    className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm transition-all duration-300 disabled:bg-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed whitespace-nowrap"
                                 >
                                     {countdown > 0 ? `Resend (${countdown}s)` : 'Send OTP'}
                                 </button>
@@ -217,7 +227,7 @@ function Register() {
                                 <input
                                     type="text"
                                     name="otp"
-                                    placeholder="Enter OTP"
+                                    placeholder="Enter 6-digit OTP"
                                     value={formData.otp}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2.5 bg-gray-800/50 border border-gray-700/50 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300"
@@ -229,18 +239,13 @@ function Register() {
                             </div>
                         )}
 
-                        {error && (
-                            <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-                                <p className="text-red-400 text-sm">{error.message}</p>
-                            </div>
-                        )}
-
                         <button
                             type="submit"
                             disabled={loading || !otpSent}
-                            className="w-full py-3 px-6 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-all duration-300 disabled:bg-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed"
+                            className="w-full py-3 px-6 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-all duration-300 disabled:bg-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                             {loading ? 'Processing...' : 'Register'}
+                            {!loading && <FaArrowRight className="text-sm" />}
                         </button>
 
                         <div className="text-center pt-1">

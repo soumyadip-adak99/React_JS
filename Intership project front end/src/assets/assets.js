@@ -8,6 +8,7 @@ import shoumitaPaulImage from '../assets/ShoumitaPaul.jpg'
 import sectionMainCard1st from '../assets/main_card_1st.jpg'
 import sectionMainCard2nd from '../assets/main_card_2nd.jpg'
 import sectionMainCard3rd from '../assets/main_card_3rd.jpg'
+import aritraNaskarImage from '../assets/aritra_naskar.jpg'
 
 export const assets = {
     loginPic,
@@ -19,5 +20,6 @@ export const assets = {
     shoumitaPaulImage,
     sectionMainCard1st,
     sectionMainCard2nd,
-    sectionMainCard3rd
+    sectionMainCard3rd,
+    aritraNaskarImage
 }

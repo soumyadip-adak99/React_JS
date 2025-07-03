@@ -1,273 +1,219 @@
-import { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
+import { getUserDetails as apiGetUserDetails, userLogout as apiLogout } from '../api/userAPI';
+import { login as apiLogin, sentOtp as apiSentOTP, register as apiRegister } from '../api/publicAPI';
+import toast from "react-hot-toast";
 
 const AuthContext = createContext();
+
 export const useAuth = () => useContext(AuthContext);
 
-const api = axios.create({
-    baseURL: "http://localhost:8080/app",
-    headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-    },
-    withCredentials: true
-});
+// Function to clear a cookie
+const clearCookie = (name) => {
+    document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax;`;
+};
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    // helper function to extract roles from JWT token
-    const extractRolesFromToken = (token) => {
+    // Extract user data from token
+    const extractUserFromToken = (token) => {
         try {
             const decoded = jwtDecode(token);
             let roles = [];
 
-            if (decoded.authorities) {
-                if (typeof decoded.authorities === 'string') {
-                    try {
-                        roles = JSON.parse(decoded.authorities);
-                        if (Array.isArray(roles) && Array.isArray(roles[0])) {
-                            roles = roles[0];
-                        }
-                    } catch (e) {
-                        const match = decoded.authorities.match(/ROLE_\w+/g);
-                        roles = match || [];
-                    }
-                } else if (Array.isArray(decoded.authorities)) {
-                    roles = decoded.authorities;
+            if (typeof decoded.authorities === 'string') {
+                try {
+                    roles = JSON.parse(decoded.authorities).flat();
+                } catch {
+                    roles = [decoded.authorities];
                 }
-            } else if (decoded.roles) {
-                roles = Array.isArray(decoded.roles) ? decoded.roles : [decoded.roles];
+            } else if (Array.isArray(decoded.authorities)) {
+                roles = decoded.authorities.flat();
             }
 
-            return roles;
-        } catch (e) {
-            console.error('Error extracting roles from token:', e);
-            return [];
-        }
-    };
-
-    // check if token is valid
-    const isTokenValid = (token) => {
-        try {
-            const decoded = jwtDecode(token);
-            return decoded.exp * 1000 > Date.now();
-        } catch (e) {
-            return false;
-        }
-    };
-
-    // clear error state
-    const clearError = useCallback(() => setError(null), []);
-
-    // fetch user details from API
-    const fetchUserDetails = useCallback(async () => {
-        try {
-            setLoading(true);
-            const response = await api.get("/user");
-            return response.data;
+            return {
+                email: decoded.sub,
+                roles: roles,
+                exp: decoded.exp
+            };
         } catch (err) {
-            console.error("Failed to fetch user details:", err);
-            throw err;
-        } finally {
-            setLoading(false);
+            console.error('Error extracting user from token:', err);
+            return null;
         }
+    };
+
+    // Clear authentication state
+    const clearAuth = () => {
+        clearCookie('jwt');
+        setUser(null);
+    };
+
+    // Initialize auth state
+    useEffect(() => {
+        const checkAuthStatus = async () => {
+            try {
+                const response = await apiGetUserDetails();
+
+                if (response.data) {
+                    setUser({
+                        email: response.data.email,
+                        roles: response.data.roles || []
+                    });
+                }
+            } catch (err) {
+                clearAuth();
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        checkAuthStatus();
     }, []);
 
-    // handle successful authentication response
-    const handleAuthResponse = useCallback(async (response, shouldRedirect = true) => {
-        if (response.data?.token) {
-            localStorage.setItem('authToken', response.data.token);
-
-            try {
-                const userDetails = await fetchUserDetails();
-                const roles = extractRolesFromToken(response.data.token);
-
-                const userData = {
-                    ...userDetails,
-                    roles,
-                    exp: jwtDecode(response.data.token).exp
-                };
-
-                localStorage.setItem('user', JSON.stringify(userData));
-                setUser(userData);
-
-                if (shouldRedirect) {
-                    navigate('/');
-                }
-
-                return userData;
-            } catch (error) {
-                console.error('Error handling auth response:', error);
-                throw error;
-            }
-        }
-        return null;
-    }, [fetchUserDetails, navigate]);
-
-    // initialize user state
-    useEffect(() => {
-        const initializeAuth = async () => {
-            const token = localStorage.getItem("authToken");
-            const storedUser = localStorage.getItem("user");
-
-            if (token && isTokenValid(token)) {
-                try {
-                    const userDetails = await fetchUserDetails();
-                    const roles = extractRolesFromToken(token);
-
-                    const userData = {
-                        ...userDetails,
-                        roles,
-                        exp: jwtDecode(token).exp
-                    };
-
-                    localStorage.setItem('user', JSON.stringify(userData));
-                    setUser(userData);
-                } catch (error) {
-                    console.error('Auth initialization error:', error);
-                    await logout();
-                }
-            }
-        };
-
-        initializeAuth();
-    }, [fetchUserDetails]);
-
     // login method
-    const login = async (email, password) => {
+    const login = async (formData) => {
         try {
-            setLoading(true);
-            clearError();
-            const response = await api.post("/api/public/login", {
-                email: email.trim(),
-                password: password
-            });
+            const request = {
+                email: formData.email,
+                password: formData.password
+            };
 
-            return await handleAuthResponse(response);
-        } catch (err) {
-            const errorData = err.response?.data || {};
-            setError({
-                message: errorData.message || "Login failed",
-                details: errorData
-            });
-            throw errorData;
-        } finally {
-            setLoading(false);
-        }
-    };
+            const response = await apiLogin(request);
+            const { email, token } = response.data;
 
-    // register method
-    const register = async (userData) => {
-        try {
-            setLoading(true);
-            clearError();
-            const response = await api.post("/api/public/register", {
-                firstname: userData.firstname.trim(),
-                lastname: userData.lastname.trim(),
-                email: userData.email.trim(),
-                password: userData.password,
-                phone_number: userData.phone_number,
-                otp: userData.otp
-            });
-
-
-            return await handleAuthResponse(response, false);
-        } catch (err) {
-            const errorData = err.response?.data || {};
-            setError({
-                message: errorData.message || "Registration failed",
-                details: errorData
-            });
-            throw errorData;
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // logout method
-    const logout = useCallback(async () => {
-        try {
-            await api.post("/api/public/logout");
-        } catch (err) {
-            console.error("Logout error:", err);
-        } finally {
-            localStorage.removeItem('authToken');
-            localStorage.removeItem('user');
-            setUser(null);
-            navigate('/auth/sign-in');
-        }
-    }, [navigate]);
-
-    // check authentication status
-    const isAuthenticated = useCallback(() => {
-        const token = localStorage.getItem('authToken');
-        return !!user && !!token && isTokenValid(token);
-    }, [user]);
-
-    // check if user is admin
-    const isAdmin = useCallback(() => {
-        return user?.roles?.includes("ROLE_ADMIN");
-    }, [user]);
-
-    // check if user is regular user
-    const isUser = useCallback(() => {
-        return user?.roles?.includes("ROLE_USER");
-    }, [user]);
-
-    // set up axios interceptors
-    useEffect(() => {
-        const requestInterceptor = api.interceptors.request.use(
-            async (config) => {
-                const token = localStorage.getItem('authToken');
-                if (token && isTokenValid(token)) {
-                    config.headers.Authorization = `Bearer ${token}`;
-                } else if (user) {
-                    await logout();
-                }
-                return config;
-            },
-            (error) => Promise.reject(error)
-        );
-
-        const responseInterceptor = api.interceptors.response.use(
-            (response) => response,
-            async (error) => {
-                if (error.response?.status === 401 && user) {
-                    await logout();
-                }
-                return Promise.reject(error);
+            // Extract user info from token and set user state
+            const userData = extractUserFromToken(token);
+            if (userData) {
+                setUser(userData);
+            } else {
+                // Fallback to email from response
+                setUser({ email: email, roles: [] });
             }
-        );
 
-        return () => {
-            api.interceptors.request.eject(requestInterceptor);
-            api.interceptors.response.eject(responseInterceptor);
-        };
-    }, [logout, user]);
+            toast.success('Login successful!');
+            navigate('/');
+        } catch (err) {
+            const errorMessage = err.response?.data?.message || "Login failed";
+            toast.error(errorMessage);
+            console.error('Login error:', err);
+            clearAuth();
+            throw err;
+        }
+    };
+
+    // registration method
+    const registration = async (formData) => {
+        try {
+            const request = {
+                firstname: formData.firstname,
+                lastname: formData.lastname,
+                email: formData.email,
+                password: String(formData.password),
+                phone_number: String(formData.phone_number),
+                otp: String(formData.otp)
+            };
+
+            const response = await apiRegister(request);
+            toast.success('Registration successful.');
+            navigate('/auth/sing-in');
+            return response.data;
+        } catch (err) {
+            const errorMessage = err.response?.data?.message || "Registration failed";
+            toast.error(errorMessage);
+            console.error("Registration error:", err);
+            throw err;
+        }
+    };
+
+    // send OTP
+    const sentOTP = async (phoneNumber) => {
+        try {
+            const request = {
+                phone_number: phoneNumber
+            };
+
+            await apiSentOTP(request);
+            toast.success('OTP sent successfully');
+        } catch (err) {
+            const errorMessage = err.response?.data?.message || "OTP send failed";
+            toast.error(errorMessage);
+            console.error('OTP send error:', err);
+            throw err;
+        }
+    };
+
+    // fetch user details
+    const fetchUserDetails = async () => {
+        try {
+            const response = await apiGetUserDetails();
+            if (response.data) {
+                setUser(prevUser => ({
+                    ...prevUser,
+                    ...response.data
+                }));
+                return response.data;
+            }
+        } catch (err) {
+            console.error('Error fetching user details:', err);
+
+            if (err.response?.status === 401) {
+                clearAuth();
+                navigate('/auth/sign-in');
+                toast.error('Session expired. Please login again.');
+            } else {
+                toast.error('Failed to fetch user details.');
+            }
+
+            return null;
+        }
+    };
+
+    // logout
+    const logout = async () => {
+        try {
+            await apiLogout();
+            toast.success("Logged out successfully");
+        } catch (err) {
+            console.error('Logout error:', err);
+        } finally {
+            clearAuth();
+            navigate('/');
+        }
+    };
+
+    // authentication checks
+    const isAuthenticated = () => {
+        if (loading) return false;
+        return !!user;
+    };
+
+    const hasRole = (role) => {
+        return user?.roles?.includes(role) || false;
+    };
+
+    const isAdmin = () => hasRole('ROLE_ADMIN');
+    const isUser = () => hasRole('ROLE_USER');
+
+    const contextValue = {
+        user,
+        loading,
+        isAuthenticated,
+        isAdmin,
+        isUser,
+        hasRole,
+        login,
+        registration,
+        sentOTP,
+        logout,
+        fetchUserDetails
+    };
 
     return (
-        <AuthContext.Provider
-            value={{
-                user,
-                loading,
-                error,
-                login,
-                register,
-                logout,
-                clearError,
-                isAuthenticated,
-                isAdmin,
-                isUser,
-                fetchUserDetails,
-                api
-            }}
-        >
+        <AuthContext.Provider value={contextValue}>
             {children}
         </AuthContext.Provider>
     );

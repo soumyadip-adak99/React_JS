@@ -6,8 +6,8 @@ import AOS from "aos";
 import 'aos/dist/aos.css';
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
-import RootRoute from "./components/RootRoute";
-import Test from "./components/Test";
+import RootRoute from "./router/RootRoute";
+import PublicRoute from "./router/PublicRoute";
 
 function App() {
     useEffect(() => {
@@ -22,10 +22,26 @@ function App() {
                 <Routes>
 
                     <Route path="/" element={<RootRoute />} />
-                    <Route path="/auth/sing-in" element={<Login />} />
-                    <Route path="/auth/register" element={<Register />} />
 
-                    {/*Fall back*/}
+                    <Route
+                        path="/auth/sing-in"
+                        element={
+                            <PublicRoute>
+                                <Login />
+                            </PublicRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/auth/register"
+                        element={
+                            <PublicRoute>
+                                <Register />
+                            </PublicRoute>
+                        }
+                    />
+
+                    {/*Fallback*/}
                     <Route path="*" element={<Navigate to='/' replace />} />
                 </Routes>
             </AuthProvider>

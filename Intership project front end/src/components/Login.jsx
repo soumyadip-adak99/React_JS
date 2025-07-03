@@ -1,32 +1,37 @@
 import { useState } from "react";
 import { FaArrowRight, FaEnvelope, FaLock } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import Animation from "../animation/Animation";
 import LandingHeader from "./LandingHeader";
 
 function Login() {
-    const { login, loading, error, clearError } = useAuth();
-    const navigate = useNavigate();
+    const { login, isAuthenticated } = useAuth();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
 
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
-        if (error) clearError();
+        if (error) setError(null);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
-            await login(formData.email, formData.password);
-            toast.success('Login successful!');
+            await login(formData);
         } catch (err) {
-            toast.error(err.message || 'Login failed');
+            setError(err);
+            toast.error("Login failed");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -80,7 +85,7 @@ function Login() {
 
                         {error && (
                             <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
-                                <p className="text-red-400 text-sm">{error.message}</p>
+                                <p className="text-red-400 text-sm">{error.message || "Invalid credentials"}</p>
                             </div>
                         )}
 
