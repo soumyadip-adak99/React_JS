@@ -57,7 +57,7 @@ function Register() {
 
     const handleSendOtp = async () => {
         if (!validateField('phone_number', formData.phone_number)) {
-            toast.error('Please enter a valid 10-digit mobile number');
+            toast.error('please enter a valid 10-digit mobile number');
             return;
         }
 
@@ -66,9 +66,9 @@ function Register() {
             await sentOTP(formData.phone_number);
             setOtpSent(true);
             setCountdown(30);
-            toast.success('OTP sent successfully');
+            // toast.success('otp sent successfully');
         } catch (error) {
-            toast.error(error.message || 'Failed to send OTP');
+            toast.error(error.message || 'failed to send otp');
         } finally {
             setLoading(false);
         }
@@ -77,12 +77,12 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validate all fields
+        // validate all fields
         const requiredFields = ['firstname', 'lastname', 'email', 'password', 'phone_number'];
         const isValid = requiredFields.every(field => {
             const valid = validateField(field, formData[field]);
             if (!valid) {
-                toast.error(`Please enter a valid ${field.replace('_', ' ')}`);
+                toast.error(`please enter a valid ${field.replace('_', ' ')}`);
             }
             return valid;
         });
@@ -90,17 +90,17 @@ function Register() {
         if (!isValid) return;
 
         if (!otpSent || !validateField('otp', formData.otp)) {
-            toast.error('Please verify your mobile number with OTP first');
+            toast.error('please verify your mobile number with otp first');
             return;
         }
 
         setLoading(true);
         try {
             await registration(formData);
-            //toast.success('Registration successful! Please login.');
+            // toast.success('registration successful! please login.');
             // navigate('/auth/sign-in');
         } catch (error) {
-            toast.error(error.message || 'Registration failed');
+            toast.error(error.message || 'registration failed');
         } finally {
             setLoading(false);
         }
@@ -118,7 +118,7 @@ function Register() {
                     </h2>
 
                     <div className="space-y-5">
-                        {/* Name fields */}
+                        {/* name fields */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-gray-300 mb-1.5 ml-1 text-sm font-medium">First Name</label>
@@ -154,7 +154,7 @@ function Register() {
                             </div>
                         </div>
 
-                        {/* Email */}
+                        {/* email */}
                         <div>
                             <label className="block text-gray-300 mb-1.5 ml-1 text-sm font-medium">Email</label>
                             <div className="relative">
@@ -172,7 +172,7 @@ function Register() {
                             </div>
                         </div>
 
-                        {/* Password */}
+                        {/* password */}
                         <div>
                             <label className="block text-gray-300 mb-1.5 ml-1 text-sm font-medium">Password</label>
                             <div className="relative">
@@ -191,10 +191,10 @@ function Register() {
                             </div>
                         </div>
 
-                        {/* Phone number and OTP */}
+                        {/* phone number and otp */}
                         <div>
                             <label className="block text-gray-300 mb-1.5 ml-1 text-sm font-medium">Mobile Number</label>
-                            <div className="flex gap-3">
+                            <div className="flex flex-col sm:flex-row gap-3">
                                 <div className="relative flex-grow">
                                     <FaMobileAlt className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm" />
                                     <input
