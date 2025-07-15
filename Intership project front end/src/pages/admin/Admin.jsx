@@ -1,31 +1,81 @@
-import { useEffect } from "react";
-import { useAuth } from "../../context/AuthContext";
+import { useState, useEffect, useCallback, useRef } from 'react';
+import Navbar from './admin_componets/Navbar';
+import { useAuth } from '../../context/AuthContext';
+import { Outlet, useLocation } from 'react-router-dom';
 
-function Admin() {
-    const { user, fetchUserDetails, logout } = useAuth();
+function ScrollController() {
+    const { pathname, key } = useLocation();
+    const isInitialLoad = useRef(true);
 
-    useEffect(() => {
-        fetchUserDetails();
+    const scrollToTop = useCallback((behavior = 'auto') => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior
+        });
     }, []);
 
-    const handelLogout = async () => {
+    useEffect(() => {
+        if (key !== 'default') {
+            scrollToTop('instant');
+        }
+    }, [pathname, key, scrollToTop]);
+
+    useEffect(() => {
+        if (isInitialLoad.current) {
+            const timer = setTimeout(() => {
+                scrollToTop('smooth');
+                isInitialLoad.current = false;
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [scrollToTop]);
+
+    return null; // Don't return ScrollRestoration here
+}
+
+function Admin() {
+    const [activeItem, setActiveItem] = useState('Dashboard');
+    const { user, logout } = useAuth();
+    const location = useLocation();
+
+    useEffect(() => {
+        const path = location.pathname.split('/').pop();
+        const activeMap = {
+            'dashboard': 'Dashboard',
+            'users': 'Users',
+            'analytics': 'Analytics',
+            'reports': 'Reports',
+            'security': 'Security',
+            'settings': 'Settings'
+        };
+
+        if (!path || path === 'admin') {
+            setActiveItem('Dashboard');
+        } else if (activeMap[path]) {
+            setActiveItem(activeMap[path]);
+        }
+    }, [location]);
+
+    const userEmail = user?.email;
+
+    const handleLogout = async () => {
         try {
-            await logout()
-            //toast.success('Log Out Succesful')
-        } catch {
-            console.log('Erro while log out from home page: ', err)
-            toast.error("Something Went Wrong")
+            await logout();
+        } catch (err) {
+            console.log('Error while logging out from admin page: ', err);
         }
     }
 
     return (
-        <div className='bg-white text-black p-4'>
-            <h1>Admin page</h1>
-            <p>Name: {user?.firstname} {user?.lastname}</p>
-            <p>Email: {user?.email}</p>
-            <p>Phone: {user?.phone_number}</p>
-            <p>Role: {user?.role?.join(", ")}</p>
-            <button className='bg-green-400' onClick={handelLogout}>Log out</button>
+        <div className='min-h-screen bg-gray-900'>
+            <ScrollController />
+            <Navbar activeItem={activeItem} setActiveItem={setActiveItem} email={userEmail} logout={handleLogout} />
+            <main className="md:ml-64 min-h-screen pt-16 md:pt-0 transition-all duration-300">
+                <div className="p-6 lg:p-8">
+                    <Outlet />
+                </div>
+            </main>
         </div>
     );
 }

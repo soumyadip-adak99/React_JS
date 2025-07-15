@@ -4,5 +4,5 @@ import { Navigate } from "react-router"
 export default function RequireAuth({ children }) {
     const { isAuthenticated } = useAuth()
 
-    return isAuthenticated() ? children : <Navigate to="/auth/sing-in" replace />
+    return isAuthenticated() ? children : <Navigate to="/" replace />
 }

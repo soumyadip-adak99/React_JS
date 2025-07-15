@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 
@@ -12,7 +12,6 @@ function Home() {
     const handelLogout = async () => {
         try {
             await logout()
-            // toast.success('Log Out Succesful')
         } catch {
             console.log('Erro while log out from home page: ', err)
             toast.error("Something Went Wrong")

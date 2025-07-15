@@ -32,7 +32,7 @@ function Animation() {
                     filter: 'blur(40px)'
                 }} />
 
-            <div className="fixed inset-0 pointer-events-none opacity-5 animate-pulse"
+            <div className="fixed inset-0 pointer-events-none opacity-8 animate-pulse"
                 style={{
                     backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
                     backgroundSize: '50px 50px',
@@ -53,7 +53,7 @@ function Animation() {
                     }}
                 />
                 <div
-                    className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-5 transition-all duration-2000 ease-out"
+                    className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-8 transition-all duration-2000 ease-out"
                     style={{
                         background: 'radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%)',
                         filter: 'blur(60px)',

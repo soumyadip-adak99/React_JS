@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import { getUserDetails as apiGetUserDetails, userLogout as apiLogout } from '../api/userAPI';
 import { login as apiLogin, sentOtp as apiSentOTP, register as apiRegister } from '../api/publicAPI';
+import { getAllUsers, getAllBlogs } from '../api/adminApi'
 import toast from "react-hot-toast";
 
 const AuthContext = createContext();
@@ -198,6 +199,33 @@ export const AuthProvider = ({ children }) => {
     const isAdmin = () => hasRole('ROLE_ADMIN');
     const isUser = () => hasRole('ROLE_USER');
 
+
+    /**
+     *  admin function
+     */
+
+    const getAllUserDetails = async () => {
+        try {
+            const response = await getAllUsers()
+            //toast.success("Successfully fetch user details.")
+            return response.data
+        } catch (error) {
+            console.log(error)
+            // toast.error("User details fetching faild")
+        }
+    }
+
+    const getAllBlogsDetails = async () => {
+        try {
+            const response = await getAllBlogs()
+            return response.data
+        } catch (error) {
+            console.log('error')
+        }
+    }
+
+
+
     const contextValue = {
         user,
         loading,
@@ -209,7 +237,9 @@ export const AuthProvider = ({ children }) => {
         registration,
         sentOTP,
         logout,
-        fetchUserDetails
+        fetchUserDetails,
+        getAllUserDetails,
+        getAllBlogsDetails
     };
 
     return (
