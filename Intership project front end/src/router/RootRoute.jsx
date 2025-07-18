@@ -9,7 +9,6 @@ export default function RootRoute() {
     const { isAuthenticated, user, loading, fetchUserDetails } = useAuth();
     const [userFetched, setUserFetched] = useState(false);
 
-    // Ensure user data (including roles) is loaded before rendering
     useEffect(() => {
         const loadUser = async () => {
             try {
@@ -26,29 +25,24 @@ export default function RootRoute() {
         }
     }, [isAuthenticated, userFetched, fetchUserDetails]);
 
-    // While authentication or user details are loading, show skeleton
     if (loading || (isAuthenticated() && !userFetched)) {
         return <LoadingScaliton />;
     }
 
-    // Unauthenticated user
     if (!isAuthenticated()) {
         return <LandingPage />;
     }
 
-    // Authenticated user — route by role
     const roles = user?.role || [];
 
     if (roles.includes("ROLE_ADMIN")) {
-        // Redirect to admin dashboard instead of rendering Admin component directly
         return <Navigate to="/admin/dashboard" replace />;
     }
 
     if (roles.includes("ROLE_USER")) {
-        return <Home />;
+        return <Navigate to="/user/home" />;
     }
 
-    // Fallback for unexpected role
     return (
         <div className="flex items-center justify-center min-h-screen">
             <div className="text-center">

@@ -1,72 +1,53 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FiEdit, FiTrash2, FiSearch, FiChevronUp, FiChevronDown, FiX } from 'react-icons/fi';
+import { useAuth } from '../../../context/AuthContext';
 
 function BlogManagement() {
-    // Sample blog data
-    const demoBlogData = [
-        {
-            "id": "65f3a1b8c8b9c12a5c8e7f1a",
-            "title": "Getting Started with Spring Boot",
-            "authorName": "John Doe",
-            "content": "Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can 'just run'...",
-            "createdDate": "2023-05-15T10:30:45",
-            "isAiApproved": true,
-            "status": "PUBLISHED"
-        },
-        {
-            "id": "65f3a1b8c8b9c12a5c8e7f1b",
-            "title": "MongoDB Best Practices",
-            "authorName": "Jane Smith",
-            "content": "When working with MongoDB, there are several best practices to follow for optimal performance...",
-            "createdDate": "2023-06-20T14:15:22",
-            "isAiApproved": false,
-            "status": "DRAFT"
-        },
-        {
-            "id": "65f3a1b8c8b9c12a5c8e7f1c",
-            "title": "Microservices Architecture Patterns",
-            "authorName": "Alex Johnson",
-            "content": "Microservices architecture has become increasingly popular. Here are the key patterns you should know...",
-            "createdDate": "2023-07-10T09:05:33",
-            "isAiApproved": true,
-            "status": "PUBLISHED"
-        },
-        {
-            "id": "65f3a1b8c8b9c12a5c8e7f1d",
-            "title": "React Hooks Explained",
-            "authorName": "Sarah Williams",
-            "content": "React Hooks allow you to use state and other React features without writing classes...",
-            "createdDate": "2023-08-05T16:45:10",
-            "isAiApproved": true,
-            "status": "PENDING_REVIEW"
-        },
-        {
-            "id": "65f3a1b8c8b9c12a5c8e7f1e",
-            "title": "DevOps CI/CD Pipeline",
-            "authorName": "Michael Brown",
-            "content": "Setting up an efficient CI/CD pipeline is crucial for modern software development...",
-            "createdDate": "2023-09-12T11:20:05",
-            "isAiApproved": false,
-            "status": "ARCHIVED"
-        }
-    ]
-
-    const [blogs, setBlogs] = useState(demoBlogData);
+    const [blogs, setBlogs] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const [sortConfig, setSortConfig] = useState({ key: 'createdDate', direction: 'desc' });
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedBlog, setSelectedBlog] = useState(null);
     const [editBlog, setEditBlog] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    const { getAllBlogsDetails } = useAuth();
+
     const blogsPerPage = 8;
 
+    useEffect(() => {
+        const fetchBlogs = async () => {
+            try {
+                setLoading(true);
+                const blogData = await getAllBlogsDetails();
+                if (blogData) {
+                    setBlogs(blogData);
+                }
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchBlogs();
+    }, [getAllBlogsDetails]);
+
+    // Filter blogs
     // Filter blogs
     const filteredBlogs = blogs.filter(blog => {
+        // Safely handle potentially undefined properties
+        const id = blog.id || '';
+        const title = blog.title || '';
+        const authorName = blog.authorName || '';
+        const authorEmail = blog.authorEmail || '';
+
         const matchesSearch =
-            blog.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            blog.authorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            blog.authorEmail.toLowerCase().includes(searchTerm.toLowerCase());
+            id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            authorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            authorEmail.toLowerCase().includes(searchTerm.toLowerCase());
 
         const matchesStatus =
             statusFilter === 'all' ||
@@ -170,115 +151,119 @@ function BlogManagement() {
 
             {/* Blogs Table */}
             <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-700">
-                        <thead className="bg-gray-750">
-                            <tr>
-                                <th className="px-4 py-3 md:px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer"
-                                    onClick={() => requestSort('id')}>
-                                    <div className="flex items-center">
-                                        Blog ID
-                                        {sortConfig.key === 'id' && (
-                                            sortConfig.direction === 'asc' ? <FiChevronUp className="ml-1" /> : <FiChevronDown className="ml-1" />
-                                        )}
-                                    </div>
-                                </th>
-                                <th className="px-4 py-3 md:px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer"
-                                    onClick={() => requestSort('title')}>
-                                    <div className="flex items-center">
-                                        Title
-                                        {sortConfig.key === 'title' && (
-                                            sortConfig.direction === 'asc' ? <FiChevronUp className="ml-1" /> : <FiChevronDown className="ml-1" />
-                                        )}
-                                    </div>
-                                </th>
-                                <th className="px-4 py-3 md:px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer"
-                                    onClick={() => requestSort('authorName')}>
-                                    <div className="flex items-center">
-                                        Author
-                                        {sortConfig.key === 'authorName' && (
-                                            sortConfig.direction === 'asc' ? <FiChevronUp className="ml-1" /> : <FiChevronDown className="ml-1" />
-                                        )}
-                                    </div>
-                                </th>
-                                <th className="px-4 py-3 md:px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer"
-                                    onClick={() => requestSort('status')}>
-                                    <div className="flex items-center">
-                                        Status
-                                        {sortConfig.key === 'status' && (
-                                            sortConfig.direction === 'asc' ? <FiChevronUp className="ml-1" /> : <FiChevronDown className="ml-1" />
-                                        )}
-                                    </div>
-                                </th>
-                                <th className="px-4 py-3 md:px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer"
-                                    onClick={() => requestSort('createdDate')}>
-                                    <div className="flex items-center">
-                                        Created
-                                        {sortConfig.key === 'createdDate' && (
-                                            sortConfig.direction === 'asc' ? <FiChevronUp className="ml-1" /> : <FiChevronDown className="ml-1" />
-                                        )}
-                                    </div>
-                                </th>
-                                <th className="px-4 py-3 md:px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-700">
-                            {currentBlogs.length > 0 ? (
-                                currentBlogs.map((blog) => (
-                                    <tr
-                                        key={blog.id}
-                                        className="hover:bg-gray-750 cursor-pointer"
-                                        onClick={() => setSelectedBlog(blog)}
-                                    >
-                                        <td className="px-4 py-4 md:px-6 whitespace-nowrap text-sm text-gray-300">
-                                            {blog.id.substring(0, 8)}...
-                                        </td>
-                                        <td className="px-4 py-4 md:px-6 whitespace-nowrap text-sm font-medium text-white">
-                                            {blog.title.substring(0, 30)}{blog.title.length > 30 ? '...' : ''}
-                                        </td>
-                                        <td className="px-4 py-4 md:px-6 whitespace-nowrap text-sm text-gray-300">
-                                            <div>
-                                                <div>{blog.authorName}</div>
-                                                <div className="text-xs text-gray-400">{blog.authorEmail}</div>
-                                            </div>
-                                        </td>
-                                        <td className="px-4 py-4 md:px-6 whitespace-nowrap">
-                                            <StatusBadge status={blog.status} />
-                                        </td>
-                                        <td className="px-4 py-4 md:px-6 whitespace-nowrap text-sm text-gray-300">
-                                            {new Date(blog.createdDate).toLocaleDateString()}
-                                        </td>
-                                        <td className="px-4 py-4 md:px-6 whitespace-nowrap text-sm font-medium">
-                                            <div className="flex space-x-2">
-                                                <button
-                                                    className="text-blue-400 hover:text-blue-300"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setEditBlog(blog);
-                                                    }}
-                                                >
-                                                    <FiEdit />
-                                                </button>
-                                                <button
-                                                    className="text-red-400 hover:text-red-300"
-                                                    onClick={(e) => e.stopPropagation()}
-                                                >
-                                                    <FiTrash2 />
-                                                </button>
-                                            </div>
+                {loading ? (
+                    <div className="p-6 text-center text-gray-400">Loading blogs...</div>
+                ) : (
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-700">
+                            <thead className="bg-gray-750">
+                                <tr>
+                                    <th className="px-4 py-3 md:px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer"
+                                        onClick={() => requestSort('id')}>
+                                        <div className="flex items-center">
+                                            Blog ID
+                                            {sortConfig.key === 'id' && (
+                                                sortConfig.direction === 'asc' ? <FiChevronUp className="ml-1" /> : <FiChevronDown className="ml-1" />
+                                            )}
+                                        </div>
+                                    </th>
+                                    <th className="px-4 py-3 md:px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer"
+                                        onClick={() => requestSort('title')}>
+                                        <div className="flex items-center">
+                                            Title
+                                            {sortConfig.key === 'title' && (
+                                                sortConfig.direction === 'asc' ? <FiChevronUp className="ml-1" /> : <FiChevronDown className="ml-1" />
+                                            )}
+                                        </div>
+                                    </th>
+                                    <th className="px-4 py-3 md:px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer"
+                                        onClick={() => requestSort('authorName')}>
+                                        <div className="flex items-center">
+                                            Author
+                                            {sortConfig.key === 'authorName' && (
+                                                sortConfig.direction === 'asc' ? <FiChevronUp className="ml-1" /> : <FiChevronDown className="ml-1" />
+                                            )}
+                                        </div>
+                                    </th>
+                                    <th className="px-4 py-3 md:px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer"
+                                        onClick={() => requestSort('status')}>
+                                        <div className="flex items-center">
+                                            Status
+                                            {sortConfig.key === 'status' && (
+                                                sortConfig.direction === 'asc' ? <FiChevronUp className="ml-1" /> : <FiChevronDown className="ml-1" />
+                                            )}
+                                        </div>
+                                    </th>
+                                    <th className="px-4 py-3 md:px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer"
+                                        onClick={() => requestSort('createdDate')}>
+                                        <div className="flex items-center">
+                                            Created
+                                            {sortConfig.key === 'createdDate' && (
+                                                sortConfig.direction === 'asc' ? <FiChevronUp className="ml-1" /> : <FiChevronDown className="ml-1" />
+                                            )}
+                                        </div>
+                                    </th>
+                                    <th className="px-4 py-3 md:px-6 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-700">
+                                {currentBlogs.length > 0 ? (
+                                    currentBlogs.map((blog) => (
+                                        <tr
+                                            key={blog.id}
+                                            className="hover:bg-gray-750 cursor-pointer"
+                                            onClick={() => setSelectedBlog(blog)}
+                                        >
+                                            <td className="px-4 py-4 md:px-6 whitespace-nowrap text-sm text-gray-300">
+                                                {blog.id.substring(0, 8)}...
+                                            </td>
+                                            <td className="px-4 py-4 md:px-6 whitespace-nowrap text-sm font-medium text-white">
+                                                {blog.title.substring(0, 30)}{blog.title.length > 30 ? '...' : ''}
+                                            </td>
+                                            <td className="px-4 py-4 md:px-6 whitespace-nowrap text-sm text-gray-300">
+                                                <div>
+                                                    <div>{blog.authorName}</div>
+                                                    <div className="text-xs text-gray-400">{blog.authorEmail}</div>
+                                                </div>
+                                            </td>
+                                            <td className="px-4 py-4 md:px-6 whitespace-nowrap">
+                                                <StatusBadge status={blog.status} />
+                                            </td>
+                                            <td className="px-4 py-4 md:px-6 whitespace-nowrap text-sm text-gray-300">
+                                                {new Date(blog.create_at).toLocaleDateString()}
+                                            </td>
+                                            <td className="px-4 py-4 md:px-6 whitespace-nowrap text-sm font-medium">
+                                                <div className="flex space-x-2">
+                                                    <button
+                                                        className="text-blue-400 hover:text-blue-300"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setEditBlog(blog);
+                                                        }}
+                                                    >
+                                                        <FiEdit />
+                                                    </button>
+                                                    <button
+                                                        className="text-red-400 hover:text-red-300"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                    >
+                                                        <FiTrash2 />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="6" className="px-6 py-4 text-center text-sm text-gray-400">
+                                            No blogs found matching your criteria
                                         </td>
                                     </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="6" className="px-6 py-4 text-center text-sm text-gray-400">
-                                        No blogs found matching your criteria
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
 
                 {/* Pagination */}
                 {totalPages > 1 && (

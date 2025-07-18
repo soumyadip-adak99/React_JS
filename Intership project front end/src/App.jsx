@@ -1,18 +1,59 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Login from './components/Login';
-import Register from "./components/Register";
-import { useEffect } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import AOS from "aos";
 import 'aos/dist/aos.css';
 import { Toaster } from "react-hot-toast";
+
 import { AuthProvider } from "./context/AuthContext";
+
 import RootRoute from "./router/RootRoute";
 import PublicRoute from "./router/PublicRoute";
-import Dashboard from "./pages/admin/admin_componets/Dashboard";
 import RequireAuth from "./router/RequireAuth";
+
+import Login from './components/Login';
+import Register from "./components/Register";
+
 import Admin from "./pages/admin/Admin";
+import Dashboard from "./pages/admin/admin_componets/Dashboard";
 import UserManagement from "./pages/admin/admin_componets/UserManagement";
 import BlogManagement from "./pages/admin/admin_componets/BlogManagement";
+
+import Home from "./pages/home/Home";
+import UserHome from "./pages/home/home_componets/UserHome";
+import Profile from "./pages/home/home_componets/Profile";
+import UserProfile from "./pages/home/home_componets/UserProfile";
+import { useLocation } from "react-router-dom";
+
+function ScrollController() {
+    const { pathname, key } = useLocation();
+    const isInitialLoad = useRef(true);
+
+    const scrollToTop = useCallback((behavior = 'auto') => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior
+        });
+    }, []);
+
+    useEffect(() => {
+        if (key !== 'default') {
+            scrollToTop('instant');
+        }
+    }, [pathname, key, scrollToTop]);
+
+    useEffect(() => {
+        if (isInitialLoad.current) {
+            const timer = setTimeout(() => {
+                scrollToTop('smooth');
+                isInitialLoad.current = false;
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [scrollToTop]);
+
+    return null; // Don't return ScrollRestoration here
+}
 
 function App() {
     useEffect(() => {
@@ -23,19 +64,21 @@ function App() {
         <Router>
             <AuthProvider>
                 <Toaster position="top-center" reverseOrder={false} />
+                <ScrollController />
 
                 <Routes>
+                    {/* Public landing */}
                     <Route path="/" element={<RootRoute />} />
 
+                    {/* Auth routes */}
                     <Route
-                        path="/auth/sing-in"
+                        path="/auth/sign-in"
                         element={
                             <PublicRoute>
                                 <Login />
                             </PublicRoute>
                         }
                     />
-
                     <Route
                         path="/auth/register"
                         element={
@@ -60,14 +103,27 @@ function App() {
                         <Route path="blogs" element={<BlogManagement />} />
                     </Route>
 
+                    {/* User routes */}
+                    <Route
+                        path="/user"
+                        element={
+                            <RequireAuth>
+                                <Home />
+                            </RequireAuth>
+                        }
+                    >
+                        <Route index element={<Navigate to="home" replace />} />
+                        <Route path="home" element={<UserHome />} />
+                        <Route path="profile" element={<Profile />} />
+                        <Route path="profile/:userId" element={<UserProfile />} />
+                    </Route>
 
-                    {/* Fallback */}
+                    {/* Fallback for undefined routes */}
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </AuthProvider>
         </Router>
     );
 }
-
 
 export default App;

@@ -1,7 +1,10 @@
 import { assets } from "../assets/assets";
-import { RiDashboardLine, RiUserLine, RiFileTextLine, RiShieldUserLine, RiSettingsLine } from "react-icons/ri";
+import { RiDashboardLine, RiUserLine } from "react-icons/ri";
 import { TbLogs } from "react-icons/tb";
 import { IoMdMore } from "react-icons/io";
+import { IoCreateOutline } from "react-icons/io5";
+import { CiSearch } from "react-icons/ci";
+import { GoHome } from "react-icons/go";
 
 export const features = [
     {
@@ -113,3 +116,116 @@ export const adminNavItems = [
         path: "/admin/more"
     },
 ];
+
+export const userNavItems = [
+    {
+        icon: <GoHome className="text-xl" />,
+        label: "Home",
+        path: "/user/home"
+    },
+    {
+        icon: <CiSearch className="text-xl" />,
+        label: "Search",
+        //path: "/admin/users"
+    },
+    {
+        icon: <IoCreateOutline className="text-xl" />,
+        label: "Create",
+        path: "/user/create-blogs"
+    },
+];
+
+
+export const demoUserData = [
+    {
+        "id": "68669bbd3c0bc7f052828b2c",
+        "firstName": "Soumyadip",
+        "lastName": "Adak",
+        "email": "soumyadip76adak@gmail.com",
+        "phoneNumber": "6294385292",
+        "profileImage": null,
+        "blogEntries": [
+            {
+                "id": "686e34ec8d09b67092caf5a5",
+                "title": "My first blog",
+                "authorName": "soumyadip76adak@gmail.com",
+                "content": "I create my first blog in this web site",
+                "image": null,
+                "status": "APPROVED",
+                "aiApproved": true,
+                "create_at": "2025-07-09T09:22:52"
+            },
+            {
+                "id": "686e43b7e9b84bfa98238170",
+                "title": "My second blog",
+                "authorName": "soumyadip76adak@gmail.com",
+                "content": "I create my first blog in this web site",
+                "image": null,
+                "status": "APPROVED",
+                "aiApproved": true,
+                "create_at": "2025-07-09T15:55:59"
+            },
+            {
+                "id": "686e43f6e9b84bfa98238171",
+                "title": "My Third blog",
+                "authorName": "soumyadip76adak@gmail.com",
+                "content": "I create my third blog in this web site",
+                "image": null,
+                "status": "APPROVED",
+                "aiApproved": true,
+                "create_at": "2025-07-09T15:57:02"
+            },
+            {
+                "id": "6875b997f93c3e45011f0d70",
+                "title": "My 6th",
+                "authorName": "Soumyadip Adak",
+                "content": "I create a new blog",
+                "image": null,
+                "status": "APPROVED",
+                "aiApproved": true,
+                "create_at": "2025-07-15T07:44:47"
+            }
+        ],
+        "createdAt": null
+    },
+    {
+        "id": "6867dd5164988a5fa3a8b18a",
+        "firstName": "MasterAdmin",
+        "lastName": "io.codeScribe",
+        "email": "io.codescribeai@gmail.com",
+        "phoneNumber": "9898980134",
+        "profileImage": null,
+        "blogEntries": [],
+        "createdAt": null
+    },
+    {
+        "id": "6879fb18b40a34271f16f528",
+        "firstName": "Adak",
+        "lastName": "Soumyadip",
+        "email": "soumyadipadakmailbox@gmail.com",
+        "phoneNumber": "8207296428",
+        "profileImage": null,
+        "blogEntries": [],
+        "createdAt": "2025-07-18T13:13:20.038"
+    },
+    {
+        "id": "687a2b954db9cbdfaf933777",
+        "firstName": "Arindam",
+        "lastName": "Pal",
+        "email": "arindampa0@gmail.com",
+        "phoneNumber": "912345670",
+        "profileImage": null,
+        "blogEntries": [],
+        "createdAt": null
+    },
+    {
+        "id": "687a2e184db9cbdfaf933784",
+        "firstName": "Swati",
+        "lastName": "Pal",
+        "email": "swatipal1976@gmail.com",
+        "phoneNumber": "912345670",
+        "profileImage": null,
+        "blogEntries": [],
+        "createdAt": null
+    }
+]

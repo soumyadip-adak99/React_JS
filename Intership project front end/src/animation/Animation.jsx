@@ -19,7 +19,6 @@ function Animation() {
                 cursorFollower.style.transform = `translate(${clientX - 128}px, ${clientY - 128}px)`;
             }
         };
-        //
         window.addEventListener('mousemove', handleMouseMove);
         return () => window.removeEventListener('mousemove', handleMouseMove);
     }, []);

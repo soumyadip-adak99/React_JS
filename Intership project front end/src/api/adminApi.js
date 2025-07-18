@@ -10,3 +10,6 @@ const API = axios.create({
 
 export const getAllUsers = () => API.get('/admin/users');
 export const getAllBlogs = () => API.get('/admin/blogs');
+export const deleteUser = (id) => API.delete(`/admin/users/${id}`)
+
+export const deleteBlog = (id) => API.delete(`/admin/blogs/${id}`)

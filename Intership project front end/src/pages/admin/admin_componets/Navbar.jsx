@@ -17,13 +17,14 @@ import {
     RiMore2Line
 } from "react-icons/ri";
 import { adminNavItems } from "../../../constants/data";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Navbar({ activeItem, setActiveItem, email, logout }) {
     const [isMobile, setIsMobile] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    const navigate = useNavigate();
 
     const [userProfile, setUserProfile] = useState({
         name: "Admin User",
@@ -91,6 +92,13 @@ function Navbar({ activeItem, setActiveItem, email, logout }) {
         setShowProfile(false);
         setIsEditing(false);
         setEditableProfile({ ...userProfile });
+    };
+
+    // Handle navigation without triggering on hover
+    const handleNavigation = (item) => {
+        setActiveItem(item.label);
+        if (isMobile) setSidebarOpen(false);
+        navigate(item.path);
     };
 
     return (
@@ -355,13 +363,9 @@ function Navbar({ activeItem, setActiveItem, email, logout }) {
                     {/* Navigation Items */}
                     <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-2">
                         {adminNavItems.map((item) => (
-                            <Link
+                            <button
                                 key={item.label}
-                                to={item.path}
-                                onClick={() => {
-                                    setActiveItem(item.label);
-                                    if (isMobile) setSidebarOpen(false);
-                                }}
+                                onClick={() => handleNavigation(item)}
                                 className={`flex items-center w-full px-4 py-3 rounded-lg transition-all duration-200 text-left ${activeItem === item.label
                                     ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
                                     : 'text-gray-300 hover:bg-gray-700 hover:text-white'
@@ -369,7 +373,7 @@ function Navbar({ activeItem, setActiveItem, email, logout }) {
                             >
                                 <span className="mr-3">{item.icon}</span>
                                 <span className="font-medium">{item.label}</span>
-                            </Link>
+                            </button>
                         ))}
                     </nav>
 

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import { getUserDetails as apiGetUserDetails, userLogout as apiLogout } from '../api/userAPI';
 import { login as apiLogin, sentOtp as apiSentOTP, register as apiRegister } from '../api/publicAPI';
-import { getAllUsers, getAllBlogs } from '../api/adminApi'
+import { getAllUsers, getAllBlogs, deleteUser, deleteBlog } from '../api/adminApi'
 import toast from "react-hot-toast";
 
 const AuthContext = createContext();
@@ -224,7 +224,27 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    const userDelete = async (id) => {
+        try {
+            const response = await deleteUser(id);
+            toast.success("User deleted successfully")
+            return response
+        } catch (error) {
+            console.log("Error while delete the user: ", error)
+            throw error
+        }
+    }
 
+    const blogDelete = async (id) => {
+        try {
+            const response = await deleteBlog(id)
+            toast.success('Blog deleted successfully')
+            return response
+        } catch (error) {
+            console.log("Error while delete the blog: ", error)
+            throw error
+        }
+    }
 
     const contextValue = {
         user,
@@ -239,7 +259,9 @@ export const AuthProvider = ({ children }) => {
         logout,
         fetchUserDetails,
         getAllUserDetails,
-        getAllBlogsDetails
+        getAllBlogsDetails,
+        userDelete,
+        blogDelete
     };
 
     return (
