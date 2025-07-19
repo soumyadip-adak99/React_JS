@@ -139,7 +139,7 @@ function ResetPassword() {
                             )}
                         </div>
 
-                        {/* new password */}
+                        {/* new password  */}
                         <div>
                             <label className="block text-gray-300 mb-1.5 ml-1 text-sm font-medium">New Password</label>
                             <div className="relative">
