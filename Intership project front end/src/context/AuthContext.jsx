@@ -1,11 +1,12 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {jwtDecode} from 'jwt-decode';
-import {getUserDetails as apiGetUserDetails, userLogout as apiLogout} from '../api/userAPI';
+import {getUserDetails as apiGetUserDetails, userLogout as apiLogout, uploadImage} from '../api/userAPI';
 import {login as apiLogin, sentOtp as apiSentOTP, register as apiRegister} from '../api/publicAPI';
 import {getAllUsers, getAllBlogs, deleteUser, deleteBlog} from '../api/adminApi'
 import toast from "react-hot-toast";
 import {getUserById, apiGetAllUsers, apiGetAllBlogs} from "../api/apiData";
+import {addNewBlog, userBlogDeleteById} from "../api/blogApi.js";
 
 const AuthContext = createContext();
 
@@ -181,6 +182,18 @@ export const AuthProvider = ({children}) => {
         }
     };
 
+    // upload image
+    const fetchToProfileImageUpload = async (image) => {
+        try {
+            const response = await uploadImage(image);
+            toast.success('Profile image upload successfully.');
+            return response;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
     // logout
     const logout = async () => {
         try {
@@ -299,6 +312,28 @@ export const AuthProvider = ({children}) => {
      * get logged userBlogs
      * */
 
+    const uploadBlog = async (blogData, file) => {
+        try {
+            const response = await addNewBlog(blogData, file);
+            toast.success('Blog uploaded successfully');
+            return response.data;
+        } catch (error) {
+            console.log(error)
+            toast.error(error.response?.data?.message || 'Failed to upload blog');
+            throw error
+        }
+    }
+
+    const fetchToDeleteBlog = async (id) => {
+        try {
+            const response = await userBlogDeleteById(id);
+            toast.success('Blog deleted successfully');
+            return response
+        } catch (error) {
+            console.log(error)
+            throw error;
+        }
+    }
 
 
     const contextValue = {
@@ -322,6 +357,9 @@ export const AuthProvider = ({children}) => {
         allUsers,
         allBlogs,
         fetchAllUsers,
+        uploadBlog,
+        fetchToDeleteBlog,
+        fetchToProfileImageUpload
     };
 
     return (

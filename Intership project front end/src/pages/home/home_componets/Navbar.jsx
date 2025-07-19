@@ -6,8 +6,6 @@ import {
     RiUserLine,
     RiSearchLine,
     RiAddLine,
-    RiHomeLine,
-    RiImageAddLine,
     RiCloseFill,
     RiUploadLine
 } from "react-icons/ri";
@@ -15,9 +13,8 @@ import {useNavigate, useLocation} from "react-router-dom";
 import {useAuth} from "../../../context/AuthContext";
 import toast from "react-hot-toast";
 import {userNavItems} from "../../../constants/data";
-import axios from 'axios';
 
-function Navbar({activeItem, setActiveItem, email, logout}) {
+function Navbar({activeItem, setActiveItem, email}) {
     const [isMobile, setIsMobile] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [showSearchModal, setShowSearchModal] = useState(false);
@@ -29,10 +26,18 @@ function Navbar({activeItem, setActiveItem, email, logout}) {
         image: null,
         previewImage: null
     });
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSubmitting, setIsSubmitting,] = useState(false);
+
     const navigate = useNavigate();
-    const {user, allUsers, fetchAllUsers, fetchUserDetailsById} = useAuth();
     const location = useLocation();
+    const {
+        user,
+        allUsers,
+        fetchAllUsers,
+        logout,
+        uploadBlog,
+        fetchUserDetails
+    } = useAuth();
 
     useEffect(() => {
         fetchAllUsers();
@@ -77,10 +82,10 @@ function Navbar({activeItem, setActiveItem, email, logout}) {
         setSearchQuery(e.target.value);
     };
 
-    const filteredUsers = allUsers.filter(user =>
-        `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredUsers = allUsers?.filter(user =>
+        `${user.firstName || ''} ${user.lastName || ''}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email?.toLowerCase().includes(searchQuery.toLowerCase())
+    ) || [];
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -110,32 +115,11 @@ function Navbar({activeItem, setActiveItem, email, logout}) {
         setIsSubmitting(true);
 
         try {
-            const formData = new FormData();
+            await uploadBlog(
+                {title: blogData.title, content: blogData.content},
+                blogData.image
+            );
 
-            // Create the blog request object
-            const blogRequest = {
-                title: blogData.title,
-                content: blogData.content
-            };
-
-            // Add the blog request as JSON string
-            formData.append('blog', new Blob([JSON.stringify(blogRequest)], {
-                type: 'application/json'
-            }));
-
-            // Add the image file if exists
-            if (blogData.image) {
-                formData.append('file', blogData.image);
-            }
-
-            const response = await axios.post('http://localhost:8080/app/blog/add-new-blog', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${user.token}`
-                }
-            });
-
-            toast.success("Blog created successfully!");
             setShowCreateModal(false);
             setBlogData({
                 title: "",
@@ -144,12 +128,11 @@ function Navbar({activeItem, setActiveItem, email, logout}) {
                 previewImage: null
             });
 
-            // Optionally refresh the page or update state
-            window.location.reload();
-
+            // Refresh user details to get updated blogs
+            await fetchUserDetails();
         } catch (error) {
+            toast.error("Failed upload blog")
             console.error("Error creating blog:", error);
-            toast.error(error.response?.data?.message || "Failed to create blog");
         } finally {
             setIsSubmitting(false);
         }
@@ -159,6 +142,7 @@ function Navbar({activeItem, setActiveItem, email, logout}) {
         setShowSearchModal(false);
         setShowCreateModal(false);
         setSearchQuery("");
+        navigate(location)
         setBlogData({
             title: "",
             content: "",
@@ -169,8 +153,7 @@ function Navbar({activeItem, setActiveItem, email, logout}) {
 
     const handleUserClick = (user) => {
         closeModal();
-        const id = user.id;
-        navigate(`/user/profile/${id}`, {
+        navigate(`/user/profile/${user.id}`, {
             state: {user},
             replace: false
         });
@@ -244,10 +227,12 @@ function Navbar({activeItem, setActiveItem, email, logout}) {
                                             <div className="flex items-center space-x-3">
                                                 <div
                                                     className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-medium">
-                                                    {user.firstName.charAt(0)}{user.lastName.charAt(0)}
+                                                    {user.firstname?.charAt(0)}{user.lastname?.charAt(0)}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <p className="font-medium text-white truncate">{user.firstName} {user.lastName}</p>
+                                                    <p className="font-medium text-white truncate">
+                                                        {user.firstname} {user.lastname}
+                                                    </p>
                                                     <p className="text-xs text-gray-400 truncate">{user.email}</p>
                                                 </div>
                                                 <RiUserLine className="text-gray-400"/>
@@ -371,10 +356,12 @@ function Navbar({activeItem, setActiveItem, email, logout}) {
 
             {/* Sidebar */}
             <aside
-                className={`fixed h-screen bg-gray-950 border-r border-gray-700 z-50 transition-all duration-300 ease-in-out ${isMobile
-                    ? (sidebarOpen ? 'w-64 left-0' : '-left-64 w-64')
-                    : 'left-0 w-64'
-                }`}>
+                className={`fixed h-screen bg-gray-950 border-r border-gray-700 z-50 transition-all duration-300 ease-in-out ${
+                    isMobile
+                        ? (sidebarOpen ? 'w-64 left-0' : '-left-64 w-64')
+                        : 'left-0 w-64'
+                }`}
+            >
                 <div className="flex flex-col h-full">
                     {/* Sidebar Header */}
                     <div className="flex flex-col p-6 border-b border-gray-700">
@@ -387,7 +374,7 @@ function Navbar({activeItem, setActiveItem, email, logout}) {
                         </h1>
                         <div className="mt-2 text-xs text-gray-400 flex items-center">
                             <RiUserLine className="mr-1"/>
-                            <span>{`${user?.firstname} ${user?.lastName}`}</span>
+                            <span>{`${user?.firstname || ''} ${user?.lastname || ''}`}</span>
                         </div>
                     </div>
 
@@ -397,9 +384,10 @@ function Navbar({activeItem, setActiveItem, email, logout}) {
                             <button
                                 key={item.label}
                                 onClick={() => handleNavigation(item)}
-                                className={`flex items-center w-full px-4 py-3 rounded-lg transition-all duration-200 text-left ${activeItem === item.label
-                                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-                                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                className={`flex items-center w-full px-4 py-3 rounded-lg transition-all duration-200 text-left ${
+                                    activeItem === item.label
+                                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                                 }`}
                             >
                                 <span className="mr-3">{item.icon}</span>
@@ -420,7 +408,7 @@ function Navbar({activeItem, setActiveItem, email, logout}) {
                             </div>
                             <div className="ml-3 flex-1 min-w-0">
                                 <p className="text-sm font-medium text-white">
-                                    {user?.firstname} {user?.lastName}
+                                    {user?.firstname} {user?.lastname}
                                 </p>
                                 <p className="text-xs text-gray-400 truncate">{email}</p>
                             </div>
@@ -428,9 +416,10 @@ function Navbar({activeItem, setActiveItem, email, logout}) {
 
                         <button
                             onClick={handleLogout}
-                            className={`flex items-center w-full px-4 py-3 rounded-lg transition-all duration-200 text-left ${activeItem === 'Logout'
-                                ? 'bg-red-600 text-white'
-                                : 'text-gray-300 hover:bg-red-600 hover:text-white'
+                            className={`flex items-center w-full px-4 py-3 rounded-lg transition-all duration-200 text-left ${
+                                activeItem === 'Logout'
+                                    ? 'bg-red-600 text-white'
+                                    : 'text-gray-300 hover:bg-red-600 hover:text-white'
                             }`}
                         >
                             <RiLogoutBoxLine className="text-xl mr-3"/>
