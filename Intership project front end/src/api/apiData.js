@@ -8,3 +8,7 @@ const API = axios.create({
     }
 });
 
+export const getUserById = (id) => API.get(`/data/get-by/${id}`)
+export const apiGetAllUsers = () => API.get('/data/get-all/users')
+export const apiGetAllBlogs = () => API.get('/data/getAll/blogs')
+

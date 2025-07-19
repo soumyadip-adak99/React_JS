@@ -16,7 +16,9 @@ import {
     RiCodeSSlashLine,
     RiArticleLine,
     RiHeartLine,
-    RiVerifiedBadgeFill
+    RiVerifiedBadgeFill,
+    RiDeleteBinLine,
+    RiCloseLine
 } from 'react-icons/ri';
 import { useAuth } from '../../../context/AuthContext';
 import { useParams } from 'react-router-dom';
@@ -32,6 +34,17 @@ function Profile() {
         bio: ''
     });
 
+    // State for blog post actions
+    const [selectedPost, setSelectedPost] = useState(null);
+    const [showPostMenu, setShowPostMenu] = useState(null);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [editedPost, setEditedPost] = useState({
+        title: '',
+        content: '',
+        image: null
+    });
+
     // Mock user data - in a real app, you'd fetch this based on userId
     const [currentUser, setCurrentUser] = useState({
         id: userId || "user_001",
@@ -41,58 +54,12 @@ function Profile() {
         joinDate: "2023-01-15",
         profileImage: null,
         bio: "Senior Software Engineer | Spring Boot Expert | Microservices Architect | Tech Blogger",
+        userBlogs: user?.blogs || [],
         stats: {
-            posts: 156,
             followers: 2847,
             following: 892,
             views: 125000
         },
-        demoData: [
-            {
-                "id": "blog_001",
-                "title": "Getting Started with Spring Boot",
-                "authorName": "Alice Johnson",
-                "content": "Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can 'just run'. In this tutorial, we'll cover the basics of setting up a Spring Boot project, including dependency management, auto-configuration, and building RESTful APIs. We'll also explore the embedded server capabilities that make deployment a breeze.",
-                "image": null,
-                "created_at": "2023-05-15T10:30:00",
-                "isAiApproved": true,
-                "status": "PUBLISHED",
-                "likes": 124,
-                "comments": 28,
-                "shares": 15
-            },
-            {
-                "id": "blog_002",
-                "title": "Advanced Spring Security Techniques",
-                "authorName": "Alice Johnson",
-                "content": "Security is a crucial aspect of any application. This post dives deep into Spring Security configurations, OAuth2 implementation, and JWT token management for robust authentication. We'll explore role-based access control, method security, and best practices for securing your microservices architecture.",
-                "image": {
-                    "img_002": "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
-                },
-                "created_at": "2023-06-22T14:45:00",
-                "isAiApproved": true,
-                "status": "PUBLISHED",
-                "likes": 89,
-                "comments": 14,
-                "shares": 7
-            },
-            {
-                "id": "blog_003",
-                "title": "Microservices Architecture Patterns",
-                "authorName": "Alice Johnson",
-                "content": "Exploring different microservices patterns including API Gateway, Service Discovery, Circuit Breaker, and how to implement them using Spring Cloud. This comprehensive guide covers service-to-service communication strategies, distributed tracing, and container orchestration considerations.",
-                "image": {
-                    "img_003": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-                    "img_004": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
-                },
-                "created_at": "2023-07-10T09:15:00",
-                "isAiApproved": false,
-                "status": "DRAFT",
-                "likes": 0,
-                "comments": 0,
-                "shares": 0
-            }
-        ]
     });
 
     useEffect(() => {
@@ -105,7 +72,7 @@ function Profile() {
     }, [currentUser]);
 
     const [activeTab, setActiveTab] = useState('posts');
-    const demoData = currentUser.demoData;
+    const userBlogs = currentUser.userBlogs;
     const name = `${currentUser.firstname} ${currentUser.lastName}`;
 
     const handleEditToggle = () => {
@@ -126,6 +93,77 @@ function Profile() {
             ...editedUser
         }));
         setIsEditing(false);
+    };
+
+    // Blog post actions
+    const togglePostMenu = (postId) => {
+        setShowPostMenu(showPostMenu === postId ? null : postId);
+    };
+
+    const handleEditPost = (post) => {
+        setSelectedPost(post);
+        setEditedPost({
+            title: post.title,
+            content: post.content,
+            image: post.image?.url || null
+        });
+        setShowPostMenu(null);
+        setShowEditModal(true);
+    };
+
+    const handleDeletePost = (post) => {
+        setSelectedPost(post);
+        setShowPostMenu(null);
+        setShowDeleteModal(true);
+    };
+
+    const handlePostInputChange = (e) => {
+        const { name, value } = e.target;
+        setEditedPost(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setEditedPost(prev => ({
+                    ...prev,
+                    image: reader.result
+                }));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const removeImage = () => {
+        setEditedPost(prev => ({
+            ...prev,
+            image: null
+        }));
+    };
+
+    const savePostChanges = () => {
+        // In a real app, you would make an API call here
+        setCurrentUser(prev => ({
+            ...prev,
+            userBlogs: prev.userBlogs.map(post =>
+                post.id === selectedPost.id ? { ...post, ...editedPost } : post
+            )
+        }));
+        setShowEditModal(false);
+    };
+
+    const confirmDeletePost = () => {
+        // In a real app, you would make an API call here
+        setCurrentUser(prev => ({
+            ...prev,
+            userBlogs: prev.userBlogs.filter(post => post.id !== selectedPost.id)
+        }));
+        setShowDeleteModal(false);
     };
 
     const formatDate = (dateString) => {
@@ -277,7 +315,7 @@ function Profile() {
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <div className="bg-gray-800/50 rounded-lg p-3 text-center border border-gray-700">
                                         <div className="text-xl md:text-2xl font-bold text-white">
-                                            {formatNumber(currentUser.stats.posts)}
+                                            {formatNumber(currentUser.userBlogs.length)}
                                         </div>
                                         <div className="text-xs text-gray-400">Posts</div>
                                     </div>
@@ -315,7 +353,7 @@ function Profile() {
                                 className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-all ${activeTab === tab.id
                                     ? 'bg-blue-600 text-white shadow-lg'
                                     : 'text-gray-400 hover:text-white hover:bg-gray-800'
-                                    }`}
+                                }`}
                             >
                                 <tab.icon className="w-4 h-4" />
                                 <span className="hidden sm:inline">{tab.label}</span>
@@ -328,65 +366,96 @@ function Profile() {
                 <div className="pb-8">
                     {activeTab === 'posts' && (
                         <div className="space-y-6">
-                            {demoData.map((post) => (
-                                <div key={post.id} className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-6 shadow-lg hover:shadow-xl transition-shadow">
-                                    <div className="flex items-start justify-between mb-4">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white">
-                                                {post.authorName[0]}
+                            {userBlogs.length > 0 ? (
+                                userBlogs.map((post) => (
+                                    <div key={post.id} className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-6 shadow-lg hover:shadow-xl transition-shadow">
+                                        <div className="flex items-start justify-between mb-4">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white">
+                                                    {post.authorName?.[0] || name[0]}
+                                                </div>
+                                                <div>
+                                                    <p className="font-medium text-white">{name}</p>
+                                                    <p className="text-xs text-gray-400">{formatDateTime(post.create_at)}</p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <p className="font-medium text-white">{name}</p>
-                                                <p className="text-xs text-gray-400">{formatDateTime(post.created_at)}</p>
+                                            <div className="flex items-center gap-2">
+                                                {getStatusBadge(post.status)}
+                                                <div className="relative">
+                                                    <button
+                                                        onClick={() => togglePostMenu(post.id)}
+                                                        className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
+                                                    >
+                                                        <RiMoreFill className="w-5 h-5" />
+                                                    </button>
+                                                    {showPostMenu === post.id && (
+                                                        <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg border border-gray-700 z-10">
+                                                            <button
+                                                                onClick={() => handleEditPost(post)}
+                                                                className="w-full flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700"
+                                                            >
+                                                                <RiEditLine className="mr-2" />
+                                                                Edit Post
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleDeletePost(post)}
+                                                                className="w-full flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700"
+                                                            >
+                                                                <RiDeleteBinLine className="mr-2" />
+                                                                Delete Post
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-2">
-                                            {getStatusBadge(post.status)}
-                                            <button className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors">
-                                                <RiMoreFill className="w-5 h-5" />
+
+                                        <h3 className="text-lg md:text-xl font-bold text-white mb-3 hover:text-blue-400 cursor-pointer transition-colors">
+                                            {post.title}
+                                        </h3>
+
+                                        <p className="text-gray-300 mb-4 leading-relaxed whitespace-pre-line">
+                                            {post.content}
+                                        </p>
+
+                                        {post.image?.url && (
+                                            <div className="mb-4 rounded-xl overflow-hidden">
+                                                <img
+                                                    src={post.image.url}
+                                                    alt={post.title}
+                                                    className="w-full h-48 md:h-64 object-cover hover:scale-105 transition-transform duration-300"
+                                                />
+                                            </div>
+                                        )}
+
+                                        <div className="flex items-center justify-between pt-4 border-t border-gray-800">
+                                            <div className="flex items-center gap-6">
+                                                <button className="flex items-center gap-2 text-gray-400 hover:text-red-400 transition-colors">
+                                                    <RiHeartLine className="w-5 h-5" />
+                                                    <span className="text-sm">{post.likes || 0}</span>
+                                                </button>
+                                                <button className="flex items-center gap-2 text-gray-400 hover:text-blue-400 transition-colors">
+                                                    <RiChat3Line className="w-5 h-5" />
+                                                    <span className="text-sm">{post.comments || 0}</span>
+                                                </button>
+                                                <button className="flex items-center gap-2 text-gray-400 hover:text-green-400 transition-colors">
+                                                    <RiShareForwardLine className="w-5 h-5" />
+                                                    <span className="text-sm">{post.shares || 0}</span>
+                                                </button>
+                                            </div>
+                                            <button className="text-gray-400 hover:text-yellow-400 transition-colors">
+                                                <RiBookmarkLine className="w-5 h-5" />
                                             </button>
                                         </div>
                                     </div>
-
-                                    <h3 className="text-lg md:text-xl font-bold text-white mb-3 hover:text-blue-400 cursor-pointer transition-colors">
-                                        {post.title}
-                                    </h3>
-
-                                    <p className="text-gray-300 mb-4 leading-relaxed">
-                                        {post.content}
-                                    </p>
-
-                                    {post.image && (
-                                        <div className="mb-4 rounded-xl overflow-hidden">
-                                            <img
-                                                src={Object.values(post.image)[0]}
-                                                alt={post.title}
-                                                className="w-full h-48 md:h-64 object-cover hover:scale-105 transition-transform duration-300"
-                                            />
-                                        </div>
-                                    )}
-
-                                    <div className="flex items-center justify-between pt-4 border-t border-gray-800">
-                                        <div className="flex items-center gap-6">
-                                            <button className="flex items-center gap-2 text-gray-400 hover:text-red-400 transition-colors">
-                                                <RiHeartLine className="w-5 h-5" />
-                                                <span className="text-sm">{post.likes}</span>
-                                            </button>
-                                            <button className="flex items-center gap-2 text-gray-400 hover:text-blue-400 transition-colors">
-                                                <RiChat3Line className="w-5 h-5" />
-                                                <span className="text-sm">{post.comments}</span>
-                                            </button>
-                                            <button className="flex items-center gap-2 text-gray-400 hover:text-green-400 transition-colors">
-                                                <RiShareForwardLine className="w-5 h-5" />
-                                                <span className="text-sm">{post.shares}</span>
-                                            </button>
-                                        </div>
-                                        <button className="text-gray-400 hover:text-yellow-400 transition-colors">
-                                            <RiBookmarkLine className="w-5 h-5" />
-                                        </button>
-                                    </div>
+                                ))
+                            ) : (
+                                <div className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-6 shadow-lg text-center">
+                                    <RiArticleLine className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+                                    <p className="text-gray-400 text-lg">No posts yet</p>
+                                    <p className="text-gray-500 text-sm mt-1">You haven't created any blog posts</p>
                                 </div>
-                            ))}
+                            )}
                         </div>
                     )}
 
@@ -438,6 +507,125 @@ function Profile() {
                     )}
                 </div>
             </div>
+
+            {/* Edit Post Modal */}
+            {showEditModal && (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-gray-900 rounded-xl border border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                        <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+                            <h3 className="text-xl font-bold text-white">Edit Blog Post</h3>
+                            <button
+                                onClick={() => setShowEditModal(false)}
+                                className="text-gray-400 hover:text-white"
+                            >
+                                <RiCloseLine className="w-6 h-6" />
+                            </button>
+                        </div>
+                        <div className="p-6">
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-300 mb-2">Title</label>
+                                <input
+                                    type="text"
+                                    name="title"
+                                    value={editedPost.title}
+                                    onChange={handlePostInputChange}
+                                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-300 mb-2">Content</label>
+                                <textarea
+                                    name="content"
+                                    value={editedPost.content}
+                                    onChange={handlePostInputChange}
+                                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white h-40 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-300 mb-2">Featured Image</label>
+                                {editedPost.image ? (
+                                    <div className="relative mb-2">
+                                        <img
+                                            src={editedPost.image}
+                                            alt="Post preview"
+                                            className="w-full h-48 object-cover rounded-lg"
+                                        />
+                                        <button
+                                            onClick={removeImage}
+                                            className="absolute top-2 right-2 bg-gray-900/80 text-white p-1 rounded-full hover:bg-gray-800"
+                                        >
+                                            <RiCloseLine className="w-5 h-5" />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="flex items-center justify-center w-full">
+                                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-700 border-dashed rounded-lg cursor-pointer bg-gray-800 hover:bg-gray-700">
+                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                <RiEditLine className="w-8 h-8 mb-4 text-gray-400" />
+                                                <p className="text-sm text-gray-400">Click to upload an image</p>
+                                            </div>
+                                            <input
+                                                type="file"
+                                                className="hidden"
+                                                accept="image/*"
+                                                onChange={handleImageChange}
+                                            />
+                                        </label>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="flex justify-end gap-3 pt-4">
+                                <button
+                                    onClick={() => setShowEditModal(false)}
+                                    className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={savePostChanges}
+                                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                                >
+                                    Save Changes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Delete Confirmation Modal */}
+            {showDeleteModal && (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-gray-900 rounded-xl border border-gray-700 w-full max-w-md">
+                        <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+                            <h3 className="text-xl font-bold text-white">Delete Post</h3>
+                            <button
+                                onClick={() => setShowDeleteModal(false)}
+                                className="text-gray-400 hover:text-white"
+                            >
+                                <RiCloseLine className="w-6 h-6" />
+                            </button>
+                        </div>
+                        <div className="p-6">
+                            <p className="text-gray-300 mb-6">Are you sure you want to delete this post? This action cannot be undone.</p>
+                            <div className="flex justify-end gap-3">
+                                <button
+                                    onClick={() => setShowDeleteModal(false)}
+                                    className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={confirmDeletePost}
+                                    className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

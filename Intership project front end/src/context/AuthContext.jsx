@@ -1,10 +1,11 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { jwtDecode } from 'jwt-decode';
-import { getUserDetails as apiGetUserDetails, userLogout as apiLogout } from '../api/userAPI';
-import { login as apiLogin, sentOtp as apiSentOTP, register as apiRegister } from '../api/publicAPI';
-import { getAllUsers, getAllBlogs, deleteUser, deleteBlog } from '../api/adminApi'
+import {createContext, useContext, useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {jwtDecode} from 'jwt-decode';
+import {getUserDetails as apiGetUserDetails, userLogout as apiLogout} from '../api/userAPI';
+import {login as apiLogin, sentOtp as apiSentOTP, register as apiRegister} from '../api/publicAPI';
+import {getAllUsers, getAllBlogs, deleteUser, deleteBlog} from '../api/adminApi'
 import toast from "react-hot-toast";
+import {getUserById, apiGetAllUsers, apiGetAllBlogs} from "../api/apiData";
 
 const AuthContext = createContext();
 
@@ -15,9 +16,12 @@ const clearCookie = (name) => {
     document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax;`;
 };
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [allUsers, setAllUsers] = useState([])
+    const [allBlogs, setAllBlogs] = useState([])
+    const [currentBlog, setCurrentBlog] = useState(null);
     const navigate = useNavigate();
 
     // Extract user data from token
@@ -67,6 +71,7 @@ export const AuthProvider = ({ children }) => {
                 }
             } catch (err) {
                 clearAuth();
+                throw err;
             } finally {
                 setLoading(false);
             }
@@ -84,7 +89,7 @@ export const AuthProvider = ({ children }) => {
             };
 
             const response = await apiLogin(request);
-            const { email, token } = response.data;
+            const {email, token} = response.data;
 
             // Extract user info from token and set user state
             const userData = extractUserFromToken(token);
@@ -92,10 +97,11 @@ export const AuthProvider = ({ children }) => {
                 setUser(userData);
             } else {
                 // Fallback to email from response
-                setUser({ email: email, roles: [] });
+                setUser({email: email, roles: []});
             }
 
             toast.success('Login successful!');
+
             navigate('/');
         } catch (err) {
             const errorMessage = err.response?.data?.message || "Login failed";
@@ -156,6 +162,8 @@ export const AuthProvider = ({ children }) => {
                     ...prevUser,
                     ...response.data
                 }));
+                setCurrentBlog(user.blogs)
+                //console.log(currentBlog)
                 return response.data;
             }
         } catch (err) {
@@ -181,6 +189,7 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             console.error('Logout error:', err);
         } finally {
+            setCurrentBlog({})
             clearAuth();
             navigate('/');
         }
@@ -221,6 +230,7 @@ export const AuthProvider = ({ children }) => {
             return response.data
         } catch (error) {
             console.log('error')
+            throw error
         }
     }
 
@@ -246,6 +256,51 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    /**
+     * API basic response
+     */
+
+    const fetchUserDetailsById = async (id) => {
+        try {
+            console.log(id)
+            const response = await getUserById(id);
+            console.log(response.data)
+            return response.data
+        } catch (err) {
+            console.error("Error while fetching user by id: ", id, err);
+            throw err
+        }
+    }
+
+    // all user
+    const fetchAllUsers = async () => {
+        try {
+            const response = await apiGetAllUsers()
+            setAllUsers(response.data)
+        } catch (err) {
+            console.log("Error: ", err)
+            throw err
+        }
+    }
+
+
+    // all blogs
+    const fetchAllBlogs = async () => {
+        try {
+            const response = await apiGetAllBlogs()
+            setAllBlogs(response.data)
+        } catch (err) {
+            console.log("error: ", err)
+            throw err
+        }
+    }
+
+    /**
+     * get logged userBlogs
+     * */
+
+
+
     const contextValue = {
         user,
         loading,
@@ -261,7 +316,12 @@ export const AuthProvider = ({ children }) => {
         getAllUserDetails,
         getAllBlogsDetails,
         userDelete,
-        blogDelete
+        blogDelete,
+        fetchUserDetailsById,
+        fetchAllBlogs,
+        allUsers,
+        allBlogs,
+        fetchAllUsers,
     };
 
     return (
