@@ -159,6 +159,23 @@ function Navbar({activeItem, setActiveItem, email}) {
         });
     };
 
+    const handleShowProfileImage = () => {
+        if (user?.profileImage?.url || user?.profileImage) {
+            return (
+                <img src={user.profileImage.url} alt="Profile"
+                     className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white"
+                />
+            )
+        } else {
+            return (
+                <div
+                    className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-whtie">
+                    <RiUserLine className="text-xl text-white"/>
+                </div>
+            )
+        }
+    }
+
     return (
         <>
             {/* Mobile Header */}
@@ -225,13 +242,30 @@ function Navbar({activeItem, setActiveItem, email}) {
                                             className="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer"
                                         >
                                             <div className="flex items-center space-x-3">
-                                                <div
-                                                    className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-medium">
-                                                    {user.firstname?.charAt(0)}{user.lastname?.charAt(0)}
-                                                </div>
+                                                {user?.profileImage?.url ? (
+                                                    <img
+                                                        src={user.profileImage.url}
+                                                        alt={`${user?.firstname || ''} ${user?.lastname || ''}`.trim() || 'User'}
+                                                        className="w-10 h-10 rounded-full object-cover bg-gradient-to-r from-purple-500 to-pink-500"
+                                                        onError={(e) => {
+                                                            e.target.onerror = null; // Prevent infinite loop
+                                                            e.target.style.display = 'none'; // Hide broken image
+                                                        }}
+                                                    />
+                                                ) : null
+                                                }
+
+                                                {(!user?.profileImage?.url || user.profileImage.url === '') && (
+                                                    <div
+                                                        className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white">
+                                                        {user?.firstname?.[0]?.toUpperCase() || user?.lastname?.[0]?.toUpperCase() || (
+                                                            <RiUserLine className="text-xl"/>
+                                                        )}
+                                                    </div>
+                                                )}
                                                 <div className="flex-1 min-w-0">
                                                     <p className="font-medium text-white truncate">
-                                                        {user.firstname} {user.lastname}
+                                                        {user.firstName} {user.lastName}
                                                     </p>
                                                     <p className="text-xs text-gray-400 truncate">{user.email}</p>
                                                 </div>
@@ -256,11 +290,14 @@ function Navbar({activeItem, setActiveItem, email}) {
 
             {/* Create Blog Modal */}
             {showCreateModal && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+                <div
+                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
                     <div
                         className="bg-gray-800 rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden border border-gray-700">
-                        <div className="p-4 border-b border-gray-700 flex justify-between items-center">
-                            <h3 className="text-lg font-semibold text-white">Create New Blog Post</h3>
+                        <div
+                            className="p-4 border-b border-gray-700 flex justify-between items-center">
+                            <h3 className="text-lg font-semibold text-white">Create New Blog
+                                Post</h3>
                             <button
                                 onClick={closeModal}
                                 className="text-gray-400 hover:text-white transition-colors"
@@ -270,7 +307,8 @@ function Navbar({activeItem, setActiveItem, email}) {
                         </div>
                         <form onSubmit={handleBlogSubmit} className="p-4">
                             <div className="mb-4">
-                                <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">
+                                <label htmlFor="title"
+                                       className="block text-sm font-medium text-gray-300 mb-1">
                                     Title
                                 </label>
                                 <input
@@ -278,13 +316,17 @@ function Navbar({activeItem, setActiveItem, email}) {
                                     id="title"
                                     className="w-full px-3 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-600"
                                     value={blogData.title}
-                                    onChange={(e) => setBlogData({...blogData, title: e.target.value})}
+                                    onChange={(e) => setBlogData({
+                                        ...blogData,
+                                        title: e.target.value
+                                    })}
                                     required
                                 />
                             </div>
 
                             <div className="mb-4">
-                                <label htmlFor="content" className="block text-sm font-medium text-gray-300 mb-1">
+                                <label htmlFor="content"
+                                       className="block text-sm font-medium text-gray-300 mb-1">
                                     Content
                                 </label>
                                 <textarea
@@ -292,7 +334,10 @@ function Navbar({activeItem, setActiveItem, email}) {
                                     rows={5}
                                     className="w-full px-3 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-600"
                                     value={blogData.content}
-                                    onChange={(e) => setBlogData({...blogData, content: e.target.value})}
+                                    onChange={(e) => setBlogData({
+                                        ...blogData,
+                                        content: e.target.value
+                                    })}
                                     required
                                 />
                             </div>
@@ -320,9 +365,12 @@ function Navbar({activeItem, setActiveItem, email}) {
                                     <div className="flex items-center justify-center w-full">
                                         <label
                                             className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-600 border-dashed rounded-lg cursor-pointer bg-gray-700 hover:bg-gray-600 transition-colors">
-                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                <RiUploadLine className="w-8 h-8 text-gray-400 mb-2"/>
-                                                <p className="text-sm text-gray-400">Upload an image</p>
+                                            <div
+                                                className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                <RiUploadLine
+                                                    className="w-8 h-8 text-gray-400 mb-2"/>
+                                                <p className="text-sm text-gray-400">Upload an
+                                                    image</p>
                                             </div>
                                             <input
                                                 type="file"
@@ -374,7 +422,7 @@ function Navbar({activeItem, setActiveItem, email}) {
                         </h1>
                         <div className="mt-2 text-xs text-gray-400 flex items-center">
                             <RiUserLine className="mr-1"/>
-                            <span>{`${user?.firstname || ''} ${user?.lastname || ''}`}</span>
+                            <span>{`${user?.firstname || ''} ${user?.lastName || ''}`}</span>
                         </div>
                     </div>
 
@@ -402,13 +450,11 @@ function Navbar({activeItem, setActiveItem, email}) {
                             className="flex items-center mb-4 cursor-pointer hover:bg-gray-700 rounded-lg p-2 transition-colors"
                             onClick={handleProfileClick}
                         >
-                            <div
-                                className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white">
-                                <RiUserLine className="text-xl"/>
-                            </div>
+                            {handleShowProfileImage()}
+
                             <div className="ml-3 flex-1 min-w-0">
                                 <p className="text-sm font-medium text-white">
-                                    {user?.firstname} {user?.lastname}
+                                    {user?.firstname} {user?.lastName}
                                 </p>
                                 <p className="text-xs text-gray-400 truncate">{email}</p>
                             </div>

@@ -105,9 +105,9 @@ function Login() {
                         </button>
 
                         <div className="text-center pt-4">
-                            <a href="#" className="text-gray-400 hover:text-indigo-400 text-sm transition-colors duration-300">
+                            <Link to="/auth/reset-password" className="text-gray-400 hover:text-indigo-400 text-sm transition-colors duration-300">
                                 Forgot password?
-                            </a>
+                            </Link>
                             <p className="text-gray-500 text-sm mt-4">
                                 Don't have an account?{' '}
                                 <Link to="/auth/register" className="text-indigo-400 hover:text-indigo-300 transition-colors duration-300">

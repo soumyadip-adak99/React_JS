@@ -1,12 +1,13 @@
-import {createContext, useContext, useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {jwtDecode} from 'jwt-decode';
-import {getUserDetails as apiGetUserDetails, userLogout as apiLogout, uploadImage} from '../api/userAPI';
-import {login as apiLogin, sentOtp as apiSentOTP, register as apiRegister} from '../api/publicAPI';
-import {getAllUsers, getAllBlogs, deleteUser, deleteBlog} from '../api/adminApi'
+import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from 'jwt-decode';
+import { getUserDetails as apiGetUserDetails, userLogout as apiLogout, uploadProfileImage } from '../api/userAPI';
+import { login as apiLogin, sentOtp as apiSentOTP, register as apiRegister, resetPassword } from '../api/publicAPI';
+import { getAllUsers, getAllBlogs, deleteUser, deleteBlog } from '../api/adminApi'
 import toast from "react-hot-toast";
-import {getUserById, apiGetAllUsers, apiGetAllBlogs} from "../api/apiData";
-import {addNewBlog, userBlogDeleteById} from "../api/blogApi.js";
+import { getUserById, apiGetAllUsers, apiGetAllBlogs } from "../api/apiData";
+import { addNewBlog, userBlogDeleteById } from "../api/blogApi.js";
+import { nav } from "framer-motion/client";
 
 const AuthContext = createContext();
 
@@ -17,7 +18,7 @@ const clearCookie = (name) => {
     document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax;`;
 };
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [allUsers, setAllUsers] = useState([])
@@ -90,7 +91,7 @@ export const AuthProvider = ({children}) => {
             };
 
             const response = await apiLogin(request);
-            const {email, token} = response.data;
+            const { email, token } = response.data;
 
             // Extract user info from token and set user state
             const userData = extractUserFromToken(token);
@@ -98,7 +99,7 @@ export const AuthProvider = ({children}) => {
                 setUser(userData);
             } else {
                 // Fallback to email from response
-                setUser({email: email, roles: []});
+                setUser({ email: email, roles: [] });
             }
 
             toast.success('Login successful!');
@@ -113,6 +114,8 @@ export const AuthProvider = ({children}) => {
         }
     };
 
+
+
     // registration method
     const registration = async (formData) => {
         try {
@@ -121,7 +124,6 @@ export const AuthProvider = ({children}) => {
                 lastname: formData.lastname,
                 email: formData.email,
                 password: String(formData.password),
-                phone_number: String(formData.phone_number),
                 otp: String(formData.otp)
             };
 
@@ -137,11 +139,29 @@ export const AuthProvider = ({children}) => {
         }
     };
 
+    // reset password 
+    const fetchResetPassword = async (data) => {
+        try {
+            const response = await resetPassword({
+                email: data.email,
+                newPassword: data.newPassword,
+                otp: data.otp
+            });
+            toast.success("Password reset successfully");
+            navigate('/auth/sing-in');
+            return response;
+        } catch (error) {
+            console.error(error);
+            toast.error(error.response?.data?.message || "Password reset failed");
+            throw error;
+        }
+    }
+
     // send OTP
-    const sentOTP = async (phoneNumber) => {
+    const sentOTP = async (email) => {
         try {
             const request = {
-                phone_number: phoneNumber
+                email: email
             };
 
             await apiSentOTP(request);
@@ -185,7 +205,7 @@ export const AuthProvider = ({children}) => {
     // upload image
     const fetchToProfileImageUpload = async (image) => {
         try {
-            const response = await uploadImage(image);
+            const response = await uploadProfileImage(image);
             toast.success('Profile image upload successfully.');
             return response;
         } catch (error) {
@@ -359,7 +379,8 @@ export const AuthProvider = ({children}) => {
         fetchAllUsers,
         uploadBlog,
         fetchToDeleteBlog,
-        fetchToProfileImageUpload
+        fetchToProfileImageUpload,
+        fetchResetPassword
     };
 
     return (

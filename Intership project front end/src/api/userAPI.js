@@ -9,9 +9,8 @@ const API = axios.create({
 });
 
 API.interceptors.request.use(config => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+    if (config.data instanceof FormData) {
+        delete config.headers['Content-Type'];
     }
     return config;
 }, error => {
@@ -23,7 +22,7 @@ export const userLogout = () => API.post('/api/user/log-out')
 
 export const uploadProfileImage = async (imageFile) => {
     const formData = new FormData();
-    formData.append('image', imageFile);
+    formData.append('file', imageFile);
 
     try {
         const response = await API.post('/api/user/upload-profile-image', formData, {

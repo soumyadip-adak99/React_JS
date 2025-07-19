@@ -5,7 +5,6 @@ import {
     RiCalendarLine,
     RiEditLine,
     RiBookmarkLine,
-    RiThumbUpLine,
     RiChat3Line,
     RiShareForwardLine,
     RiMoreFill,
@@ -16,16 +15,17 @@ import {
     RiCodeSSlashLine,
     RiArticleLine,
     RiHeartLine,
-    RiVerifiedBadgeFill,
     RiDeleteBinLine,
-    RiCloseLine
+    RiCloseLine,
+    RiImageLine,
+    RiUploadLine
 } from 'react-icons/ri';
 import {useAuth} from '../../../context/AuthContext';
 import {useParams} from 'react-router-dom';
 import toast from "react-hot-toast";
 
 function Profile() {
-    const {user, fetchToDeleteBlog} = useAuth();
+    const {user, fetchToDeleteBlog, fetchToProfileImageUpload} = useAuth();
     const {userId} = useParams();
     const [isEditing, setIsEditing] = useState(false);
     const [editedUser, setEditedUser] = useState({
@@ -46,6 +46,13 @@ function Profile() {
         image: null
     });
 
+    // Profile image states
+    const [showProfileImageModal, setShowProfileImageModal] = useState(false);
+    const [showProfileImageEditModal, setShowProfileImageEditModal] = useState(false);
+    const [profileImageFile, setProfileImageFile] = useState(null);
+    const [profileImagePreview, setProfileImagePreview] = useState(null);
+    const [isUploading, setIsUploading] = useState(false);
+
     // Initialize user data with proper null checks
     const [currentUser, setCurrentUser] = useState({
         id: userId || user?.id || "",
@@ -53,7 +60,7 @@ function Profile() {
         lastName: user?.lastName || '',
         email: user?.email || '',
         joinDate: "2023-01-15",
-        profileImage: null,
+        profileImage: user?.profileImage || null,
         bio: "Senior Software Engineer | Spring Boot Expert | Microservices Architect | Tech Blogger",
         userBlogs: Array.isArray(user?.blogs) ? user.blogs : [],
         stats: {
@@ -94,6 +101,58 @@ function Profile() {
             ...editedUser
         }));
         setIsEditing(false);
+    };
+
+    // Profile image handlers
+    const handleProfileImageClick = () => {
+        if (currentUser.profileImage) {
+            setShowProfileImageModal(true);
+        } else {
+            setShowProfileImageEditModal(true);
+        }
+    };
+
+    const handleProfileImageChange = (e) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setProfileImageFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setProfileImagePreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleProfileImageUpload = async () => {
+        if (!profileImageFile) return;
+
+        setIsUploading(true);
+        try {
+            const response = await fetchToProfileImageUpload(profileImageFile);
+            setCurrentUser(prev => ({
+                ...prev,
+                profileImage: response.url || URL.createObjectURL(profileImageFile)
+            }));
+            toast.success('Profile image updated successfully');
+            setShowProfileImageEditModal(false);
+            setProfileImageFile(null);
+            setProfileImagePreview(null);
+        } catch (error) {
+            toast.error('Failed to upload profile image');
+            console.error(error);
+        } finally {
+            setIsUploading(false);
+        }
+    };
+
+    const removeProfileImage = () => {
+        setCurrentUser(prev => ({
+            ...prev,
+            profileImage: null
+        }));
+        setShowProfileImageModal(false);
+        setShowProfileImageEditModal(true);
     };
 
     // Blog post actions
@@ -175,13 +234,13 @@ function Profile() {
             setShowDeleteModal(false);
         } catch (error) {
             toast.error("Failed to delete post");
+            throw error;
         }
     };
 
     const handleDeleteBlog = async (id) => {
         try {
             await fetchToDeleteBlog(id);
-            toast.success("Blog deleted successfully");
         } catch (error) {
             toast.error("Delete failed.");
             throw error;
@@ -248,9 +307,11 @@ function Profile() {
 
     const tabs = [
         {id: 'posts', label: 'Posts', icon: RiArticleLine},
-        // {id: 'about', label: 'About', icon: RiUserLine},
-        // {id: 'activity', label: 'Activity', icon: RiTrophyLine}
+        {id: 'about', label: 'About', icon: RiUserLine},
+        {id: 'activity', label: 'Activity', icon: RiTrophyLine}
     ];
+
+    console.log(userBlogs)
 
     return (
         <div className="min-h-screen bg-gray-950 text-gray-100">
@@ -270,13 +331,27 @@ function Profile() {
                             {/* Profile Picture */}
                             <div className="relative">
                                 <div
-                                    className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-3xl md:text-4xl font-bold text-white shadow-lg">
-                                    {currentUser.firstname?.[0] || 'U'}{currentUser.lastName?.[0] || ''}
+                                    className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-3xl md:text-4xl font-bold text-white shadow-lg cursor-pointer overflow-hidden"
+                                    onClick={handleProfileImageClick}
+                                >
+                                    {currentUser.profileImage ? (
+                                        <img
+                                            src={currentUser.profileImage.url}
+                                            alt="Profile"
+                                            className="w-full h-full object-cover"
+                                        />
+                                    ) : (
+                                        <>
+                                            {currentUser.firstname?.[0] || 'U'}{currentUser.lastName?.[0] || ''}
+                                        </>
+                                    )}
                                 </div>
-                                <div
-                                    className="absolute -bottom-2 -right-2 bg-emerald-500 rounded-full p-1.5 border-2 border-gray-900">
-                                    <RiVerifiedBadgeFill className="w-4 h-4 text-white"/>
-                                </div>
+                                <button
+                                    onClick={() => setShowProfileImageEditModal(true)}
+                                    className="absolute bottom-0 right-0 bg-gray-800 p-2 rounded-full border border-gray-700 hover:bg-gray-700 transition-colors"
+                                >
+                                    <RiEditLine className="w-4 h-4 text-white"/>
+                                </button>
                             </div>
 
                             {/* Profile Info */}
@@ -414,10 +489,16 @@ function Profile() {
                                          className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-6 shadow-lg hover:shadow-xl transition-shadow">
                                         <div className="flex items-start justify-between mb-4">
                                             <div className="flex items-center gap-3">
-                                                <div
-                                                    className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white">
-                                                    {name[0]}
-                                                </div>
+                                                {(currentUser?.profileImage?.url || currentUser?.profileImage) ? (
+                                                    <img src={currentUser.profileImage.url}
+                                                         className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white"/>
+                                                ) : (
+                                                    <div
+                                                        className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white">
+                                                        {name[0]}
+                                                    </div>
+                                                )}
+
                                                 <div>
                                                     <p className="font-medium text-white">{name}</p>
                                                     <p className="text-xs text-gray-400">{formatDateTime(post.create_at)}</p>
@@ -559,6 +640,114 @@ function Profile() {
                     )}
                 </div>
             </div>
+
+            {/* View Profile Image Modal */}
+            {showProfileImageModal && (
+                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="relative max-w-4xl w-full">
+                        <button
+                            onClick={() => setShowProfileImageModal(false)}
+                            className="absolute top-4 right-4 z-10 bg-gray-900/80 text-white p-2 rounded-full hover:bg-gray-800 transition-colors"
+                        >
+                            <RiCloseLine className="w-6 h-6"/>
+                        </button>
+                        <div className="bg-transparent rounded-xl overflow-hidden">
+                            <img
+                                src={currentUser.profileImage.url}
+                                alt="Profile"
+                                className="w-full max-h-[80vh] object-contain rounded-lg"
+                            />
+                        </div>
+                        <div className="mt-4 flex justify-center gap-4">
+                            <button
+                                onClick={() => {
+                                    setShowProfileImageModal(false);
+                                    setShowProfileImageEditModal(true);
+                                }}
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                            >
+                                <RiEditLine className="w-4 h-4"/>
+                                Edit Image
+                            </button>
+                            <button
+                                onClick={removeProfileImage}
+                                className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                            >
+                                <RiDeleteBinLine className="w-4 h-4"/>
+                                Remove Image
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Edit Profile Image Modal */}
+            {showProfileImageEditModal && (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-gray-900 rounded-xl border border-gray-700 w-full max-w-md">
+                        <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+                            <h3 className="text-xl font-bold text-white">
+                                {currentUser.profileImage ? 'Update Profile Image' : 'Upload Profile Image'}
+                            </h3>
+                            <button
+                                onClick={() => setShowProfileImageEditModal(false)}
+                                className="text-gray-400 hover:text-white"
+                            >
+                                <RiCloseLine className="w-6 h-6"/>
+                            </button>
+                        </div>
+                        <div className="p-6">
+                            <div className="flex flex-col items-center justify-center mb-6">
+                                {profileImagePreview || currentUser.profileImage ? (
+                                    <div className="relative mb-4">
+                                        <img
+                                            src={profileImagePreview || currentUser.profileImage}
+                                            alt="Profile preview"
+                                            className="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover border-2 border-gray-700"
+                                        />
+                                    </div>
+                                ) : (
+                                    <div
+                                        className="w-32 h-32 md:w-48 md:h-48 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-4xl md:text-6xl font-bold text-white mb-4">
+                                        {currentUser.firstname?.[0] || 'U'}{currentUser.lastName?.[0] || ''}
+                                    </div>
+                                )}
+                                <label className="cursor-pointer">
+                                    <div
+                                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2">
+                                        <RiUploadLine className="w-4 h-4"/>
+                                        {profileImagePreview ? 'Change Image' : 'Select Image'}
+                                    </div>
+                                    <input
+                                        type="file"
+                                        className="hidden"
+                                        accept="image/*"
+                                        onChange={handleProfileImageChange}
+                                    />
+                                </label>
+                            </div>
+                            <div className="flex justify-end gap-3">
+                                <button
+                                    onClick={() => setShowProfileImageEditModal(false)}
+                                    className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleProfileImageUpload}
+                                    disabled={!profileImageFile && !currentUser.profileImage}
+                                    className={`px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${(!profileImageFile && !currentUser.profileImage)
+                                        ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                                        : 'bg-green-600 hover:bg-green-700 text-white'
+                                    }`}
+                                >
+                                    {isUploading ? 'Uploading...' : 'Save Changes'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Edit Post Modal */}
             {showEditModal && (

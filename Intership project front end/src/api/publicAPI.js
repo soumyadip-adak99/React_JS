@@ -17,3 +17,6 @@ export const register = (request) =>
 
 export const login = (data) =>
     API.post('/api/public/login', data)
+
+export const resetPassword = (data) =>
+    API.post('/api/public/reset-password', data);

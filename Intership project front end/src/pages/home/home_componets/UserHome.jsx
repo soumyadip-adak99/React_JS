@@ -87,19 +87,22 @@ function UserHome() {
             case 'PUBLISHED':
             case 'APPROVED':
                 return (
-                    <span className="bg-emerald-500/20 text-emerald-400 text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1.5 border border-emerald-500/30">
-                        <RiVerifiedBadgeFill className="w-3 h-3" /> Published
+                    <span
+                        className="bg-emerald-500/20 text-emerald-400 text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1.5 border border-emerald-500/30">
+                        <RiVerifiedBadgeFill className="w-3 h-3"/> Published
                     </span>
                 );
             case 'DRAFT':
                 return (
-                    <span className="bg-amber-500/20 text-amber-400 text-xs font-medium px-2 py-1 rounded-full border border-amber-500/30">
+                    <span
+                        className="bg-amber-500/20 text-amber-400 text-xs font-medium px-2 py-1 rounded-full border border-amber-500/30">
                         Draft
                     </span>
                 );
             case 'PENDING_APPROVAL':
                 return (
-                    <span className="bg-blue-500/20 text-blue-400 text-xs font-medium px-2 py-1 rounded-full border border-blue-500/30">
+                    <span
+                        className="bg-blue-500/20 text-blue-400 text-xs font-medium px-2 py-1 rounded-full border border-blue-500/30">
                         Pending
                     </span>
                 );
@@ -123,7 +126,8 @@ function UserHome() {
             );
         }
         return (
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white">
+            <div
+                className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white">
                 {post.authorName?.[0] || 'U'}
             </div>
         );
@@ -145,7 +149,8 @@ function UserHome() {
                             }}
                         />
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                    <div
+                        className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                         <span className="text-white text-sm font-medium">View full image</span>
                     </div>
                 </div>
@@ -168,7 +173,8 @@ function UserHome() {
                 <div className="space-y-6">
                     {randomizedBlogs.length > 0 ? (
                         randomizedBlogs.map((post) => (
-                            <div key={post.id} className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                            <div key={post.id}
+                                 className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
                                 <div className="flex flex-col">
                                     <div className="flex items-start justify-between mb-4">
                                         <div className="flex items-center gap-3">
@@ -177,15 +183,6 @@ function UserHome() {
                                                 <p className="font-medium text-white">{post.authorName || 'Unknown Author'}</p>
                                                 <p className="text-xs text-gray-400">{formatDateTime(post.create_at)}</p>
                                             </div>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            {getStatusBadge(post.status)}
-                                            <button
-                                                className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
-                                                aria-label="More options"
-                                            >
-                                                <RiMoreFill className="w-5 h-5" />
-                                            </button>
                                         </div>
                                     </div>
 
@@ -207,9 +204,9 @@ function UserHome() {
                                                 aria-label="Like post"
                                             >
                                                 {likedPosts.has(post.id) ? (
-                                                    <RiHeartFill className="w-5 h-5 text-red-400" />
+                                                    <RiHeartFill className="w-5 h-5 text-red-400"/>
                                                 ) : (
-                                                    <RiHeartLine className="w-5 h-5" />
+                                                    <RiHeartLine className="w-5 h-5"/>
                                                 )}
                                                 <span className="text-sm">
                                                     {formatNumber((post.likes || 0) + (likedPosts.has(post.id) ? 1 : 0))}
@@ -219,14 +216,14 @@ function UserHome() {
                                                 className="flex items-center gap-1.5 text-gray-400 hover:text-blue-400 transition-colors"
                                                 aria-label="Comment on post"
                                             >
-                                                <RiChat3Line className="w-5 h-5" />
+                                                <RiChat3Line className="w-5 h-5"/>
                                                 <span className="text-sm">{formatNumber(post.comments || 0)}</span>
                                             </button>
                                             <button
                                                 className="flex items-center gap-1.5 text-gray-400 hover:text-green-400 transition-colors"
                                                 aria-label="Share post"
                                             >
-                                                <RiShareForwardLine className="w-5 h-5" />
+                                                <RiShareForwardLine className="w-5 h-5"/>
                                                 <span className="text-sm">{formatNumber(post.shares || 0)}</span>
                                             </button>
                                         </div>
@@ -236,9 +233,9 @@ function UserHome() {
                                             aria-label={bookmarkedPosts.has(post.id) ? "Remove bookmark" : "Bookmark post"}
                                         >
                                             {bookmarkedPosts.has(post.id) ? (
-                                                <RiBookmarkFill className="w-5 h-5 text-yellow-400" />
+                                                <RiBookmarkFill className="w-5 h-5 text-yellow-400"/>
                                             ) : (
-                                                <RiBookmarkLine className="w-5 h-5" />
+                                                <RiBookmarkLine className="w-5 h-5"/>
                                             )}
                                         </button>
                                     </div>
@@ -246,7 +243,8 @@ function UserHome() {
                             </div>
                         ))
                     ) : (
-                        <div className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-8 text-center">
+                        <div
+                            className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-8 text-center">
                             <div className="text-gray-400 text-lg mb-2">No posts found</div>
                             <p className="text-gray-500 text-sm">Be the first to create a post!</p>
                         </div>
