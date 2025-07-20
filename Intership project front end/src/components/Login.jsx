@@ -27,8 +27,11 @@ function Login() {
         try {
             await login(formData);
         } catch (err) {
-            setError(err);
-            //toast.error("Login failed");
+            if (err.response && err.response.status === 500 || err.response.status == 401) {
+                setError({ message: "Invalid email or password" });
+            } else {
+                setError(err);
+            }
         } finally {
             setLoading(false);
         }

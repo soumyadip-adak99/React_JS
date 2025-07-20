@@ -36,3 +36,5 @@ export const uploadProfileImage = async (imageFile) => {
         throw error;
     }
 };
+
+export const deleteUserAccount = () => API.delete("/api/user/delete-account")

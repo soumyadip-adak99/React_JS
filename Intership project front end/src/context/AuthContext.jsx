@@ -1,13 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
-import { getUserDetails as apiGetUserDetails, userLogout as apiLogout, uploadProfileImage } from '../api/userAPI';
+import { getUserDetails as apiGetUserDetails, userLogout as apiLogout, uploadProfileImage, deleteUserAccount } from '../api/userAPI';
 import { login as apiLogin, sentOtp as apiSentOTP, register as apiRegister, resetPassword } from '../api/publicAPI';
 import { getAllUsers, getAllBlogs, deleteUser, deleteBlog } from '../api/adminApi'
 import toast from "react-hot-toast";
 import { getUserById, apiGetAllUsers, apiGetAllBlogs } from "../api/apiData";
 import { addNewBlog, userBlogDeleteById } from "../api/blogApi.js";
-import { nav } from "framer-motion/client";
+
 
 const AuthContext = createContext();
 
@@ -113,7 +113,6 @@ export const AuthProvider = ({ children }) => {
             throw err;
         }
     };
-
 
 
     // registration method
@@ -356,6 +355,20 @@ export const AuthProvider = ({ children }) => {
     }
 
 
+    const fetchToDeleteAccount = async () => {
+        try {
+            const response = await deleteUserAccount()
+            toast.success("Account Delete success full.")
+            clearAuth();
+            navigate('/auth/register');
+            return response
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+ 
+
     const contextValue = {
         user,
         loading,
@@ -380,7 +393,8 @@ export const AuthProvider = ({ children }) => {
         uploadBlog,
         fetchToDeleteBlog,
         fetchToProfileImageUpload,
-        fetchResetPassword
+        fetchResetPassword,
+        fetchToDeleteAccount
     };
 
     return (

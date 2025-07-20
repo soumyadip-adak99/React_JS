@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     RiChat3Line,
     RiShareForwardLine,
@@ -9,7 +9,7 @@ import {
     RiHeartLine,
     RiHeartFill
 } from 'react-icons/ri';
-import {useAuth} from "../../../context/AuthContext.jsx";
+import { useAuth } from "../../../context/AuthContext.jsx";
 
 function UserHome() {
     const [likedPosts, setLikedPosts] = useState(new Set());
@@ -17,7 +17,7 @@ function UserHome() {
     const [isLoading, setIsLoading] = useState(true);
     const [randomizedBlogs, setRandomizedBlogs] = useState([]);
 
-    const {allBlogs, fetchAllBlogs, user} = useAuth();
+    const { allBlogs, fetchAllBlogs, user } = useAuth();
 
     useEffect(() => {
         const loadData = async () => {
@@ -89,7 +89,7 @@ function UserHome() {
                 return (
                     <span
                         className="bg-emerald-500/20 text-emerald-400 text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1.5 border border-emerald-500/30">
-                        <RiVerifiedBadgeFill className="w-3 h-3"/> Published
+                        <RiVerifiedBadgeFill className="w-3 h-3" /> Published
                     </span>
                 );
             case 'DRAFT':
@@ -174,7 +174,7 @@ function UserHome() {
                     {randomizedBlogs.length > 0 ? (
                         randomizedBlogs.map((post) => (
                             <div key={post.id}
-                                 className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                                className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
                                 <div className="flex flex-col">
                                     <div className="flex items-start justify-between mb-4">
                                         <div className="flex items-center gap-3">
@@ -204,9 +204,9 @@ function UserHome() {
                                                 aria-label="Like post"
                                             >
                                                 {likedPosts.has(post.id) ? (
-                                                    <RiHeartFill className="w-5 h-5 text-red-400"/>
+                                                    <RiHeartFill className="w-5 h-5 text-red-400" />
                                                 ) : (
-                                                    <RiHeartLine className="w-5 h-5"/>
+                                                    <RiHeartLine className="w-5 h-5" />
                                                 )}
                                                 <span className="text-sm">
                                                     {formatNumber((post.likes || 0) + (likedPosts.has(post.id) ? 1 : 0))}
@@ -216,14 +216,14 @@ function UserHome() {
                                                 className="flex items-center gap-1.5 text-gray-400 hover:text-blue-400 transition-colors"
                                                 aria-label="Comment on post"
                                             >
-                                                <RiChat3Line className="w-5 h-5"/>
+                                                <RiChat3Line className="w-5 h-5" />
                                                 <span className="text-sm">{formatNumber(post.comments || 0)}</span>
                                             </button>
                                             <button
                                                 className="flex items-center gap-1.5 text-gray-400 hover:text-green-400 transition-colors"
                                                 aria-label="Share post"
                                             >
-                                                <RiShareForwardLine className="w-5 h-5"/>
+                                                <RiShareForwardLine className="w-5 h-5" />
                                                 <span className="text-sm">{formatNumber(post.shares || 0)}</span>
                                             </button>
                                         </div>
@@ -233,9 +233,9 @@ function UserHome() {
                                             aria-label={bookmarkedPosts.has(post.id) ? "Remove bookmark" : "Bookmark post"}
                                         >
                                             {bookmarkedPosts.has(post.id) ? (
-                                                <RiBookmarkFill className="w-5 h-5 text-yellow-400"/>
+                                                <RiBookmarkFill className="w-5 h-5 text-yellow-400" />
                                             ) : (
-                                                <RiBookmarkLine className="w-5 h-5"/>
+                                                <RiBookmarkLine className="w-5 h-5" />
                                             )}
                                         </button>
                                     </div>

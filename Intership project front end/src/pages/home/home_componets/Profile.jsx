@@ -1,32 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import {
-    RiUserLine,
-    RiMailLine,
-    RiCalendarLine,
-    RiEditLine,
-    RiBookmarkLine,
-    RiChat3Line,
-    RiShareForwardLine,
-    RiMoreFill,
-    RiCheckboxCircleFill,
-    RiGlobalLine,
-    RiStarLine,
-    RiTrophyLine,
-    RiCodeSSlashLine,
-    RiArticleLine,
-    RiHeartLine,
-    RiDeleteBinLine,
-    RiCloseLine,
-    RiImageLine,
-    RiUploadLine
+    RiUserLine, RiMailLine, RiCalendarLine,
+    RiEditLine, RiBookmarkLine, RiChat3Line, RiShareForwardLine, RiMoreFill, RiCheckboxCircleFill,
+    RiGlobalLine, RiStarLine, RiTrophyLine, RiCodeSSlashLine, RiArticleLine,
+    RiHeartLine, RiDeleteBinLine, RiCloseLine, RiImageLine, RiUploadLine
 } from 'react-icons/ri';
-import {useAuth} from '../../../context/AuthContext';
-import {useParams} from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext';
+import { useParams } from 'react-router-dom';
 import toast from "react-hot-toast";
 
 function Profile() {
-    const {user, fetchToDeleteBlog, fetchToProfileImageUpload} = useAuth();
-    const {userId} = useParams();
+    const { user, fetchToDeleteBlog, fetchToProfileImageUpload, fetchToDeleteAccount } = useAuth();
+    const { userId } = useParams();
     const [isEditing, setIsEditing] = useState(false);
     const [editedUser, setEditedUser] = useState({
         firstname: '',
@@ -88,7 +73,7 @@ function Profile() {
     };
 
     const handleInputChange = (e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setEditedUser(prev => ({
             ...prev,
             [name]: value
@@ -101,6 +86,7 @@ function Profile() {
             ...editedUser
         }));
         setIsEditing(false);
+        toast.success('Profile updated successfully');
     };
 
     // Profile image handlers
@@ -153,6 +139,7 @@ function Profile() {
         }));
         setShowProfileImageModal(false);
         setShowProfileImageEditModal(true);
+        toast.success('Profile image removed');
     };
 
     // Blog post actions
@@ -182,7 +169,7 @@ function Profile() {
     };
 
     const handlePostInputChange = (e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setEditedPost(prev => ({
             ...prev,
             [name]: value
@@ -216,10 +203,11 @@ function Profile() {
         setCurrentUser(prev => ({
             ...prev,
             userBlogs: prev.userBlogs.map(post =>
-                post?.id === selectedPost.id ? {...post, ...editedPost} : post
-            ).filter(Boolean) // Remove any null/undefined posts
+                post?.id === selectedPost.id ? { ...post, ...editedPost } : post
+            ).filter(Boolean)
         }));
         setShowEditModal(false);
+        toast.success('Post updated successfully');
     };
 
     const confirmDeletePost = async () => {
@@ -232,6 +220,7 @@ function Profile() {
                 userBlogs: prev.userBlogs.filter(post => post?.id !== selectedPost.id)
             }));
             setShowDeleteModal(false);
+            toast.success('Post deleted successfully');
         } catch (error) {
             toast.error("Failed to delete post");
             throw error;
@@ -250,7 +239,7 @@ function Profile() {
     const formatDate = (dateString) => {
         if (!dateString) return 'Unknown date';
         try {
-            const options = {year: 'numeric', month: 'short', day: 'numeric'};
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
             return new Date(dateString).toLocaleDateString(undefined, options);
         } catch {
             return dateString;
@@ -278,18 +267,15 @@ function Profile() {
 
         switch (status.toUpperCase()) {
             case 'PUBLISHED':
-                return <span
-                    className="bg-emerald-500/20 text-emerald-400 text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1.5 border border-emerald-500/30">
-                    <RiCheckboxCircleFill className="w-3 h-3"/> Published
+                return <span className="bg-emerald-500/20 text-emerald-400 text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1.5 border border-emerald-500/30">
+                    <RiCheckboxCircleFill className="w-3 h-3" /> Published
                 </span>;
             case 'DRAFT':
-                return <span
-                    className="bg-amber-500/20 text-amber-400 text-xs font-medium px-3 py-1 rounded-full border border-amber-500/30">
+                return <span className="bg-amber-500/20 text-amber-400 text-xs font-medium px-3 py-1 rounded-full border border-amber-500/30">
                     Draft
                 </span>;
             default:
-                return <span
-                    className="bg-gray-500/20 text-gray-400 text-xs font-medium px-3 py-1 rounded-full border border-gray-500/30">
+                return <span className="bg-gray-500/20 text-gray-400 text-xs font-medium px-3 py-1 rounded-full border border-gray-500/30">
                     {status}
                 </span>;
         }
@@ -306,12 +292,10 @@ function Profile() {
     };
 
     const tabs = [
-        {id: 'posts', label: 'Posts', icon: RiArticleLine},
-        {id: 'about', label: 'About', icon: RiUserLine},
-        {id: 'activity', label: 'Activity', icon: RiTrophyLine}
+        { id: 'posts', label: 'Posts', icon: RiArticleLine },
+        { id: 'about', label: 'About', icon: RiUserLine },
+        { id: 'activity', label: 'Activity', icon: RiTrophyLine }
     ];
-
-    console.log(userBlogs)
 
     return (
         <div className="min-h-screen bg-gray-950 text-gray-100">
@@ -325,8 +309,7 @@ function Profile() {
             <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Profile Header */}
                 <div className="relative -mt-20 md:-mt-32 pb-8">
-                    <div
-                        className="bg-gray-900/95 backdrop-blur-sm rounded-2xl border border-gray-800 p-6 md:p-8 shadow-2xl">
+                    <div className="bg-gray-900/95 backdrop-blur-sm rounded-2xl border border-gray-800 p-6 md:p-8 shadow-2xl">
                         <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6">
                             {/* Profile Picture */}
                             <div className="relative">
@@ -350,15 +333,14 @@ function Profile() {
                                     onClick={() => setShowProfileImageEditModal(true)}
                                     className="absolute bottom-0 right-0 bg-gray-800 p-2 rounded-full border border-gray-700 hover:bg-gray-700 transition-colors"
                                 >
-                                    <RiEditLine className="w-4 h-4 text-white"/>
+                                    <RiEditLine className="w-4 h-4 text-white" />
                                 </button>
                             </div>
 
                             {/* Profile Info */}
-                            <div className="flex-1">
-                                <div
-                                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-                                    <div>
+                            <div className="flex-1 w-full">
+                                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
+                                    <div className="flex-1">
                                         {isEditing ? (
                                             <div className="space-y-3">
                                                 <input
@@ -366,52 +348,65 @@ function Profile() {
                                                     name="firstname"
                                                     value={editedUser.firstname}
                                                     onChange={handleInputChange}
-                                                    className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white"
+                                                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white"
+                                                    placeholder="First name"
                                                 />
                                                 <input
                                                     type="text"
                                                     name="lastName"
                                                     value={editedUser.lastName}
                                                     onChange={handleInputChange}
-                                                    className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white"
+                                                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white"
+                                                    placeholder="Last name"
                                                 />
                                             </div>
                                         ) : (
                                             <>
-                                                <h1 className="text-2xl md:text-3xl font-bold text-white flex items-center gap-2">
+                                                <h1 className="text-2xl md:text-3xl font-bold text-white">
                                                     {currentUser.firstname} {currentUser.lastName}
                                                 </h1>
-                                                <p className="text-gray-400 flex items-center gap-2 mt-1">
-                                                    <RiMailLine className="w-4 h-4"/>
+                                                <p className="text-gray-400 flex items-center gap-2 mt-1 text-sm md:text-1xl">
+                                                    <RiMailLine className="w-4 h-4" />
                                                     {currentUser.email}
                                                 </p>
                                             </>
                                         )}
                                     </div>
-                                    {isEditing ? (
-                                        <div className="flex gap-2">
-                                            <button
-                                                onClick={handleSave}
-                                                className="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2 shadow-lg"
-                                            >
-                                                Save
-                                            </button>
-                                            <button
-                                                onClick={handleEditToggle}
-                                                className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2 shadow-lg"
-                                            >
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <button
-                                            onClick={handleEditToggle}
-                                            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2 shadow-lg"
-                                        >
-                                            <RiEditLine className="w-4 h-4"/>
-                                            Edit Profile
-                                        </button>
-                                    )}
+                                    <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                                        {isEditing ? (
+                                            <>
+                                                <button
+                                                    onClick={handleSave}
+                                                    className="bg-green-600 hover:bg-green-700 text-white px-4 sm:px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 shadow-lg w-full sm:w-auto"
+                                                >
+                                                    Save
+                                                </button>
+                                                <button
+                                                    onClick={handleEditToggle}
+                                                    className="bg-gray-600 hover:bg-gray-700 text-white px-4 sm:px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 shadow-lg w-full sm:w-auto"
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <button
+                                                    onClick={handleEditToggle}
+                                                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 shadow-lg w-full sm:w-auto"
+                                                >
+                                                    <RiEditLine className="w-4 h-4" />
+                                                    <span className="whitespace-nowrap">Edit Profile</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => fetchToDeleteAccount()}
+                                                    className="bg-red-600 hover:bg-red-700 text-white px-4 sm:px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 shadow-lg w-full sm:w-auto"
+                                                >
+                                                    <RiDeleteBinLine className="w-4 h-4" />
+                                                    <span className="whitespace-nowrap">Delete Account</span>
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
 
                                 {isEditing ? (
@@ -421,6 +416,7 @@ function Profile() {
                                         onChange={handleInputChange}
                                         className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white mb-6"
                                         rows="3"
+                                        placeholder="Tell us about yourself..."
                                     />
                                 ) : (
                                     <p className="text-gray-300 mb-6 text-sm md:text-base leading-relaxed">
@@ -429,14 +425,17 @@ function Profile() {
                                 )}
 
                                 {/* Stats */}
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                                     <div className="bg-gray-800/50 rounded-lg p-3 text-center border border-gray-700">
                                         <div className="text-xl md:text-2xl font-bold text-white">
-                                            {formatNumber(currentUser.userBlogs.length)}
+                                            {formatNumber(currentUser.userBlogs.length || 0)}
                                         </div>
                                         <div className="text-xs text-gray-400">Posts</div>
                                     </div>
-                                    <div className="bg-gray-800/50 rounded-lg p-3 text-center border border-gray-700">
+
+                                    {/** TODO: add this privous */}
+
+                                    {/* <div className="bg-gray-800/50 rounded-lg p-3 text-center border border-gray-700">
                                         <div className="text-xl md:text-2xl font-bold text-white">
                                             {formatNumber(currentUser.stats?.followers || 0)}
                                         </div>
@@ -453,7 +452,7 @@ function Profile() {
                                             {formatNumber(currentUser.stats?.views || 0)}
                                         </div>
                                         <div className="text-xs text-gray-400">Views</div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -462,18 +461,18 @@ function Profile() {
 
                 {/* Tab Navigation */}
                 <div className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-1 mb-6 shadow-lg">
-                    <div className="flex space-x-1">
+                    <div className="flex overflow-x-auto">
                         {tabs.map((tab) => (
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
-                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-all ${activeTab === tab.id
+                                className={`flex-1 min-w-[100px] flex items-center justify-center gap-2 px-3 sm:px-4 py-3 rounded-lg font-medium transition-all ${activeTab === tab.id
                                     ? 'bg-blue-600 text-white shadow-lg'
                                     : 'text-gray-400 hover:text-white hover:bg-gray-800'
-                                }`}
+                                    }`}
                             >
-                                <tab.icon className="w-4 h-4"/>
-                                <span className="hidden sm:inline">{tab.label}</span>
+                                <tab.icon className="w-4 h-4" />
+                                <span>{tab.label}</span>
                             </button>
                         ))}
                     </div>
@@ -486,12 +485,15 @@ function Profile() {
                             {userBlogs.length > 0 ? (
                                 userBlogs.filter(Boolean).map((post) => (
                                     <div key={post.id || Math.random()}
-                                         className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-6 shadow-lg hover:shadow-xl transition-shadow">
-                                        <div className="flex items-start justify-between mb-4">
+                                        className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-6 shadow-lg hover:shadow-xl transition-shadow">
+                                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
                                             <div className="flex items-center gap-3">
                                                 {(currentUser?.profileImage?.url || currentUser?.profileImage) ? (
-                                                    <img src={currentUser.profileImage.url}
-                                                         className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white"/>
+                                                    <img
+                                                        src={currentUser.profileImage.url}
+                                                        className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white"
+                                                        alt="Profile"
+                                                    />
                                                 ) : (
                                                     <div
                                                         className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white">
@@ -504,14 +506,14 @@ function Profile() {
                                                     <p className="text-xs text-gray-400">{formatDateTime(post.create_at)}</p>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2 self-end sm:self-auto">
                                                 {getStatusBadge(post.status)}
                                                 <div className="relative">
                                                     <button
                                                         onClick={() => togglePostMenu(post.id)}
                                                         className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
                                                     >
-                                                        <RiMoreFill className="w-5 h-5"/>
+                                                        <RiMoreFill className="w-5 h-5" />
                                                     </button>
                                                     {showPostMenu === post.id && (
                                                         <div
@@ -520,14 +522,14 @@ function Profile() {
                                                                 onClick={() => handleEditPost(post)}
                                                                 className="w-full flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700"
                                                             >
-                                                                <RiEditLine className="mr-2"/>
+                                                                <RiEditLine className="mr-2" />
                                                                 Edit Post
                                                             </button>
                                                             <button
                                                                 onClick={() => handleDeletePost(post)}
                                                                 className="w-full flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700"
                                                             >
-                                                                <RiDeleteBinLine className="mr-2"/>
+                                                                <RiDeleteBinLine className="mr-2" />
                                                                 Delete Post
                                                             </button>
                                                         </div>
@@ -554,27 +556,26 @@ function Profile() {
                                             </div>
                                         )}
 
-                                        <div
-                                            className="flex items-center justify-between pt-4 border-t border-gray-800">
-                                            <div className="flex items-center gap-6">
+                                        <div className="flex items-center justify-between pt-4 border-t border-gray-800">
+                                            <div className="flex items-center gap-4 sm:gap-6">
                                                 <button
-                                                    className="flex items-center gap-2 text-gray-400 hover:text-red-400 transition-colors">
-                                                    <RiHeartLine className="w-5 h-5"/>
-                                                    <span className="text-sm">{post.likes || 0}</span>
+                                                    className="flex items-center gap-1 sm:gap-2 text-gray-400 hover:text-red-400 transition-colors">
+                                                    <RiHeartLine className="w-4 h-4 sm:w-5 sm:h-5" />
+                                                    <span className="text-xs sm:text-sm">{post.likes || 0}</span>
                                                 </button>
                                                 <button
-                                                    className="flex items-center gap-2 text-gray-400 hover:text-blue-400 transition-colors">
-                                                    <RiChat3Line className="w-5 h-5"/>
-                                                    <span className="text-sm">{post.comments || 0}</span>
+                                                    className="flex items-center gap-1 sm:gap-2 text-gray-400 hover:text-blue-400 transition-colors">
+                                                    <RiChat3Line className="w-4 h-4 sm:w-5 sm:h-5" />
+                                                    <span className="text-xs sm:text-sm">{post.comments || 0}</span>
                                                 </button>
                                                 <button
-                                                    className="flex items-center gap-2 text-gray-400 hover:text-green-400 transition-colors">
-                                                    <RiShareForwardLine className="w-5 h-5"/>
-                                                    <span className="text-sm">{post.shares || 0}</span>
+                                                    className="flex items-center gap-1 sm:gap-2 text-gray-400 hover:text-green-400 transition-colors">
+                                                    <RiShareForwardLine className="w-4 h-4 sm:w-5 sm:h-5" />
+                                                    <span className="text-xs sm:text-sm">{post.shares || 0}</span>
                                                 </button>
                                             </div>
                                             <button className="text-gray-400 hover:text-yellow-400 transition-colors">
-                                                <RiBookmarkLine className="w-5 h-5"/>
+                                                <RiBookmarkLine className="w-4 h-4 sm:w-5 sm:h-5" />
                                             </button>
                                         </div>
                                     </div>
@@ -582,7 +583,7 @@ function Profile() {
                             ) : (
                                 <div
                                     className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-6 shadow-lg text-center">
-                                    <RiArticleLine className="w-12 h-12 text-gray-600 mx-auto mb-3"/>
+                                    <RiArticleLine className="w-12 h-12 text-gray-600 mx-auto mb-3" />
                                     <p className="text-gray-400 text-lg">No posts yet</p>
                                     <p className="text-gray-500 text-sm mt-1">You haven't created any blog posts</p>
                                 </div>
@@ -596,19 +597,19 @@ function Profile() {
                             <h3 className="text-xl font-bold text-white mb-6">About Me</h3>
                             <div className="space-y-4">
                                 <div className="flex items-center gap-3 text-gray-300">
-                                    <RiUserLine className="w-5 h-5 text-blue-400"/>
+                                    <RiUserLine className="w-5 h-5 text-blue-400" />
                                     <span>Senior Software Engineer with 8+ years of experience</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-300">
-                                    <RiCodeSSlashLine className="w-5 h-5 text-purple-400"/>
+                                    <RiCodeSSlashLine className="w-5 h-5 text-purple-400" />
                                     <span>Specializes in Spring Boot, Microservices, and Cloud Architecture</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-300">
-                                    <RiCalendarLine className="w-5 h-5 text-green-400"/>
+                                    <RiCalendarLine className="w-5 h-5 text-green-400" />
                                     <span>Joined {formatDate(currentUser.joinDate)}</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-300">
-                                    <RiGlobalLine className="w-5 h-5 text-cyan-400"/>
+                                    <RiGlobalLine className="w-5 h-5 text-cyan-400" />
                                     <span>Based in San Francisco, CA</span>
                                 </div>
                             </div>
@@ -621,17 +622,17 @@ function Profile() {
                             <h3 className="text-xl font-bold text-white mb-6">Recent Activity</h3>
                             <div className="space-y-4">
                                 <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
-                                    <RiArticleLine className="w-5 h-5 text-blue-400"/>
+                                    <RiArticleLine className="w-5 h-5 text-blue-400" />
                                     <span className="text-gray-300">Published a new blog post</span>
                                     <span className="text-xs text-gray-400 ml-auto">2 hours ago</span>
                                 </div>
                                 <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
-                                    <RiHeartLine className="w-5 h-5 text-red-400"/>
+                                    <RiHeartLine className="w-5 h-5 text-red-400" />
                                     <span className="text-gray-300">Received 15 new likes</span>
                                     <span className="text-xs text-gray-400 ml-auto">1 day ago</span>
                                 </div>
                                 <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
-                                    <RiStarLine className="w-5 h-5 text-yellow-400"/>
+                                    <RiStarLine className="w-5 h-5 text-yellow-400" />
                                     <span className="text-gray-300">Gained 25 new followers</span>
                                     <span className="text-xs text-gray-400 ml-auto">3 days ago</span>
                                 </div>
@@ -649,7 +650,7 @@ function Profile() {
                             onClick={() => setShowProfileImageModal(false)}
                             className="absolute top-4 right-4 z-10 bg-gray-900/80 text-white p-2 rounded-full hover:bg-gray-800 transition-colors"
                         >
-                            <RiCloseLine className="w-6 h-6"/>
+                            <RiCloseLine className="w-6 h-6" />
                         </button>
                         <div className="bg-transparent rounded-xl overflow-hidden">
                             <img
@@ -658,22 +659,22 @@ function Profile() {
                                 className="w-full max-h-[80vh] object-contain rounded-lg"
                             />
                         </div>
-                        <div className="mt-4 flex justify-center gap-4">
+                        <div className="mt-4 flex flex-col sm:flex-row justify-center gap-3">
                             <button
                                 onClick={() => {
                                     setShowProfileImageModal(false);
                                     setShowProfileImageEditModal(true);
                                 }}
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
                             >
-                                <RiEditLine className="w-4 h-4"/>
+                                <RiEditLine className="w-4 h-4" />
                                 Edit Image
                             </button>
                             <button
                                 onClick={removeProfileImage}
-                                className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                                className="bg-red-600 hover:bg-red-700 text-white px-4 sm:px-6 py-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
                             >
-                                <RiDeleteBinLine className="w-4 h-4"/>
+                                <RiDeleteBinLine className="w-4 h-4" />
                                 Remove Image
                             </button>
                         </div>
@@ -693,7 +694,7 @@ function Profile() {
                                 onClick={() => setShowProfileImageEditModal(false)}
                                 className="text-gray-400 hover:text-white"
                             >
-                                <RiCloseLine className="w-6 h-6"/>
+                                <RiCloseLine className="w-6 h-6" />
                             </button>
                         </div>
                         <div className="p-6">
@@ -714,8 +715,8 @@ function Profile() {
                                 )}
                                 <label className="cursor-pointer">
                                     <div
-                                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2">
-                                        <RiUploadLine className="w-4 h-4"/>
+                                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
+                                        <RiUploadLine className="w-4 h-4" />
                                         {profileImagePreview ? 'Change Image' : 'Select Image'}
                                     </div>
                                     <input
@@ -726,7 +727,7 @@ function Profile() {
                                     />
                                 </label>
                             </div>
-                            <div className="flex justify-end gap-3">
+                            <div className="flex flex-col sm:flex-row justify-end gap-3">
                                 <button
                                     onClick={() => setShowProfileImageEditModal(false)}
                                     className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
@@ -736,10 +737,10 @@ function Profile() {
                                 <button
                                     onClick={handleProfileImageUpload}
                                     disabled={!profileImageFile && !currentUser.profileImage}
-                                    className={`px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${(!profileImageFile && !currentUser.profileImage)
+                                    className={`px-6 py-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${(!profileImageFile && !currentUser.profileImage)
                                         ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
                                         : 'bg-green-600 hover:bg-green-700 text-white'
-                                    }`}
+                                        }`}
                                 >
                                     {isUploading ? 'Uploading...' : 'Save Changes'}
                                 </button>
@@ -760,7 +761,7 @@ function Profile() {
                                 onClick={() => setShowEditModal(false)}
                                 className="text-gray-400 hover:text-white"
                             >
-                                <RiCloseLine className="w-6 h-6"/>
+                                <RiCloseLine className="w-6 h-6" />
                             </button>
                         </div>
                         <div className="p-6">
@@ -796,7 +797,7 @@ function Profile() {
                                             onClick={removeImage}
                                             className="absolute top-2 right-2 bg-gray-900/80 text-white p-1 rounded-full hover:bg-gray-800"
                                         >
-                                            <RiCloseLine className="w-5 h-5"/>
+                                            <RiCloseLine className="w-5 h-5" />
                                         </button>
                                     </div>
                                 ) : (
@@ -804,7 +805,7 @@ function Profile() {
                                         <label
                                             className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-700 border-dashed rounded-lg cursor-pointer bg-gray-800 hover:bg-gray-700">
                                             <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                <RiEditLine className="w-8 h-8 mb-4 text-gray-400"/>
+                                                <RiImageLine className="w-8 h-8 mb-4 text-gray-400" />
                                                 <p className="text-sm text-gray-400">Click to upload an image</p>
                                             </div>
                                             <input
@@ -817,7 +818,7 @@ function Profile() {
                                     </div>
                                 )}
                             </div>
-                            <div className="flex justify-end gap-3 pt-4">
+                            <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4">
                                 <button
                                     onClick={() => setShowEditModal(false)}
                                     className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
@@ -846,13 +847,13 @@ function Profile() {
                                 onClick={() => setShowDeleteModal(false)}
                                 className="text-gray-400 hover:text-white"
                             >
-                                <RiCloseLine className="w-6 h-6"/>
+                                <RiCloseLine className="w-6 h-6" />
                             </button>
                         </div>
                         <div className="p-6">
                             <p className="text-gray-300 mb-6">Are you sure you want to delete this post? This action
                                 cannot be undone.</p>
-                            <div className="flex justify-end gap-3">
+                            <div className="flex flex-col sm:flex-row justify-end gap-3">
                                 <button
                                     onClick={() => setShowDeleteModal(false)}
                                     className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"

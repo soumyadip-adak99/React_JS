@@ -35,5 +35,7 @@ export const addNewBlog = (blogData, file) => {
 };
 
 
-export const userBlogDeleteById = async (id) => API.delete(`/delete-blog/${id}`)
+export const userBlogDeleteById = async (id) => {
+    return API.delete(`/delete-blog/${id}`);
+}
 
