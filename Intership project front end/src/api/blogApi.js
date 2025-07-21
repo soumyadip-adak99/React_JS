@@ -39,3 +39,7 @@ export const userBlogDeleteById = async (id) => {
     return API.delete(`/delete-blog/${id}`);
 }
 
+export const userBlogUpdateById = async (id, data) => {
+    return API.put(`/edit/blog/${String(id)}`, data); 
+}
+

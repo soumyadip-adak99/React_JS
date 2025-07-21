@@ -10,14 +10,14 @@ import { useParams } from 'react-router-dom';
 import toast from "react-hot-toast";
 
 function Profile() {
-    const { user, fetchToDeleteBlog, fetchToProfileImageUpload, fetchToDeleteAccount } = useAuth();
+    const { user, fetchToDeleteBlog, fetchToProfileImageUpload, fetchToDeleteAccount, fetchToUpdateBlogById, fetchUserDetails } = useAuth();
     const { userId } = useParams();
     const [isEditing, setIsEditing] = useState(false);
     const [editedUser, setEditedUser] = useState({
         firstname: '',
         lastName: '',
         email: '',
-        bio: ''
+        // bio: ''
     });
 
     // State for blog post actions
@@ -25,10 +25,11 @@ function Profile() {
     const [showPostMenu, setShowPostMenu] = useState(null);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showAccountDeleteModal, setShowAccountDeleteModal] = useState(false);
     const [editedPost, setEditedPost] = useState({
         title: '',
         content: '',
-        image: null
+        // image: null
     });
 
     // Profile image states
@@ -37,6 +38,7 @@ function Profile() {
     const [profileImageFile, setProfileImageFile] = useState(null);
     const [profileImagePreview, setProfileImagePreview] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
+    const [loading, setLoading] = useState(false)
 
     // Initialize user data with proper null checks
     const [currentUser, setCurrentUser] = useState({
@@ -46,13 +48,16 @@ function Profile() {
         email: user?.email || '',
         joinDate: "2023-01-15",
         profileImage: user?.profileImage || null,
-        bio: "Senior Software Engineer | Spring Boot Expert | Microservices Architect | Tech Blogger",
+        // bio: "Senior Software Engineer | Spring Boot Expert | Microservices Architect | Tech Blogger",
         userBlogs: Array.isArray(user?.blogs) ? user.blogs : [],
-        stats: {
-            followers: 2847,
-            following: 892,
-            views: 125000
-        },
+
+
+        // TODO: for latter
+        // stats: {
+        //     followers: 2847,
+        //     following: 892,
+        //     views: 125000
+        // },
     });
 
     useEffect(() => {
@@ -63,6 +68,11 @@ function Profile() {
             bio: currentUser.bio || ''
         });
     }, [currentUser]);
+
+
+    useEffect(() => {
+        fetchUserDetails()
+    }, [editedUser, profileImageFile, currentUser.userBlogs])
 
     const [activeTab, setActiveTab] = useState('posts');
     const userBlogs = currentUser.userBlogs || [];
@@ -197,33 +207,46 @@ function Profile() {
         }));
     };
 
-    const savePostChanges = () => {
+    const savePostChanges = async () => {
         if (!selectedPost) return;
 
-        setCurrentUser(prev => ({
-            ...prev,
-            userBlogs: prev.userBlogs.map(post =>
-                post?.id === selectedPost.id ? { ...post, ...editedPost } : post
-            ).filter(Boolean)
-        }));
-        setShowEditModal(false);
-        toast.success('Post updated successfully');
-    };
+        try {
+            setLoading(true)
+            await fetchToUpdateBlogById(selectedPost.id, editedPost)
+
+            setCurrentUser(prev => ({
+                ...prev,
+                userBlogs: prev.userBlogs.map(post =>
+                    post?.id === selectedPost.id ? { ...post, ...editedPost } : post
+                ).filter(Boolean)
+            }));
+
+            setShowEditModal(false);
+        } catch (error) {
+            toast.error("Blog Update Faild")
+            throw error
+        } finally {
+            setLoading(false)
+        }
+    }
 
     const confirmDeletePost = async () => {
         if (!selectedPost) return;
 
         try {
+            setLoading(true)
             await handleDeleteBlog(selectedPost.id);
             setCurrentUser(prev => ({
                 ...prev,
                 userBlogs: prev.userBlogs.filter(post => post?.id !== selectedPost.id)
             }));
             setShowDeleteModal(false);
-            toast.success('Post deleted successfully');
+            // toast.success('Post deleted successfully');
         } catch (error) {
             toast.error("Failed to delete post");
             throw error;
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -234,7 +257,21 @@ function Profile() {
             toast.error("Delete failed.");
             throw error;
         }
-    }
+    };
+
+    const handleDeleteAccount = async () => {
+        try {
+            setLoading(true)
+            await fetchToDeleteAccount();
+            setShowAccountDeleteModal(false);
+            toast.success('Account deleted successfully');
+        } catch (error) {
+            toast.error("Failed to delete account");
+            console.error(error);
+        } finally {
+            setLoading(false)
+        }
+    };
 
     const formatDate = (dateString) => {
         if (!dateString) return 'Unknown date';
@@ -293,8 +330,8 @@ function Profile() {
 
     const tabs = [
         { id: 'posts', label: 'Posts', icon: RiArticleLine },
-        { id: 'about', label: 'About', icon: RiUserLine },
-        { id: 'activity', label: 'Activity', icon: RiTrophyLine }
+        // { id: 'about', label: 'About', icon: RiUserLine },
+        // { id: 'activity', label: 'Activity', icon: RiTrophyLine }
     ];
 
     return (
@@ -319,7 +356,7 @@ function Profile() {
                                 >
                                     {currentUser.profileImage ? (
                                         <img
-                                            src={currentUser.profileImage.url}
+                                            src={currentUser.profileImage.url || currentUser.profileImage}
                                             alt="Profile"
                                             className="w-full h-full object-cover"
                                         />
@@ -331,7 +368,7 @@ function Profile() {
                                 </div>
                                 <button
                                     onClick={() => setShowProfileImageEditModal(true)}
-                                    className="absolute bottom-0 right-0 bg-gray-800 p-2 rounded-full border border-gray-700 hover:bg-gray-700 transition-colors"
+                                    className="absolute bottom-0 right-0 bg-gray-800 p-2 rounded-full border border-gray-700 hover:bg-gray-700 transition-colors cursor-pointer"
                                 >
                                     <RiEditLine className="w-4 h-4 text-white" />
                                 </button>
@@ -392,14 +429,14 @@ function Profile() {
                                             <>
                                                 <button
                                                     onClick={handleEditToggle}
-                                                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 shadow-lg w-full sm:w-auto"
+                                                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 shadow-lg w-full sm:w-auto cursor-pointer"
                                                 >
                                                     <RiEditLine className="w-4 h-4" />
                                                     <span className="whitespace-nowrap">Edit Profile</span>
                                                 </button>
                                                 <button
-                                                    onClick={() => fetchToDeleteAccount()}
-                                                    className="bg-red-600 hover:bg-red-700 text-white px-4 sm:px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 shadow-lg w-full sm:w-auto"
+                                                    onClick={() => setShowAccountDeleteModal(true)}
+                                                    className="bg-red-600 hover:bg-red-700 text-white px-4 sm:px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 shadow-lg w-full sm:w-auto cursor-pointer"
                                                 >
                                                     <RiDeleteBinLine className="w-4 h-4" />
                                                     <span className="whitespace-nowrap">Delete Account</span>
@@ -433,7 +470,6 @@ function Profile() {
                                         <div className="text-xs text-gray-400">Posts</div>
                                     </div>
 
-                                    {/** TODO: add this privous */}
 
                                     {/* <div className="bg-gray-800/50 rounded-lg p-3 text-center border border-gray-700">
                                         <div className="text-xl md:text-2xl font-bold text-white">
@@ -490,7 +526,7 @@ function Profile() {
                                             <div className="flex items-center gap-3">
                                                 {(currentUser?.profileImage?.url || currentUser?.profileImage) ? (
                                                     <img
-                                                        src={currentUser.profileImage.url}
+                                                        src={currentUser.profileImage.url || currentUser.profileImage}
                                                         className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white"
                                                         alt="Profile"
                                                     />
@@ -511,7 +547,7 @@ function Profile() {
                                                 <div className="relative">
                                                     <button
                                                         onClick={() => togglePostMenu(post.id)}
-                                                        className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
+                                                        className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors cursor-pointer"
                                                     >
                                                         <RiMoreFill className="w-5 h-5" />
                                                     </button>
@@ -520,14 +556,14 @@ function Profile() {
                                                             className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg border border-gray-700 z-10">
                                                             <button
                                                                 onClick={() => handleEditPost(post)}
-                                                                className="w-full flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700"
+                                                                className="w-full flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 cursor-pointer"
                                                             >
                                                                 <RiEditLine className="mr-2" />
                                                                 Edit Post
                                                             </button>
                                                             <button
                                                                 onClick={() => handleDeletePost(post)}
-                                                                className="w-full flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700"
+                                                                className="w-full flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 cursor-pointer"
                                                             >
                                                                 <RiDeleteBinLine className="mr-2" />
                                                                 Delete Post
@@ -654,7 +690,7 @@ function Profile() {
                         </button>
                         <div className="bg-transparent rounded-xl overflow-hidden">
                             <img
-                                src={currentUser.profileImage.url}
+                                src={currentUser.profileImage.url || currentUser.profileImage}
                                 alt="Profile"
                                 className="w-full max-h-[80vh] object-contain rounded-lg"
                             />
@@ -702,7 +738,7 @@ function Profile() {
                                 {profileImagePreview || currentUser.profileImage ? (
                                     <div className="relative mb-4">
                                         <img
-                                            src={profileImagePreview || currentUser.profileImage}
+                                            src={profileImagePreview || (currentUser.profileImage.url || currentUser.profileImage)}
                                             alt="Profile preview"
                                             className="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover border-2 border-gray-700"
                                         />
@@ -784,7 +820,9 @@ function Profile() {
                                     className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white h-40 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
-                            <div className="mb-4">
+
+
+                            {/* <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-300 mb-2">Featured Image</label>
                                 {editedPost.image ? (
                                     <div className="relative mb-2">
@@ -817,7 +855,9 @@ function Profile() {
                                         </label>
                                     </div>
                                 )}
-                            </div>
+                            </div> */}
+
+
                             <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4">
                                 <button
                                     onClick={() => setShowEditModal(false)}
@@ -829,7 +869,16 @@ function Profile() {
                                     onClick={savePostChanges}
                                     className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                                 >
-                                    Save Changes
+                                    {loading ? (
+                                        <span>
+                                            Save Changes....
+                                        </span>
+
+                                    ) : (
+                                        <span>
+                                            Save Changes
+                                        </span>
+                                    )}
                                 </button>
                             </div>
                         </div>
@@ -837,7 +886,45 @@ function Profile() {
                 </div>
             )}
 
-            {/* Delete Confirmation Modal */}
+            {/* Account Delete Confirmation Modal */}
+            {showAccountDeleteModal && (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-gray-900 rounded-xl border border-gray-700 w-full max-w-md">
+                        <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+                            <h3 className="text-xl font-bold text-white">Delete Account</h3>
+                            <button
+                                onClick={() => setShowAccountDeleteModal(false)}
+                                className="text-gray-400 hover:text-white cursor-pointer"
+                            >
+                                <RiCloseLine className="w-6 h-6"/>
+                            </button>
+                        </div>
+                        <div className="p-6">
+                            <p className="text-gray-300 mb-6">Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently lost.</p>
+                            <div className="flex flex-col sm:flex-row justify-end gap-3">
+                                <button
+                                    onClick={() => setShowAccountDeleteModal(false)}
+                                    className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors cursor-pointer"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleDeleteAccount}
+                                    className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
+                                >
+                                    {loading ? (
+                                        <span>Delete....</span>
+                                    ) : (
+                                        <span> Delete Account</span>
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Delete Post Confirmation Modal */}
             {showDeleteModal && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <div className="bg-gray-900 rounded-xl border border-gray-700 w-full max-w-md">
@@ -851,20 +938,29 @@ function Profile() {
                             </button>
                         </div>
                         <div className="p-6">
-                            <p className="text-gray-300 mb-6">Are you sure you want to delete this post? This action
-                                cannot be undone.</p>
+                            <p className="text-gray-300 mb-6">Are you sure you want to delete this post? This action cannot be undone.</p>
                             <div className="flex flex-col sm:flex-row justify-end gap-3">
                                 <button
                                     onClick={() => setShowDeleteModal(false)}
-                                    className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                                    className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors cursor-pointer"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={confirmDeletePost}
-                                    className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                                    className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
                                 >
-                                    Delete
+                                    {loading ? (
+                                        <span>
+                                            Deleting...
+                                        </span>
+
+                                    ) : (
+                                        <span>
+                                            Delete
+                                        </span>
+                                    )}
+
                                 </button>
                             </div>
                         </div>

@@ -20,3 +20,7 @@ export const login = (data) =>
 
 export const resetPassword = (data) =>
     API.post('/api/public/reset-password', data);
+
+export const totalNumberOfUser = () => API.get('/api/public/total-user')
+
+export const totalNumberOfBlogs = () => API.get('/api/public/total-blogs')

@@ -1,12 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
+import toast from "react-hot-toast";
+
 import { getUserDetails as apiGetUserDetails, userLogout as apiLogout, uploadProfileImage, deleteUserAccount } from '../api/userAPI';
 import { login as apiLogin, sentOtp as apiSentOTP, register as apiRegister, resetPassword } from '../api/publicAPI';
 import { getAllUsers, getAllBlogs, deleteUser, deleteBlog } from '../api/adminApi'
-import toast from "react-hot-toast";
 import { getUserById, apiGetAllUsers, apiGetAllBlogs } from "../api/apiData";
-import { addNewBlog, userBlogDeleteById } from "../api/blogApi.js";
+import { addNewBlog, userBlogDeleteById, userBlogUpdateById } from "../api/blogApi.js";
 
 
 const AuthContext = createContext();
@@ -77,7 +78,7 @@ export const AuthProvider = ({ children }) => {
             } finally {
                 setLoading(false);
             }
-        };
+        }
 
         checkAuthStatus();
     }, []);
@@ -337,9 +338,27 @@ export const AuthProvider = ({ children }) => {
             toast.success('Blog uploaded successfully');
             return response.data;
         } catch (error) {
+            if (error.status == 400) {
+                console.log("Blog contains Bad words keep change this words.")
+            }
             console.log(error)
             toast.error(error.response?.data?.message || 'Failed to upload blog');
             throw error
+        }
+    }
+
+    const fetchToUpdateBlogById = async (id, data) => {
+        try {
+            const request = {
+                title: data.title,
+                content: data.content
+            }
+
+            const response = await userBlogUpdateById(id, request)
+            toast.success("Blog Update Successfull.")
+            return response.data
+        } catch (error) {
+            throw error;
         }
     }
 
@@ -367,7 +386,32 @@ export const AuthProvider = ({ children }) => {
             throw error
         }
     }
- 
+
+
+
+    // const getTotalUsers = async () => {
+    //     try {
+    //         const response = await totalNumberOfUser()
+    //         return response;
+    //     } catch (error) {
+    //         throw error
+    //     }
+    // }
+
+    // const getTotalBlogs = async () => {
+    //     try {
+    //         const response = await totalNumberOfBlogs()
+    //         throw response
+    //     } catch (error) {
+    //         throw error
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     getTotalBlogs()
+    //     getTotalUsers()
+    // })
+
 
     const contextValue = {
         user,
@@ -394,7 +438,10 @@ export const AuthProvider = ({ children }) => {
         fetchToDeleteBlog,
         fetchToProfileImageUpload,
         fetchResetPassword,
-        fetchToDeleteAccount
+        fetchToDeleteAccount,
+        fetchToUpdateBlogById,
+        // getTotalBlogs,
+        // getTotalUsers
     };
 
     return (

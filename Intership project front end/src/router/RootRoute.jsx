@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import LandingPage from '../pages/LandingPage/LandingPage';
 import { useAuth } from "../context/AuthContext";
 import LoadingScaliton from '../constants/LoadingScaliton';

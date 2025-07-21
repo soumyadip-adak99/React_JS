@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import Navbar from './home_componets/Navbar';
 import { Outlet, useLocation } from 'react-router-dom';
 
-function Home() {
+function Home({ children }) {
     const { user, fetchUserDetails, logout } = useAuth();
     const [activeItem, setActiveItem] = useState('Home');
     const location = useLocation();
@@ -41,24 +41,9 @@ function Home() {
                 logout={logout}
             />
 
-            <main className={`md:ml-64 min-h-screen transition-all duration-300 ${isProfileRoute
-                ? 'pt-16 md:pt-0' // Minimal padding for profile
-                : 'pt-20 md:pt-6' // More padding for other pages
+            <main className={`md:ml-64 min-h-screen transition-all duration-300 ${isProfileRoute ? 'pt-16 md:pt-0' : 'pt-20 md:pt-6'
                 }`}>
-                {/* Conditional wrapper for different page layouts */}
-                {isProfileRoute ? (
-                    // Profile gets full width with no container padding
-                    <div className="w-full">
-                        <Outlet />
-                    </div>
-                ) : (
-                    // Other pages get contained layout with padding
-                    <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-                        <div className="py-4 md:py-6">
-                            <Outlet />
-                        </div>
-                    </div>
-                )}
+                {children || <Outlet />}
             </main>
         </div>
     );
