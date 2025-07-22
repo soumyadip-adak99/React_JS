@@ -3,7 +3,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 
 const Connection = () => {
-    const backendUrl = "http://localhost:8080/app/api/public/"
+    const backendUrl = "https://codescribe-ai-v1.onrender.com/app/api/public/"
     const pollInterval = 5000
     const intervalRef = useRef(null)
     const toastShownRef = useRef(false)
@@ -26,13 +26,13 @@ const Connection = () => {
                 } else {
                     // Reset success flag if connection fails
                     toastShownRef.current = false
-                    toast.error("Network connection faild.")
+                    //toast.error("Network connection faild.")
                 }
             } catch (error) {
                 // Reset success flag if there's an error
                 toastShownRef.current = false
                 console.log(error)
-                toast.error("Network connection failed.")
+                // toast.error("Network connection failed.")
             }
         }
 

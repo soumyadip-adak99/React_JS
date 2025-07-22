@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-    baseURL: 'http://localhost:8080/app/blog/',
+    baseURL: 'https://codescribe-ai-v1.onrender.com/app/blog/',
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json'
@@ -40,6 +40,6 @@ export const userBlogDeleteById = async (id) => {
 }
 
 export const userBlogUpdateById = async (id, data) => {
-    return API.put(`/edit/blog/${String(id)}`, data); 
+    return API.put(`/edit/blog/${String(id)}`, data);
 }
 
