@@ -94,6 +94,8 @@ export const AuthProvider = ({ children }) => {
             const response = await apiLogin(request);
             const { email, token } = response.data;
 
+            localStorage.setItem('jwtToken', token);
+
             // Extract user info from token and set user state
             const userData = extractUserFromToken(token);
             if (userData) {
