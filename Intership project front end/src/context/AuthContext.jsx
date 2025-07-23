@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }) => {
 
     // Clear authentication state
     const clearAuth = () => {
+        localStorage.clear()
         clearCookie('jwt');
         setUser(null);
     };
@@ -223,6 +224,7 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             console.error('Logout error:', err);
         } finally {
+            localStorage.removeItem("token")
             localStorage.clear();
             setCurrentBlog({})
             clearAuth();

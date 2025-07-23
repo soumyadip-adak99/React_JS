@@ -26,7 +26,8 @@ function Navbar({activeItem, setActiveItem, email}) {
         image: null,
         previewImage: null
     });
-    const [isSubmitting, setIsSubmitting,] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -45,9 +46,15 @@ function Navbar({activeItem, setActiveItem, email}) {
 
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 768);
-            setSidebarOpen(window.innerWidth >= 768);
+            const mobile = window.innerWidth < 768;
+            setIsMobile(mobile);
+            if (!mobile) {
+                setSidebarOpen(true);
+            } else {
+                setSidebarOpen(false);
+            }
         };
+        
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
@@ -64,12 +71,15 @@ function Navbar({activeItem, setActiveItem, email}) {
     };
 
     const handleLogout = async () => {
+        setIsLoggingOut(true);
         try {
             await logout();
             navigate('/login');
         } catch (err) {
             console.error('Error while logging out:', err);
             toast.error("Something went wrong during logout");
+        } finally {
+            setIsLoggingOut(false);
         }
     };
 
@@ -128,10 +138,9 @@ function Navbar({activeItem, setActiveItem, email}) {
                 previewImage: null
             });
 
-            // Refresh user details to get updated blogs
             await fetchUserDetails();
         } catch (error) {
-            toast.error("Failed upload blog")
+            toast.error("Failed to upload blog");
             console.error("Error creating blog:", error);
         } finally {
             setIsSubmitting(false);
@@ -142,7 +151,6 @@ function Navbar({activeItem, setActiveItem, email}) {
         setShowSearchModal(false);
         setShowCreateModal(false);
         setSearchQuery("");
-        navigate(location)
         setBlogData({
             title: "",
             content: "",
@@ -162,40 +170,40 @@ function Navbar({activeItem, setActiveItem, email}) {
     const handleShowProfileImage = () => {
         if (user?.profileImage?.url || user?.profileImage) {
             return (
-                <img src={user.profileImage.url} alt="Profile"
-                     className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white"
+                <img 
+                    src={user.profileImage.url} 
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white object-cover"
                 />
-            )
+            );
         } else {
             return (
                 <div
-                    className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-whtie">
+                    className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white">
                     <RiUserLine className="text-xl text-white"/>
                 </div>
-            )
+            );
         }
-    }
+    };
 
     return (
         <>
             {/* Mobile Header */}
             {isMobile && (
-                <header className="fixed top-0 left-0 right-0 bg-gray-950 border-b border-gray-700 z-50 h-16">
-                    <div className="flex items-center justify-between px-4 h-full">
-                        <h1 className='text-center font-bold text-xl text-white'>
-                            CodeScribe
-                            <span
-                                className='ml-1 text-transparent font-bold bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400'>
-                                AI
-                            </span>
-                        </h1>
-                        <button
-                            onClick={toggleSidebar}
-                            className="p-2 rounded-md bg-gray-700 text-white hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500"
-                        >
-                            {sidebarOpen ? <RiCloseLine className="text-xl"/> : <RiMenuLine className="text-xl"/>}
-                        </button>
-                    </div>
+                <header className="fixed top-0 left-0 right-0 bg-gray-950 border-b border-gray-700 z-50 h-16 flex items-center justify-between px-4">
+                    <h1 className='font-bold text-xl text-white'>
+                        CodeScribe
+                        <span className='ml-1 text-transparent font-bold bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400'>
+                            AI
+                        </span>
+                    </h1>
+                    <button
+                        onClick={toggleSidebar}
+                        className="p-2 rounded-md bg-gray-700 text-white hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        aria-label={sidebarOpen ? "Close menu" : "Open menu"}
+                    >
+                        {sidebarOpen ? <RiCloseLine className="text-xl"/> : <RiMenuLine className="text-xl"/>}
+                    </button>
                 </header>
             )}
 
@@ -210,8 +218,7 @@ function Navbar({activeItem, setActiveItem, email}) {
             {/* Search Modal */}
             {showSearchModal && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-                    <div
-                        className="bg-gray-800 rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden border border-gray-700">
+                    <div className="bg-gray-800 rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden border border-gray-700">
                         <div className="p-4 border-b border-gray-700 flex justify-between items-center">
                             <h3 className="text-lg font-semibold text-white">Search Users</h3>
                             <button
@@ -245,20 +252,16 @@ function Navbar({activeItem, setActiveItem, email}) {
                                                 {user?.profileImage?.url ? (
                                                     <img
                                                         src={user.profileImage.url}
-                                                        alt={`${user?.firstname || ''} ${user?.lastname || ''}`.trim() || 'User'}
+                                                        alt={`${user?.firstName || ''} ${user?.lastName || ''}`.trim() || 'User'}
                                                         className="w-10 h-10 rounded-full object-cover bg-gradient-to-r from-purple-500 to-pink-500"
                                                         onError={(e) => {
-                                                            e.target.onerror = null; // Prevent infinite loop
-                                                            e.target.style.display = 'none'; // Hide broken image
+                                                            e.target.onerror = null;
+                                                            e.target.style.display = 'none';
                                                         }}
                                                     />
-                                                ) : null
-                                                }
-
-                                                {(!user?.profileImage?.url || user.profileImage.url === '') && (
-                                                    <div
-                                                        className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white">
-                                                        {user?.firstname?.[0]?.toUpperCase() || user?.lastname?.[0]?.toUpperCase() || (
+                                                ) : (
+                                                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white">
+                                                        {user?.firstName?.[0]?.toUpperCase() || user?.lastName?.[0]?.toUpperCase() || (
                                                             <RiUserLine className="text-xl"/>
                                                         )}
                                                     </div>
@@ -290,14 +293,10 @@ function Navbar({activeItem, setActiveItem, email}) {
 
             {/* Create Blog Modal */}
             {showCreateModal && (
-                <div
-                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-                    <div
-                        className="bg-gray-800 rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden border border-gray-700">
-                        <div
-                            className="p-4 border-b border-gray-700 flex justify-between items-center">
-                            <h3 className="text-lg font-semibold text-white">Create New Blog
-                                Post</h3>
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+                    <div className="bg-gray-800 rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden border border-gray-700">
+                        <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+                            <h3 className="text-lg font-semibold text-white">Create New Blog Post</h3>
                             <button
                                 onClick={closeModal}
                                 className="text-gray-400 hover:text-white transition-colors"
@@ -307,8 +306,7 @@ function Navbar({activeItem, setActiveItem, email}) {
                         </div>
                         <form onSubmit={handleBlogSubmit} className="p-4">
                             <div className="mb-4">
-                                <label htmlFor="title"
-                                       className="block text-sm font-medium text-gray-300 mb-1">
+                                <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">
                                     Title
                                 </label>
                                 <input
@@ -325,8 +323,7 @@ function Navbar({activeItem, setActiveItem, email}) {
                             </div>
 
                             <div className="mb-4">
-                                <label htmlFor="content"
-                                       className="block text-sm font-medium text-gray-300 mb-1">
+                                <label htmlFor="content" className="block text-sm font-medium text-gray-300 mb-1">
                                     Content
                                 </label>
                                 <textarea
@@ -363,14 +360,10 @@ function Navbar({activeItem, setActiveItem, email}) {
                                     </div>
                                 ) : (
                                     <div className="flex items-center justify-center w-full">
-                                        <label
-                                            className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-600 border-dashed rounded-lg cursor-pointer bg-gray-700 hover:bg-gray-600 transition-colors">
-                                            <div
-                                                className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                <RiUploadLine
-                                                    className="w-8 h-8 text-gray-400 mb-2"/>
-                                                <p className="text-sm text-gray-400">Upload an
-                                                    image</p>
+                                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-600 border-dashed rounded-lg cursor-pointer bg-gray-700 hover:bg-gray-600 transition-colors">
+                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                <RiUploadLine className="w-8 h-8 text-gray-400 mb-2"/>
+                                                <p className="text-sm text-gray-400">Upload an image</p>
                                             </div>
                                             <input
                                                 type="file"
@@ -385,11 +378,14 @@ function Navbar({activeItem, setActiveItem, email}) {
 
                             <button
                                 type="submit"
-                                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2.5 px-4 rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center justify-center"
+                                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2.5 px-4 rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? (
-                                    'Publishing...'
+                                    <>
+                                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                                        Publishing...
+                                    </>
                                 ) : (
                                     <>
                                         <RiAddLine className="mr-2"/>
@@ -406,28 +402,27 @@ function Navbar({activeItem, setActiveItem, email}) {
             <aside
                 className={`fixed h-screen bg-gray-950 border-r border-gray-700 z-50 transition-all duration-300 ease-in-out ${
                     isMobile
-                        ? (sidebarOpen ? 'w-64 left-0' : '-left-64 w-64')
+                        ? (sidebarOpen ? 'w-72 left-0' : 'w-72 -left-72')
                         : 'left-0 w-64'
                 }`}
             >
                 <div className="flex flex-col h-full">
                     {/* Sidebar Header */}
-                    <div className="flex flex-col p-6 border-b border-gray-700">
+                    <div className="flex flex-col p-6 border-b border-gray-700 flex-shrink-0">
                         <h1 className='font-bold text-2xl text-white'>
                             CodeScribe
-                            <span
-                                className='ml-1 text-transparent font-bold bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400'>
+                            <span className='ml-1 text-transparent font-bold bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400'>
                                 AI
                             </span>
                         </h1>
                         <div className="mt-2 text-xs text-gray-400 flex items-center">
                             <RiUserLine className="mr-1"/>
-                            <span>{`${user?.firstname || ''} ${user?.lastName || ''}`}</span>
+                            <span className="truncate">{`${user?.firstName || ''} ${user?.lastName || ''}`.trim()}</span>
                         </div>
                     </div>
 
                     {/* Navigation Items */}
-                    <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-2">
+                    <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-2 custom-scrollbar">
                         {userNavItems.map((item) => (
                             <button
                                 key={item.label}
@@ -438,23 +433,24 @@ function Navbar({activeItem, setActiveItem, email}) {
                                         : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                                 }`}
                             >
-                                <span className="mr-3">{item.icon}</span>
-                                <span className="font-medium">{item.label}</span>
+                                <span className="mr-3 flex-shrink-0">{item.icon}</span>
+                                <span className="font-medium truncate">{item.label}</span>
                             </button>
                         ))}
                     </nav>
 
                     {/* Sidebar Footer / Profile */}
-                    <div className="px-4 py-6 border-t border-gray-700">
+                    <div className="px-4 py-4 border-t border-gray-700 flex-shrink-0">
                         <div
-                            className="flex items-center mb-4 cursor-pointer hover:bg-gray-700 rounded-lg p-2 transition-colors"
+                            className="flex items-center mb-3 cursor-pointer hover:bg-gray-700 rounded-lg p-2 transition-colors"
                             onClick={handleProfileClick}
                         >
-                            {handleShowProfileImage()}
-
+                            <div className="flex-shrink-0">
+                                {handleShowProfileImage()}
+                            </div>
                             <div className="ml-3 flex-1 min-w-0">
-                                <p className="text-sm font-medium text-white">
-                                    {user?.firstname} {user?.lastName}
+                                <p className="text-sm font-medium text-white truncate">
+                                    {`${user?.firstName || ''} ${user?.lastName || ''}`.trim() || 'User'}
                                 </p>
                                 <p className="text-xs text-gray-400 truncate">{email}</p>
                             </div>
@@ -462,14 +458,20 @@ function Navbar({activeItem, setActiveItem, email}) {
 
                         <button
                             onClick={handleLogout}
-                            className={`flex items-center w-full px-4 py-3 rounded-lg transition-all duration-200 text-left ${
-                                activeItem === 'Logout'
-                                    ? 'bg-red-600 text-white'
-                                    : 'text-gray-300 hover:bg-red-600 hover:text-white'
-                            }`}
+                            disabled={isLoggingOut}
+                            className="flex items-center justify-center w-full px-4 py-3 rounded-lg transition-all duration-200 text-left text-gray-300 hover:bg-red-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            <RiLogoutBoxLine className="text-xl mr-3"/>
-                            <span className="font-medium">Log out</span>
+                            {isLoggingOut ? (
+                                <>
+                                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-3"></div>
+                                    <span className="font-medium">Logging out...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <RiLogoutBoxLine className="text-xl mr-3 flex-shrink-0"/>
+                                    <span className="font-medium">Log out</span>
+                                </>
+                            )}
                         </button>
                     </div>
                 </div>
