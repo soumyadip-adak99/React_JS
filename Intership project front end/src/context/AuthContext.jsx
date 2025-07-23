@@ -223,6 +223,7 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             console.error('Logout error:', err);
         } finally {
+            localStorage.clear();
             setCurrentBlog({})
             clearAuth();
             navigate('/');
