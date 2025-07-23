@@ -32,7 +32,6 @@ function UserHome() {
     }, [user]);
 
     useEffect(() => {
-        // Randomly sort blogs whenever allBlogs changes
         if (allBlogs.length > 0) {
             const shuffled = [...allBlogs].sort(() => Math.random() - 0.5);
             setRandomizedBlogs(shuffled);
@@ -136,22 +135,22 @@ function UserHome() {
     const renderPostImage = (post) => {
         if (post.image?.url) {
             return (
-                <div className="mb-4 rounded-xl overflow-hidden relative group">
-                    <div className="aspect-w-16 aspect-h-9 w-full">
+                <div className="mb-4 rounded-xl overflow-hidden relative group w-full max-w-3xl mx-auto">
+                    <div className="relative w-full aspect-[16/9] sm:aspect-[4/3] md:aspect-[16/9]">
                         <img
                             src={post.image.url}
                             alt={post.title}
-                            className="w-full h-48 md:h-64 lg:h-80 object-cover transition-all duration-500 group-hover:scale-105"
+                            className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
                             loading="lazy"
                             onError={(e) => {
                                 e.target.onerror = null;
                                 e.target.src = 'https://via.placeholder.com/800x400';
                             }}
                         />
-                    </div>
-                    <div
-                        className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                        <span className="text-white text-sm font-medium">View full image</span>
+                        <div
+                            className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <span className="text-white text-sm font-medium">View full image</span>
+                        </div>
                     </div>
                 </div>
             );
@@ -169,12 +168,14 @@ function UserHome() {
 
     return (
         <div className="min-h-screen bg-gray-950 text-gray-100">
-            <div className="container mx-auto px-4 py-8">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="space-y-6">
                     {randomizedBlogs.length > 0 ? (
                         randomizedBlogs.map((post) => (
-                            <div key={post.id}
-                                className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                            <div
+                                key={post.id}
+                                className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 max-w-4xl mx-auto"
+                            >
                                 <div className="flex flex-col">
                                     <div className="flex items-start justify-between mb-4">
                                         <div className="flex items-center gap-3">
@@ -184,9 +185,10 @@ function UserHome() {
                                                 <p className="text-xs text-gray-400">{formatDateTime(post.create_at)}</p>
                                             </div>
                                         </div>
+                                        {getStatusBadge(post.status)}
                                     </div>
 
-                                    <h3 className="text-xl md:text-2xl font-bold text-white mb-3 hover:text-blue-400 cursor-pointer transition-colors">
+                                    <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 hover:text-blue-400 cursor-pointer transition-colors">
                                         {post.title}
                                     </h3>
 
@@ -244,7 +246,8 @@ function UserHome() {
                         ))
                     ) : (
                         <div
-                            className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-8 text-center">
+                            className="bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-800 p-8 text-center max-w-4xl mx-auto"
+                        >
                             <div className="text-gray-400 text-lg mb-2">No posts found</div>
                             <p className="text-gray-500 text-sm">Be the first to create a post!</p>
                         </div>

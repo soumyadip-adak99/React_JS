@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import {
     RiLogoutBoxLine,
     RiMenuLine,
@@ -9,12 +9,12 @@ import {
     RiCloseFill,
     RiUploadLine
 } from "react-icons/ri";
-import {useNavigate, useLocation} from "react-router-dom";
-import {useAuth} from "../../../context/AuthContext";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 import toast from "react-hot-toast";
-import {userNavItems} from "../../../constants/data";
+import { userNavItems } from "../../../constants/data";
 
-function Navbar({activeItem, setActiveItem, email}) {
+function Navbar({ activeItem, setActiveItem, email }) {
     const [isMobile, setIsMobile] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [showSearchModal, setShowSearchModal] = useState(false);
@@ -48,13 +48,9 @@ function Navbar({activeItem, setActiveItem, email}) {
         const handleResize = () => {
             const mobile = window.innerWidth < 768;
             setIsMobile(mobile);
-            if (!mobile) {
-                setSidebarOpen(true);
-            } else {
-                setSidebarOpen(false);
-            }
+            setSidebarOpen(!mobile); // Open sidebar by default on desktop, closed on mobile
         };
-        
+
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
@@ -93,7 +89,7 @@ function Navbar({activeItem, setActiveItem, email}) {
     };
 
     const filteredUsers = allUsers?.filter(user =>
-        `${user.firstName || ''} ${user.lastName || ''}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        `${user.firstname || ''} ${user.lastName || ''}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
         user.email?.toLowerCase().includes(searchQuery.toLowerCase())
     ) || [];
 
@@ -126,7 +122,7 @@ function Navbar({activeItem, setActiveItem, email}) {
 
         try {
             await uploadBlog(
-                {title: blogData.title, content: blogData.content},
+                { title: blogData.title, content: blogData.content },
                 blogData.image
             );
 
@@ -157,12 +153,13 @@ function Navbar({activeItem, setActiveItem, email}) {
             image: null,
             previewImage: null
         });
+        navigate(location)
     };
 
     const handleUserClick = (user) => {
         closeModal();
         navigate(`/user/profile/${user.id}`, {
-            state: {user},
+            state: { user },
             replace: false
         });
     };
@@ -170,8 +167,8 @@ function Navbar({activeItem, setActiveItem, email}) {
     const handleShowProfileImage = () => {
         if (user?.profileImage?.url || user?.profileImage) {
             return (
-                <img 
-                    src={user.profileImage.url} 
+                <img
+                    src={user.profileImage.url}
                     alt="Profile"
                     className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white object-cover"
                 />
@@ -180,7 +177,7 @@ function Navbar({activeItem, setActiveItem, email}) {
             return (
                 <div
                     className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white">
-                    <RiUserLine className="text-xl text-white"/>
+                    <RiUserLine className="text-xl text-white" />
                 </div>
             );
         }
@@ -202,7 +199,7 @@ function Navbar({activeItem, setActiveItem, email}) {
                         className="p-2 rounded-md bg-gray-700 text-white hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500"
                         aria-label={sidebarOpen ? "Close menu" : "Open menu"}
                     >
-                        {sidebarOpen ? <RiCloseLine className="text-xl"/> : <RiMenuLine className="text-xl"/>}
+                        {sidebarOpen ? <RiCloseLine className="text-xl" /> : <RiMenuLine className="text-xl" />}
                     </button>
                 </header>
             )}
@@ -210,27 +207,27 @@ function Navbar({activeItem, setActiveItem, email}) {
             {/* Overlay for Sidebar */}
             {isMobile && sidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity duration-200"
                     onClick={toggleSidebar}
                 />
             )}
 
             {/* Search Modal */}
             {showSearchModal && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-                    <div className="bg-gray-800 rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden border border-gray-700">
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4 sm:p-6">
+                    <div className="bg-gray-800 rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden border border-gray-700 transform transition-all duration-200 scale-100 sm:scale-100">
                         <div className="p-4 border-b border-gray-700 flex justify-between items-center">
                             <h3 className="text-lg font-semibold text-white">Search Users</h3>
                             <button
                                 onClick={closeModal}
                                 className="text-gray-400 hover:text-white transition-colors"
                             >
-                                <RiCloseFill className="text-xl"/>
+                                <RiCloseFill className="text-xl" />
                             </button>
                         </div>
                         <div className="p-4">
                             <div className="relative mb-4">
-                                <RiSearchLine className="absolute left-3 top-3 text-gray-400"/>
+                                <RiSearchLine className="absolute left-3 top-3 text-gray-400" />
                                 <input
                                     type="text"
                                     placeholder="Search by name or email"
@@ -262,7 +259,7 @@ function Navbar({activeItem, setActiveItem, email}) {
                                                 ) : (
                                                     <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white">
                                                         {user?.firstName?.[0]?.toUpperCase() || user?.lastName?.[0]?.toUpperCase() || (
-                                                            <RiUserLine className="text-xl"/>
+                                                            <RiUserLine className="text-xl" />
                                                         )}
                                                     </div>
                                                 )}
@@ -272,13 +269,13 @@ function Navbar({activeItem, setActiveItem, email}) {
                                                     </p>
                                                     <p className="text-xs text-gray-400 truncate">{user.email}</p>
                                                 </div>
-                                                <RiUserLine className="text-gray-400"/>
+                                                <RiUserLine className="text-gray-400" />
                                             </div>
                                         </div>
                                     ))
                                 ) : (
                                     <div className="text-center py-6">
-                                        <RiSearchLine className="mx-auto text-3xl text-gray-500 mb-2"/>
+                                        <RiSearchLine className="mx-auto text-3xl text-gray-500 mb-2" />
                                         <p className="text-gray-400">No users found</p>
                                         {searchQuery && (
                                             <p className="text-xs text-gray-500 mt-1">Try different search terms</p>
@@ -293,15 +290,15 @@ function Navbar({activeItem, setActiveItem, email}) {
 
             {/* Create Blog Modal */}
             {showCreateModal && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-                    <div className="bg-gray-800 rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden border border-gray-700">
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4 sm:p-6">
+                    <div className="bg-gray-800 rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden border border-gray-700 transform transition-all duration-200 scale-100 sm:scale-100">
                         <div className="p-4 border-b border-gray-700 flex justify-between items-center">
                             <h3 className="text-lg font-semibold text-white">Create New Blog Post</h3>
                             <button
                                 onClick={closeModal}
                                 className="text-gray-400 hover:text-white transition-colors"
                             >
-                                <RiCloseFill className="text-xl"/>
+                                <RiCloseFill className="text-xl" />
                             </button>
                         </div>
                         <form onSubmit={handleBlogSubmit} className="p-4">
@@ -315,7 +312,7 @@ function Navbar({activeItem, setActiveItem, email}) {
                                     className="w-full px-3 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-600"
                                     value={blogData.title}
                                     onChange={(e) => setBlogData({
-                                        ...blogData,
+                                        ...prev,
                                         title: e.target.value
                                     })}
                                     required
@@ -332,7 +329,7 @@ function Navbar({activeItem, setActiveItem, email}) {
                                     className="w-full px-3 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-600"
                                     value={blogData.content}
                                     onChange={(e) => setBlogData({
-                                        ...blogData,
+                                        ...prev,
                                         content: e.target.value
                                     })}
                                     required
@@ -355,14 +352,14 @@ function Navbar({activeItem, setActiveItem, email}) {
                                             onClick={removeImage}
                                             className="absolute top-2 right-2 bg-gray-900/80 text-white p-1 rounded-full hover:bg-gray-800"
                                         >
-                                            <RiCloseFill className="w-5 h-5"/>
+                                            <RiCloseFill className="w-5 h-5" />
                                         </button>
                                     </div>
                                 ) : (
                                     <div className="flex items-center justify-center w-full">
                                         <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-600 border-dashed rounded-lg cursor-pointer bg-gray-700 hover:bg-gray-600 transition-colors">
                                             <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                <RiUploadLine className="w-8 h-8 text-gray-400 mb-2"/>
+                                                <RiUploadLine className="w-8 h-8 text-gray-400 mb-2" />
                                                 <p className="text-sm text-gray-400">Upload an image</p>
                                             </div>
                                             <input
@@ -388,7 +385,7 @@ function Navbar({activeItem, setActiveItem, email}) {
                                     </>
                                 ) : (
                                     <>
-                                        <RiAddLine className="mr-2"/>
+                                        <RiAddLine className="mr-2" />
                                         Publish Blog
                                     </>
                                 )}
@@ -400,10 +397,10 @@ function Navbar({activeItem, setActiveItem, email}) {
 
             {/* Sidebar */}
             <aside
-                className={`fixed h-screen bg-gray-950 border-r border-gray-700 z-50 transition-all duration-300 ease-in-out ${
+                className={`fixed top-0 h-screen bg-gray-950 border-r border-gray-700 z-50 transition-transform duration-300 ease-in-out ${
                     isMobile
-                        ? (sidebarOpen ? 'w-72 left-0' : 'w-72 -left-72')
-                        : 'left-0 w-64'
+                        ? (sidebarOpen ? 'translate-x-0 w-72' : '-translate-x-full w-72')
+                        : 'translate-x-0 w-64'
                 }`}
             >
                 <div className="flex flex-col h-full">
@@ -416,8 +413,8 @@ function Navbar({activeItem, setActiveItem, email}) {
                             </span>
                         </h1>
                         <div className="mt-2 text-xs text-gray-400 flex items-center">
-                            <RiUserLine className="mr-1"/>
-                            <span className="truncate">{`${user?.firstName || ''} ${user?.lastName || ''}`.trim()}</span>
+                            <RiUserLine className="mr-1" />
+                            <span className="truncate">{`${user?.firstname || ''} ${user?.lastName || ''}`.trim()}</span>
                         </div>
                     </div>
 
@@ -450,7 +447,7 @@ function Navbar({activeItem, setActiveItem, email}) {
                             </div>
                             <div className="ml-3 flex-1 min-w-0">
                                 <p className="text-sm font-medium text-white truncate">
-                                    {`${user?.firstName || ''} ${user?.lastName || ''}`.trim() || 'User'}
+                                    {`${user?.firstname || ''} ${user?.lastName || ''}`.trim() || 'User'}
                                 </p>
                                 <p className="text-xs text-gray-400 truncate">{email}</p>
                             </div>
@@ -468,7 +465,7 @@ function Navbar({activeItem, setActiveItem, email}) {
                                 </>
                             ) : (
                                 <>
-                                    <RiLogoutBoxLine className="text-xl mr-3 flex-shrink-0"/>
+                                    <RiLogoutBoxLine className="text-xl mr-3 flex-shrink-0" />
                                     <span className="font-medium">Log out</span>
                                 </>
                             )}
@@ -494,6 +491,16 @@ function Navbar({activeItem, setActiveItem, email}) {
 
                 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
                     background: #374151;
+                }
+
+                /* Ensure smooth transitions for modals and sidebar */
+                @media (max-width: 767px) {
+                    .translate-x-0 {
+                        transform: translateX(0);
+                    }
+                    .-translate-x-full {
+                        transform: translateX(-100%);
+                    }
                 }
             `}</style>
         </>

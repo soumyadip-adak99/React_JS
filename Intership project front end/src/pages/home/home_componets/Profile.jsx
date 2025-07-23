@@ -526,7 +526,7 @@ function Profile() {
                                                 {(currentUser?.profileImage?.url || currentUser?.profileImage) ? (
                                                     <img
                                                         src={currentUser.profileImage.url || currentUser.profileImage}
-                                                        className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white"
+                                                        className="w-10 h-10 rounded-full object-cover bg-gradient-to-r from-purple-500 to-pink-500"
                                                         alt="Profile"
                                                     />
                                                 ) : (
