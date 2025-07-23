@@ -181,11 +181,11 @@ function UserHome() {
                                         <div className="flex items-center gap-3">
                                             {renderAuthorImage(post)}
                                             <div>
-                                                <p className="font-medium text-white">{post.authorName || 'Unknown Author'}</p>
+                                                <p className="text-sm md:text-1xl text-white">{post.authorName || 'Unknown Author'}</p>
                                                 <p className="text-xs text-gray-400">{formatDateTime(post.create_at)}</p>
                                             </div>
                                         </div>
-                                        {getStatusBadge(post.status)}
+                                        {/* {getStatusBadge(post.status)} */}
                                     </div>
 
                                     <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 hover:text-blue-400 cursor-pointer transition-colors">

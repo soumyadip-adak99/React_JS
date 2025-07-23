@@ -135,6 +135,7 @@ function Navbar({ activeItem, setActiveItem, email }) {
             });
 
             await fetchUserDetails();
+            toast.success("Blog published successfully");
         } catch (error) {
             toast.error("Failed to upload blog");
             console.error("Error creating blog:", error);
@@ -153,7 +154,7 @@ function Navbar({ activeItem, setActiveItem, email }) {
             image: null,
             previewImage: null
         });
-        navigate(location)
+        navigate(location);
     };
 
     const handleUserClick = (user) => {
@@ -176,7 +177,8 @@ function Navbar({ activeItem, setActiveItem, email }) {
         } else {
             return (
                 <div
-                    className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white">
+                    className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white"
+                >
                     <RiUserLine className="text-xl text-white" />
                 </div>
             );
@@ -311,10 +313,10 @@ function Navbar({ activeItem, setActiveItem, email }) {
                                     id="title"
                                     className="w-full px-3 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-600"
                                     value={blogData.title}
-                                    onChange={(e) => setBlogData({
+                                    onChange={(e) => setBlogData(prev => ({
                                         ...prev,
                                         title: e.target.value
-                                    })}
+                                    }))}
                                     required
                                 />
                             </div>
@@ -328,10 +330,10 @@ function Navbar({ activeItem, setActiveItem, email }) {
                                     rows={5}
                                     className="w-full px-3 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-600"
                                     value={blogData.content}
-                                    onChange={(e) => setBlogData({
+                                    onChange={(e) => setBlogData(prev => ({
                                         ...prev,
                                         content: e.target.value
-                                    })}
+                                    }))}
                                     required
                                 />
                             </div>
@@ -399,53 +401,53 @@ function Navbar({ activeItem, setActiveItem, email }) {
             <aside
                 className={`fixed top-0 h-screen bg-gray-950 border-r border-gray-700 z-50 transition-transform duration-300 ease-in-out ${
                     isMobile
-                        ? (sidebarOpen ? 'translate-x-0 w-72' : '-translate-x-full w-72')
+                        ? (sidebarOpen ? 'translate-x-0 w-64 sm:w-72' : '-translate-x-full w-64 sm:w-72')
                         : 'translate-x-0 w-64'
                 }`}
             >
                 <div className="flex flex-col h-full">
                     {/* Sidebar Header */}
-                    <div className="flex flex-col p-6 border-b border-gray-700 flex-shrink-0">
+                    <div className="flex flex-col p-4 sm:p-6 border-b border-gray-700 flex-shrink-0">
                         <h1 className='font-bold text-2xl text-white'>
                             CodeScribe
                             <span className='ml-1 text-transparent font-bold bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400'>
                                 AI
                             </span>
                         </h1>
-                        <div className="mt-2 text-xs text-gray-400 flex items-center">
+                        <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-400 flex items-center">
                             <RiUserLine className="mr-1" />
                             <span className="truncate">{`${user?.firstname || ''} ${user?.lastName || ''}`.trim()}</span>
                         </div>
                     </div>
 
                     {/* Navigation Items */}
-                    <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-2 custom-scrollbar">
+                    <nav className="flex-1 overflow-y-auto px-2 sm:px-4 py-2 sm:py-4 space-y-1 sm:space-y-2 custom-scrollbar">
                         {userNavItems.map((item) => (
                             <button
                                 key={item.label}
                                 onClick={() => handleNavigation(item)}
-                                className={`flex items-center w-full px-4 py-3 rounded-lg transition-all duration-200 text-left ${
+                                className={`flex items-center w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg transition-all duration-200 text-left ${
                                     activeItem === item.label
                                         ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
                                         : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                                 }`}
                             >
-                                <span className="mr-3 flex-shrink-0">{item.icon}</span>
-                                <span className="font-medium truncate">{item.label}</span>
+                                <span className="mr-2 sm:mr-3 flex-shrink-0">{item.icon}</span>
+                                <span className="font-medium text-sm sm:text-base truncate">{item.label}</span>
                             </button>
                         ))}
                     </nav>
 
                     {/* Sidebar Footer / Profile */}
-                    <div className="px-4 py-4 border-t border-gray-700 flex-shrink-0">
+                    <div className="px-2 sm:px-4 py-2 sm:py-4 border-t border-gray-700 flex-shrink-0">
                         <div
-                            className="flex items-center mb-3 cursor-pointer hover:bg-gray-700 rounded-lg p-2 transition-colors"
+                            className="flex items-center mb-2 sm:mb-3 cursor-pointer hover:bg-gray-700 rounded-lg p-1 sm:p-2 transition-colors"
                             onClick={handleProfileClick}
                         >
                             <div className="flex-shrink-0">
                                 {handleShowProfileImage()}
                             </div>
-                            <div className="ml-3 flex-1 min-w-0">
+                            <div className="ml-2 sm:ml-3 flex-1 min-w-0">
                                 <p className="text-sm font-medium text-white truncate">
                                     {`${user?.firstname || ''} ${user?.lastName || ''}`.trim() || 'User'}
                                 </p>
@@ -456,17 +458,17 @@ function Navbar({ activeItem, setActiveItem, email }) {
                         <button
                             onClick={handleLogout}
                             disabled={isLoggingOut}
-                            className="flex items-center justify-center w-full px-4 py-3 rounded-lg transition-all duration-200 text-left text-gray-300 hover:bg-red-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex items-center justify-center w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg transition-all duration-200 text-left text-gray-300 hover:bg-red-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isLoggingOut ? (
                                 <>
-                                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-3"></div>
-                                    <span className="font-medium">Logging out...</span>
+                                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2 sm:mr-3"></div>
+                                    <span className="font-medium text-sm sm:text-base">Logging out...</span>
                                 </>
                             ) : (
                                 <>
-                                    <RiLogoutBoxLine className="text-xl mr-3 flex-shrink-0" />
-                                    <span className="font-medium">Log out</span>
+                                    <RiLogoutBoxLine className="text-xl mr-2 sm:mr-3 flex-shrink-0" />
+                                    <span className="font-medium text-sm sm:text-base">Log out</span>
                                 </>
                             )}
                         </button>
