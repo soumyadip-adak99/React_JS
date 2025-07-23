@@ -18,7 +18,7 @@ const Connection = () => {
                         toast.success("Network connection successful.")
                         toastShownRef.current = true
                     }
-                    // Clear interval when connection is successful
+                    // Clear interval when connection is successful 
                     if (intervalRef.current) {
                         clearInterval(intervalRef.current)
                         intervalRef.current = null
