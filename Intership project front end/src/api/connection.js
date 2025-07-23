@@ -1,10 +1,9 @@
 import { useEffect, useRef } from 'react'
 import axios from 'axios'
 import toast from 'react-hot-toast'
-import { BASE_API } from './BASEAPI.JS'
 
 const Connection = () => {
-    const backendUrl = `${BASE_API}/app/api/public/`
+    const backendUrl = `https://codescribe-ai-v1.onrender.com/app/api/public/`
     const pollInterval = 5000
     const intervalRef = useRef(null)
     const toastShownRef = useRef(false)
