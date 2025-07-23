@@ -2,80 +2,16 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8"/>
-    <link rel="icon" type="image/svg+xml" href="/icon.png"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CodeScribe AI</title>
-    <style>
-        .dev-banner {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #ff9800;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            z-index: 9999;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .dev-banner a {
-            color: #0056b3;
-            text-decoration: underline;
-            font-weight: bold;
-        }
-
-        .dev-banner button {
-            margin-left: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid white;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .dev-banner button:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-    </style>
 </head>
 
 <body>
-<div id="root"></div>
-<script type="module" src="/src/main.jsx"></script>
-<script>
-    // Show in both development and production, but only once per session
-    if (!sessionStorage.getItem('devAlertShown')) {
-        const banner = document.createElement('div');
-        banner.className = 'dev-banner';
-        banner.innerHTML = `
-        <div>
-          <strong>Development Notice:</strong>
-          This application is currently in active development.
-          Please report any issues to <a href="mailto:io.codescribeai@gmail.com">our team</a>.
-        </div>
-        <button onclick="this.parentNode.remove()" aria-label="Dismiss">×</button>
-      `;
-        document.body.appendChild(banner);
-        sessionStorage.setItem('devAlertShown', 'true');
-
-        // Auto-dismiss after 15 seconds
-        setTimeout(() => {
-            if (document.body.contains(banner)) {
-                banner.remove();
-            }
-        }, 15000);
-    }
-</script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
 </body>
 
 </html>
