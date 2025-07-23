@@ -1,11 +1,20 @@
 import axios from "axios";
+import { BASE_API } from "./BASEAPI.JS";
 
 const API = axios.create({
-    baseURL: 'https://codescribe-ai-v1.onrender.com/app',
+    baseURL: `${BASE_API}/app`,
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json'
     }
+});
+
+API.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token'); // optional
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 

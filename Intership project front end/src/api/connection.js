@@ -1,9 +1,10 @@
-import { useContext, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import { BASE_API } from './BASEAPI.JS'
 
 const Connection = () => {
-    const backendUrl = "https://codescribe-ai-v1.onrender.com/app/api/public/"
+    const backendUrl = `${BASE_API}/app/api/public/`
     const pollInterval = 5000
     const intervalRef = useRef(null)
     const toastShownRef = useRef(false)
@@ -26,12 +27,12 @@ const Connection = () => {
                 } else {
                     // Reset success flag if connection fails
                     toastShownRef.current = false
-                    //toast.error("Network connection faild.")
+                    // toast.error("Network connection faild.")
                 }
             } catch (error) {
                 // Reset success flag if there's an error
                 toastShownRef.current = false
-                console.log(error)
+                //console.log(error)
                 // toast.error("Network connection failed.")
             }
         }

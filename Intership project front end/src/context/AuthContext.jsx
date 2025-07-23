@@ -94,10 +94,9 @@ export const AuthProvider = ({ children }) => {
             const response = await apiLogin(request);
             const { email, token } = response.data;
 
-            localStorage.setItem('jwtToken', token);
-
             // Extract user info from token and set user state
             const userData = extractUserFromToken(token);
+            localStorage.setItem("token", token)
             if (userData) {
                 setUser(userData);
             } else {
@@ -167,7 +166,7 @@ export const AuthProvider = ({ children }) => {
             };
 
             await apiSentOTP(request);
-            toast.success('OTP sent successfully');
+            toast.success('OTP sent successfully to your email.');
         } catch (err) {
             const errorMessage = err.response?.data?.message || "OTP send failed";
             toast.error(errorMessage);

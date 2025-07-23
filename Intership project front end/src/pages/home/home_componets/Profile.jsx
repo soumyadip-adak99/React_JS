@@ -264,7 +264,6 @@ function Profile() {
             setLoading(true)
             await fetchToDeleteAccount();
             setShowAccountDeleteModal(false);
-            toast.success('Account deleted successfully');
         } catch (error) {
             toast.error("Failed to delete account");
             console.error(error);
@@ -896,7 +895,7 @@ function Profile() {
                                 onClick={() => setShowAccountDeleteModal(false)}
                                 className="text-gray-400 hover:text-white cursor-pointer"
                             >
-                                <RiCloseLine className="w-6 h-6"/>
+                                <RiCloseLine className="w-6 h-6" />
                             </button>
                         </div>
                         <div className="p-6">

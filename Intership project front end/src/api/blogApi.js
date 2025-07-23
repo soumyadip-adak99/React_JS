@@ -1,36 +1,30 @@
 import axios from "axios";
+import { BASE_API } from "./BASEAPI.JS";
 
 const API = axios.create({
-    baseURL: 'https://codescribe-ai-v1.onrender.com/app/blog',
+    baseURL: `${BASE_API}/app/blog/`,
+    withCredentials: true,
     headers: {
         'Content-Type': 'application/json'
     }
 });
 
-// Request interceptor to add auth token
 API.interceptors.request.use((config) => {
-    const token = localStorage.getItem('jwtToken');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-}, (error) => {
-    return Promise.reject(error);
+  const token = localStorage.getItem('token'); 
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
-// Response interceptor to handle 401 errors
-API.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        if (error.response?.status === 401) {
-            localStorage.removeItem('jwtToken');
-            window.location.href = '/auth/sign-in';
-        }
-        return Promise.reject(error);
+API.interceptors.request.use(config => {
+    if (config.data instanceof FormData) {
+        delete config.headers['Content-Type'];
     }
-);
-
-export default API;
+    return config;
+}, error => {
+    return Promise.reject(error);
+});
 
 export const addNewBlog = (blogData, file) => {
     const formData = new FormData();
@@ -55,6 +49,6 @@ export const userBlogDeleteById = async (id) => {
 }
 
 export const userBlogUpdateById = async (id, data) => {
-    return API.put(`/edit/blog/${String(id)}`, data);
+    return API.put(`/edit/blog/${String(id)}`, data); 
 }
 

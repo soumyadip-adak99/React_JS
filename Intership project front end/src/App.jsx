@@ -66,7 +66,7 @@ function App() {
             <AuthProvider>
                 <Toaster position="top-center" reverseOrder={false} />
                 <ScrollController />
-                <Connection/>
+                <Connection />
 
                 <Routes>
                     {/* Public landing */}

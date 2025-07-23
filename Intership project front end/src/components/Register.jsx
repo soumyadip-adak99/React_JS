@@ -63,7 +63,7 @@ function Register() {
             await sentOTP(formData.email);
             setOtpSent(true);
             setCountdown(30);
-            toast.success('OTP sent to your email');
+            // toast.success('OTP sent to your email');
         } catch (error) {
             toast.error(error.message || 'Failed to send OTP');
         } finally {
