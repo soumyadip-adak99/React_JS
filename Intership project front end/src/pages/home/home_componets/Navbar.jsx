@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
-    RiLogoutBoxLine,
     RiMenuLine,
     RiCloseLine,
     RiUserLine,
     RiSearchLine,
     RiAddLine,
     RiCloseFill,
-    RiUploadLine
+    RiUploadLine,
+    RiLogoutBoxLine
 } from "react-icons/ri";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
@@ -19,6 +19,7 @@ function Navbar({ activeItem, setActiveItem, email }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [showSearchModal, setShowSearchModal] = useState(false);
     const [showCreateModal, setShowCreateModal] = useState(false);
+    const [showProfileDropdown, setShowProfileDropdown] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [blogData, setBlogData] = useState({
         title: "",
@@ -28,32 +29,40 @@ function Navbar({ activeItem, setActiveItem, email }) {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const dropdownRef = useRef(null);
 
     const navigate = useNavigate();
     const location = useLocation();
-    const {
-        user,
-        allUsers,
-        fetchAllUsers,
-        logout,
-        uploadBlog,
-        fetchUserDetails
-    } = useAuth();
+    const { user, allUsers, fetchAllUsers, logout, uploadBlog, fetchUserDetails } = useAuth();
 
+    // Fetch users on mount and location change
     useEffect(() => {
         fetchAllUsers();
-    }, [user, location]);
+    }, [user, location, fetchAllUsers]);
 
+    // Handle responsive behavior
     useEffect(() => {
         const handleResize = () => {
             const mobile = window.innerWidth < 768;
             setIsMobile(mobile);
-            setSidebarOpen(!mobile); // Open sidebar by default on desktop, closed on mobile
+            setSidebarOpen(!mobile);
         };
 
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowProfileDropdown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -80,7 +89,12 @@ function Navbar({ activeItem, setActiveItem, email }) {
     };
 
     const handleProfileClick = () => {
+        setShowProfileDropdown(!showProfileDropdown);
+    };
+
+    const handleProfileNavigation = () => {
         navigate('/user/profile');
+        setShowProfileDropdown(false);
         if (isMobile) setSidebarOpen(false);
     };
 
@@ -166,39 +180,37 @@ function Navbar({ activeItem, setActiveItem, email }) {
     };
 
     const handleShowProfileImage = () => {
-        if (user?.profileImage?.url || user?.profileImage) {
+        if (user?.profileImage?.url) {
             return (
                 <img
                     src={user.profileImage.url}
                     alt="Profile"
-                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white object-cover"
+                    className="w-9 h-9 rounded-full object-cover ring-2 ring-purple-500"
+                    onError={(e) => (e.target.style.display = 'none')}
                 />
             );
-        } else {
-            return (
-                <div
-                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white"
-                >
-                    <RiUserLine className="text-lg sm:text-xl text-white" />
-                </div>
-            );
         }
+        return (
+            <div className="w-9 h-9 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center ring-2 ring-purple-500">
+                <RiUserLine className="text-xl text-white" />
+            </div>
+        );
     };
 
     return (
         <>
             {/* Mobile Header */}
             {isMobile && (
-                <header className="fixed top-0 left-0 right-0 bg-gray-950 border-b border-gray-700 z-50 h-14 sm:h-16 flex items-center justify-between px-3 sm:px-4">
-                    <h1 className='font-bold text-lg sm:text-xl text-white'>
+                <header className="fixed top-0 left-0 right-0 bg-gray-950 border-b border-gray-800 z-50 h-14 flex items-center justify-between px-4">
+                    <h1 className="font-semibold text-xl text-white tracking-tight">
                         CodeScribe
-                        <span className='ml-1 text-transparent font-bold bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400'>
+                        <span className="ml-1.5 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
                             AI
                         </span>
                     </h1>
                     <button
                         onClick={toggleSidebar}
-                        className="p-2 rounded-md bg-gray-700 text-white hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="p-2 rounded-lg bg-gray-800 text-white hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500"
                         aria-label={sidebarOpen ? "Close menu" : "Open menu"}
                     >
                         {sidebarOpen ? <RiCloseLine className="text-xl" /> : <RiMenuLine className="text-xl" />}
@@ -209,57 +221,59 @@ function Navbar({ activeItem, setActiveItem, email }) {
             {/* Overlay for Sidebar */}
             {isMobile && sidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity duration-200"
+                    className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 transition-opacity duration-300"
                     onClick={toggleSidebar}
                 />
             )}
 
             {/* Search Modal */}
             {showSearchModal && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4 sm:p-6">
-                    <div className="bg-gray-800 rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden border border-gray-700 transform transition-all duration-200 scale-100 sm:scale-100">
-                        <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+                    <div className="bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg max-h-[85vh] overflow-hidden border border-gray-700 transform transition-all duration-300">
+                        <div className="p-5 border-b border-gray-700 flex justify-between items-center">
                             <h3 className="text-lg font-semibold text-white">Search Users</h3>
                             <button
                                 onClick={closeModal}
-                                className="text-gray-400 hover:text-white transition-colors"
+                                className="text-gray-300 hover:text-white transition-colors focus:outline-none"
+                                aria-label="Close search modal"
                             >
                                 <RiCloseFill className="text-xl" />
                             </button>
                         </div>
-                        <div className="p-4">
+                        <div className="p-5">
                             <div className="relative mb-4">
-                                <RiSearchLine className="absolute left-3 top-3 text-gray-400" />
+                                <RiSearchLine className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                                 <input
                                     type="text"
                                     placeholder="Search by name or email"
-                                    className="w-full pl-10 pr-4 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-600 transition-all"
+                                    className="w-full pl-10 pr-4 py-2.5 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-600 transition-all"
                                     value={searchQuery}
                                     onChange={handleSearch}
                                     autoFocus
+                                    aria-label="Search users"
                                 />
                             </div>
-                            <div className="mt-4 space-y-2 max-h-[60vh] overflow-y-auto custom-scrollbar">
+                            <div className="space-y-2 max-h-[50vh] overflow-y-auto custom-scrollbar">
                                 {filteredUsers.length > 0 ? (
                                     filteredUsers.map(user => (
                                         <div
                                             key={user.id}
                                             onClick={() => handleUserClick(user)}
                                             className="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer"
+                                            role="button"
+                                            tabIndex={0}
+                                            onKeyDown={(e) => e.key === 'Enter' && handleUserClick(user)}
                                         >
                                             <div className="flex items-center space-x-3">
                                                 {user?.profileImage?.url ? (
                                                     <img
                                                         src={user.profileImage.url}
                                                         alt={`${user?.firstName || ''} ${user?.lastName || ''}`.trim() || 'User'}
-                                                        className="w-10 h-10 rounded-full object-cover bg-gradient-to-r from-purple-500 to-pink-500"
-                                                        onError={(e) => {
-                                                            e.target.onerror = null;
-                                                            e.target.style.display = 'none';
-                                                        }}
+                                                        className="w-10 h-10 rounded-full object-cover ring-1 ring-gray-500"
+                                                        onError={(e) => (e.target.style.display = 'none')}
                                                     />
                                                 ) : (
-                                                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white">
+                                                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white ring-1 ring-gray-500">
                                                         {user?.firstName?.[0]?.toUpperCase() || user?.lastName?.[0]?.toUpperCase() || (
                                                             <RiUserLine className="text-xl" />
                                                         )}
@@ -271,12 +285,11 @@ function Navbar({ activeItem, setActiveItem, email }) {
                                                     </p>
                                                     <p className="text-xs text-gray-400 truncate">{user.email}</p>
                                                 </div>
-                                                <RiUserLine className="text-gray-400" />
                                             </div>
                                         </div>
                                     ))
                                 ) : (
-                                    <div className="text-center py-6">
+                                    <div className="text-center py-8">
                                         <RiSearchLine className="mx-auto text-3xl text-gray-500 mb-2" />
                                         <p className="text-gray-400">No users found</p>
                                         {searchQuery && (
@@ -292,54 +305,57 @@ function Navbar({ activeItem, setActiveItem, email }) {
 
             {/* Create Blog Modal */}
             {showCreateModal && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4 sm:p-6">
-                    <div className="bg-gray-800 rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden border border-gray-700 transform transition-all duration-200 scale-100 sm:scale-100">
-                        <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+                    <div className="bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg max-h-[85vh] overflow-hidden border border-gray-700 transform transition-all duration-300">
+                        <div className="p-5 border-b border-gray-700 flex justify-between items-center">
                             <h3 className="text-lg font-semibold text-white">Create New Blog Post</h3>
                             <button
                                 onClick={closeModal}
-                                className="text-gray-400 hover:text-white transition-colors"
+                                className="text-gray-300 hover:text-white transition-colors focus:outline-none"
+                                aria-label="Close create blog modal"
                             >
                                 <RiCloseFill className="text-xl" />
                             </button>
                         </div>
-                        <form onSubmit={handleBlogSubmit} className="p-4">
+                        <form onSubmit={handleBlogSubmit} className="p-5">
                             <div className="mb-4">
-                                <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">
+                                <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1.5">
                                     Title
                                 </label>
                                 <input
                                     type="text"
                                     id="title"
-                                    className="w-full px-3 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-600"
+                                    className="w-full px-3 py-2.5 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-600 transition-all"
                                     value={blogData.title}
                                     onChange={(e) => setBlogData(prev => ({
                                         ...prev,
                                         title: e.target.value
                                     }))}
                                     required
+                                    aria-required="true"
                                 />
                             </div>
 
                             <div className="mb-4">
-                                <label htmlFor="content" className="block text-sm font-medium text-gray-300 mb-1">
+                                <label htmlFor="content" className="block text-sm font-medium text-gray-300 mb-1.5">
                                     Content
                                 </label>
                                 <textarea
                                     id="content"
                                     rows={5}
-                                    className="w-full px-3 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-600"
+                                    className="w-full px-3 py-2.5 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-600 transition-all"
                                     value={blogData.content}
                                     onChange={(e) => setBlogData(prev => ({
                                         ...prev,
                                         content: e.target.value
                                     }))}
                                     required
+                                    aria-required="true"
                                 />
                             </div>
 
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-300 mb-1">
+                                <label className="block text-sm font-medium text-gray-300 mb-1.5">
                                     Featured Image
                                 </label>
                                 {blogData.previewImage ? (
@@ -352,7 +368,8 @@ function Navbar({ activeItem, setActiveItem, email }) {
                                         <button
                                             type="button"
                                             onClick={removeImage}
-                                            className="absolute top-2 right-2 bg-gray-900/80 text-white p-1 rounded-full hover:bg-gray-800"
+                                            className="absolute top-2 right-2 bg-gray-900/80 text-white p-1.5 rounded-full hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                            aria-label="Remove image"
                                         >
                                             <RiCloseFill className="w-5 h-5" />
                                         </button>
@@ -369,6 +386,7 @@ function Navbar({ activeItem, setActiveItem, email }) {
                                                 className="hidden"
                                                 accept="image/*"
                                                 onChange={handleImageChange}
+                                                aria-label="Upload featured image"
                                             />
                                         </label>
                                     </div>
@@ -377,7 +395,7 @@ function Navbar({ activeItem, setActiveItem, email }) {
 
                             <button
                                 type="submit"
-                                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2.5 px-4 rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2.5 px-4 rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-purple-500"
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? (
@@ -399,83 +417,95 @@ function Navbar({ activeItem, setActiveItem, email }) {
 
             {/* Sidebar */}
             <aside
-                className={`fixed top-0 h-screen bg-gray-950 border-r border-gray-700 z-50 transition-transform duration-300 ease-in-out ${isMobile
-                        ? (sidebarOpen ? 'translate-x-0 w-64 sm:w-72' : '-translate-x-full w-64 sm:w-72')
-                        : 'translate-x-0 w-64'
-                    }`}
+                className={`fixed top-0 h-screen bg-gray-950 border-r border-gray-800 z-50 transition-transform duration-300 ease-in-out flex flex-col ${
+                    isMobile
+                        ? (sidebarOpen ? 'translate-x-0 w-72' : '-translate-x-full w-72')
+                        : 'translate-x-0 w-64 lg:w-72'
+                }`}
             >
-                <div className="flex flex-col h-full">
-                    {/* Sidebar Header */}
-                    <div className="flex flex-col p-3 sm:p-4 border-b border-gray-700 flex-shrink-0">
-                        <h1 className='font-bold text-xl sm:text-2xl text-white'>
-                            CodeScribe
-                            <span className='ml-1 text-transparent font-bold bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400'>
-                                AI
-                            </span>
-                        </h1>
-                    </div>
+                {/* Sidebar Header */}
+                <div className="flex flex-col p-4 border-b border-gray-800 flex-shrink-0">
+                    <h1 className="font-semibold text-xl text-white tracking-tight">
+                        CodeScribe
+                        <span className="ml-1.5 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+                            AI
+                        </span>
+                    </h1>
+                </div>
 
-                    {/* Profile Section */}
-                    <div className="p-3 sm:p-4 border-b border-gray-700 flex-shrink-0">
-                        <div
-                            className="flex items-center cursor-pointer hover:bg-gray-800 rounded-lg p-2 transition-colors"
-                            onClick={handleProfileClick}
-                        >
-                            <div className="flex-shrink-0">
-                                {handleShowProfileImage()}
-                            </div>
-                            <div className="ml-2 sm:ml-3 flex-1 min-w-0">
-                                <p className="text-sm font-medium text-white truncate">
-                                    {`${user?.firstname || ''} ${user?.lastName || ''}`.trim() || 'User'}
-                                </p>
-                                <p className="text-xs text-gray-400 truncate">{email}</p>
-                            </div>
+                {/* Navigation Items */}
+                <nav className="flex-1 px-4 py-4 overflow-y-auto custom-scrollbar">
+                    <div className="space-y-1.5">
+                        {userNavItems.map((item) => (
+                            <button
+                                key={item.label}
+                                onClick={() => handleNavigation(item)}
+                                className={`flex items-center w-full px-4 py-2.5 rounded-lg transition-all duration-200 text-left ${
+                                    activeItem === item.label
+                                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-md'
+                                        : 'text-gray-200 hover:bg-gray-800 hover:text-white'
+                                } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                                aria-current={activeItem === item.label ? 'page' : undefined}
+                            >
+                                <span className="mr-3 flex-shrink-0 text-lg">{item.icon}</span>
+                                <span className="font-medium text-base truncate">{item.label}</span>
+                            </button>
+                        ))}
+                    </div>
+                </nav>
+
+                {/* Profile Section */}
+                <div className="p-4 border-t border-gray-800 flex-shrink-0 relative" ref={dropdownRef}>
+                    <div
+                        className="flex items-center cursor-pointer hover:bg-gray-800 rounded-lg p-2 transition-colors"
+                        onClick={handleProfileClick}
+                        role="button"
+                        aria-haspopup="true"
+                        aria-expanded={showProfileDropdown}
+                    >
+                        <div className="flex-shrink-0">
+                            {handleShowProfileImage()}
+                        </div>
+                        <div className="ml-3 flex-1 min-w-0">
+                            <p className="text-sm font-medium text-white truncate">
+                                {`${user?.firstname || ''} ${user?.lastName || ''}`.trim() || 'User'}
+                            </p>
+                            <p className="text-xs text-gray-400 truncate">{email}</p>
                         </div>
                     </div>
-
-                    {/* Navigation Items - Fixed height with flex-1 to fill available space */}
-                    <nav className="flex-1 px-3 sm:px-4 py-2 sm:py-3 min-h-0">
-                        <div className="space-y-1 sm:space-y-2">
-                            {userNavItems.map((item) => (
-                                <button
-                                    key={item.label}
-                                    onClick={() => handleNavigation(item)}
-                                    className={`flex items-center w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all duration-200 text-left ${activeItem === item.label
-                                            ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-                                            : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                                        }`}
-                                >
-                                    <span className="mr-2 sm:mr-3 flex-shrink-0 text-lg">{item.icon}</span>
-                                    <span className="font-medium text-sm sm:text-base truncate">{item.label}</span>
-                                </button>
-                            ))}
+                    {showProfileDropdown && (
+                        <div className="absolute bottom-16 left-4 right-4 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-10 overflow-hidden">
+                            <button
+                                onClick={handleProfileNavigation}
+                                className="w-full px-4 py-2.5 text-left text-gray-200 hover:bg-gray-700 hover:text-white transition-colors focus:outline-none focus:bg-gray-700"
+                                aria-label="View profile"
+                            >
+                                Profile
+                            </button>
+                            <button
+                                onClick={handleLogout}
+                                disabled={isLoggingOut}
+                                className="w-full px-4 py-2.5 text-left text-gray-200 hover:bg-red-600 hover:text-white transition-colors flex items-center disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:bg-red-600"
+                                aria-label="Log out"
+                            >
+                                {isLoggingOut ? (
+                                    <>
+                                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+                                        Logging out...
+                                    </>
+                                ) : (
+                                    <>
+                                        <RiLogoutBoxLine className="mr-2" />
+                                        Log out
+                                    </>
+                                )}
+                            </button>
                         </div>
-                    </nav>
-
-                    {/* Logout Button - Fixed at bottom */}
-                    <div className="p-3 sm:p-4 border-t border-gray-700 flex-shrink-0">
-                        <button
-                            onClick={handleLogout}
-                            disabled={isLoggingOut}
-                            className="flex items-center justify-center w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all duration-200 text-left text-gray-300 hover:bg-red-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {isLoggingOut ? (
-                                <>
-                                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2 sm:mr-3"></div>
-                                    <span className="font-medium text-sm sm:text-base">Logging out...</span>
-                                </>
-                            ) : (
-                                <>
-                                    <RiLogoutBoxLine className="text-lg sm:text-xl mr-2 sm:mr-3 flex-shrink-0" />
-                                    <span className="font-medium text-sm sm:text-base">Log out</span>
-                                </>
-                            )}
-                        </button>
-                    </div>
+                    )}
                 </div>
             </aside>
 
-            {/* Add custom scrollbar styles */}
+            {/* Custom Scrollbar and Responsive Styles */}
             <style jsx>{`
                 .custom-scrollbar::-webkit-scrollbar {
                     width: 6px;
@@ -494,13 +524,66 @@ function Navbar({ activeItem, setActiveItem, email }) {
                     background: #374151;
                 }
 
-                /* Ensure smooth transitions for modals and sidebar */
+                /* Ensure sidebar fits within viewport */
+                aside {
+                    max-height: 100vh;
+                }
+
+                /* Smooth transitions for modals and sidebar */
+                .modal-enter {
+                    opacity: 0;
+                    transform: scale(0.95);
+                }
+                .modal-enter-active {
+                    opacity: 1;
+                    transform: scale(1);
+                    transition: opacity 300ms, transform 300ms;
+                }
+                .modal-exit {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+                .modal-exit-active {
+                    opacity: 0;
+                    transform: scale(0.95);
+                    transition: opacity 300ms, transform 300ms;
+                }
+
+                /* Responsive adjustments */
                 @media (max-width: 767px) {
                     .translate-x-0 {
                         transform: translateX(0);
                     }
                     .-translate-x-full {
                         transform: translateX(-100%);
+                    }
+                    aside {
+                        width: 80%;
+                        max-width: 320px;
+                    }
+                    .modal-enter {
+                        transform: translateY(20px);
+                    }
+                    .modal-enter-active {
+                        transform: translateY(0);
+                    }
+                    .modal-exit {
+                        transform: translateY(0);
+                    }
+                    .modal-exit-active {
+                        transform: translateY(20px);
+                    }
+                }
+
+                @media (min-width: 768px) {
+                    aside {
+                        width: 260px;
+                    }
+                }
+
+                @media (min-width: 1024px) {
+                    aside {
+                        width: 280px;
                     }
                 }
             `}</style>
