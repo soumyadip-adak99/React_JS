@@ -369,7 +369,7 @@ export const AuthProvider = ({ children }) => {
     const fetchToDeleteBlog = async (id) => {
         try {
             const response = await userBlogDeleteById(id);
-            toast.success('Blog deleted successfully');
+            toast.success('Post deleted successfully');
             return response
         } catch (error) {
             console.log(error)

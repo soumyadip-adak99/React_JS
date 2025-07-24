@@ -229,7 +229,7 @@ function Profile() {
                 userBlogs: prev.userBlogs.filter(post => post?.id !== selectedPost.id)
             }));
             setShowDeleteModal(false);
-            toast.success('Post deleted successfully');
+            // toast.success('Post deleted successfully');
         } catch (error) {
             toast.error("Failed to delete post");
             throw error;
