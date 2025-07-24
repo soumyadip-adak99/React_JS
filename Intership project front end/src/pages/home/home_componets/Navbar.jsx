@@ -250,6 +250,7 @@ function Navbar({ activeItem, setActiveItem, email }) {
             setShowResetPasswordModal(false);
             setResetPasswordData({ email: '', newPassword: '', otp: '' });
             setOtpSent(false);
+            await logout()
             navigate('/auth/sign-in');
         } catch (error) {
             toast.error(error.response?.data?.message || error.message || 'Password reset failed');
