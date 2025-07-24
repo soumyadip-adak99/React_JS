@@ -394,7 +394,6 @@ function Navbar({ activeItem, setActiveItem, email }) {
                                                     <p className="font-medium text-white truncate text-sm">
                                                         {user.firstName} {user.lastName}
                                                     </p>
-                                                    <p className="text-xs text-gray-400 truncate">{user.email}</p>
                                                 </div>
                                             </div>
                                         </div>
