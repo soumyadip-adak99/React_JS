@@ -217,7 +217,7 @@ function Navbar({ activeItem, setActiveItem, email }) {
             await sentOTP(resetPasswordData.email);
             setOtpSent(true);
             setCountdown(30);
-            toast.success('OTP sent to your email');
+            // toast.success('OTP sent to your email');
         } catch (error) {
             toast.error(error.response?.data?.message || error.message || 'Failed to send OTP');
         } finally {
