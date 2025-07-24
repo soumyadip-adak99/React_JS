@@ -128,7 +128,7 @@ function Navbar({ activeItem, setActiveItem, email }) {
 
         try {
             await uploadBlog(
-                { title: blogData.title, content: blogData.content },
+                {title: blogData.title, content: blogData.content},
                 blogData.image
             );
 
@@ -141,9 +141,8 @@ function Navbar({ activeItem, setActiveItem, email }) {
             });
 
             await fetchUserDetails();
-            toast.success("Blog published successfully");
         } catch (error) {
-            toast.error("Failed to upload blog");
+            toast.error("Failed upload blog")
             console.error("Error creating blog:", error);
         } finally {
             setIsSubmitting(false);
