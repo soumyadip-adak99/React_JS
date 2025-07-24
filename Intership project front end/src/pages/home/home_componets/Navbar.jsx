@@ -178,7 +178,7 @@ function Navbar({ activeItem, setActiveItem, email }) {
                 image: null,
                 previewImage: null
             });
-            toast.success('Blog post created successfully');
+            //toast.success('Blog post created successfully');
             await fetchUserDetails();
         } catch (error) {
             toast.error("Failed to upload blog");
@@ -267,7 +267,7 @@ function Navbar({ activeItem, setActiveItem, email }) {
         setIsDeletingAccount(true);
         try {
             await fetchToDeleteAccount();
-            toast.success('Account deleted successfully');
+            // toast.success('Account deleted successfully');
             navigate('/login');
         } catch (error) {
             toast.error(error.response?.data?.message || error.message || 'Failed to delete account');
