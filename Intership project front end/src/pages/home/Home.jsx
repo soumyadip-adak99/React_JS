@@ -41,8 +41,13 @@ function Home({ children }) {
                 logout={logout}
             />
 
-            <main className={`md:ml-60 min-h-screen transition-all duration-300 ${isProfileRoute ? 'pt-16 md:pt-0' : 'pt-10 md:pt-6'
-                }`}>
+            <main
+                className={`transition-all duration-300 ${
+                    isProfileRoute
+                        ? 'pt-16 md:pt-0 md:ml-60 pb-14 md:pb-0'
+                        : 'pt-10 md:pt-6 md:ml-60 pb-14 md:pb-0'
+                }`}
+            >
                 {children || <Outlet />}
             </main>
         </div>
