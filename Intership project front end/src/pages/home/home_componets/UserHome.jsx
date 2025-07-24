@@ -111,7 +111,6 @@ function UserHome() {
     };
 
     const renderAuthorImage = (post) => {
-        console.log(post)
         if (post.authorProfileImage?.url) {
             return (
                 <img
