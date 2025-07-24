@@ -36,7 +36,7 @@ export const addNewBlog = (blogData, file) => {
         formData.append('file', file);
     }
 
-    return API.post('/add-new-blog', formData, {
+    return API.post('/add', formData, {
         headers: {
             'Accept': 'application/json'
         }
