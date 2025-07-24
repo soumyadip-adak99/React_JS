@@ -246,12 +246,11 @@ function Navbar({ activeItem, setActiveItem, email }) {
                 newPassword: resetPasswordData.newPassword,
                 otp: resetPasswordData.otp
             });
-            toast.success('Password reset successfully! Please login with your new password.');
+           // toast.success('Password reset successfully! Please login with your new password.');
             setShowResetPasswordModal(false);
             setResetPasswordData({ email: '', newPassword: '', otp: '' });
             setOtpSent(false);
-            await logout()
-            navigate('/auth/sign-in');
+            await logout();
         } catch (error) {
             toast.error(error.response?.data?.message || error.message || 'Password reset failed');
         } finally {
