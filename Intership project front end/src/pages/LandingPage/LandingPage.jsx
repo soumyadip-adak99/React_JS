@@ -11,6 +11,7 @@ import TeamSection from "./sections/TeamSection";
 import DividerLine from "../../constants/DeviderLine";
 import Footer from "../../components/Footer";
 import './LandingPage.css'
+import toast from "react-hot-toast";
 
 
 function LandingPage() {
@@ -254,11 +255,13 @@ function LandingPage() {
                     <Cards />
 
                     <div className="text-white flex items-center align-center justify-center py-9">
-                        <button className="relative group bg-transparent border border-indigo-500/40 text-white py-3 md:py-4 px-6 md:px-8 rounded-full text-base md:text-lg font-medium cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] hover:bg-indigo-500/10 hover:border-indigo-400/60 hover:text-indigo-100 transform-gpu hover:shadow-[0_10px_30px_-5px_rgba(67,56,202,0.3)] hover:-translate-y-1 active:scale-95 flex-1 sm:flex-none">
+                        <Link to={`auth/register`}
+                            onClick={() => toast("Create an account 😊")}
+                            className="relative group bg-transparent border border-indigo-500/40 text-white py-3 md:py-4 px-6 md:px-8 rounded-full text-base md:text-lg font-medium cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] hover:bg-indigo-500/10 hover:border-indigo-400/60 hover:text-indigo-100 transform-gpu hover:shadow-[0_10px_30px_-5px_rgba(67,56,202,0.3)] hover:-translate-y-1 active:scale-95 flex-1 sm:flex-none">
                             <span className="relative z-10 flex items-center justify-center">
                                 Explore More Blogs <FaArrowRight className="pl-2 text-xl" />
                             </span>
-                        </button>
+                        </Link>
                     </div>
 
                     <DividerLine />
