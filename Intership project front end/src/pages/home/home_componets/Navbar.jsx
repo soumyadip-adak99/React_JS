@@ -246,7 +246,7 @@ function Navbar({ activeItem, setActiveItem, email }) {
                 newPassword: resetPasswordData.newPassword,
                 otp: resetPasswordData.otp
             });
-           // toast.success('Password reset successfully! Please login with your new password.');
+            // toast.success('Password reset successfully! Please login with your new password.');
             setShowResetPasswordModal(false);
             setResetPasswordData({ email: '', newPassword: '', otp: '' });
             setOtpSent(false);

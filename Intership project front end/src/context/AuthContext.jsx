@@ -342,11 +342,12 @@ export const AuthProvider = ({ children }) => {
             toast.success('Blog uploaded successfully');
             return response.data;
         } catch (error) {
-            if (error.status == 400) {
-                console.log("Blog contains Bad words keep change this words.")
+            if (error.status === 400) {
+                // toast.error("Blog contains Bad words keep change this words.")
+                // setBlogError("Blog contains Bad words.");
             }
-            console.log(error)
-            toast.error(error.response?.data?.message || 'Failed to upload blog');
+            //console.log(error.status)
+            // console.log(error)
             throw error
         }
     }
