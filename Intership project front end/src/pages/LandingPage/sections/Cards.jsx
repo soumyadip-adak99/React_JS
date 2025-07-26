@@ -1,4 +1,3 @@
-import toast from "react-hot-toast";
 import { assets } from "../../../assets/assets";
 import { Link } from "react-router-dom"
 
