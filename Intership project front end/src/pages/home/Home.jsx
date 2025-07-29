@@ -29,7 +29,7 @@ function Home({ children }) {
     }, [location]);
 
     // Check if current route is profile to adjust layout
-    const isProfileRoute = location.pathname.includes('profile');
+    const isProfileRoute = /^\/user\/profile(\/[^/]*)?$/.test(location.pathname);
 
     return (
         <div className="min-h-screen bg-gray-950">
@@ -42,11 +42,10 @@ function Home({ children }) {
             />
 
             <main
-                className={`transition-all duration-300 ${
-                    isProfileRoute
-                        ? 'pt-16 md:pt-0 md:ml-60 pb-14 md:pb-0'
-                        : 'pt-10 md:pt-6 md:ml-60 pb-14 md:pb-0'
-                }`}
+                className={`transition-all duration-300 ${isProfileRoute
+                    ? 'pt-16 md:pt-0 md:ml-60 pb-14 md:pb-0'
+                    : 'pt-10 md:pt-0 md:ml-60 pb-14 md:pb-0'
+                    }`}
             >
                 {children || <Outlet />}
             </main>

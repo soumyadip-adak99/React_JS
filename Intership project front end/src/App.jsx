@@ -91,10 +91,8 @@ function App() {
                     <Route path="/user" element={<RequireAuth><UserLayout /></RequireAuth>}>
                         <Route index element={<Navigate to="home" replace />} />
                         <Route path="home" element={<UserHome />} />
-                        <Route path="profile">
-                            <Route index element={<Profile />} />
-                            <Route path=":id" element={<UserLayout children={<UserProfile />} />} />
-                        </Route>
+                        <Route path="profile" element={<Profile />} />
+                        <Route path="profile/:id" element={<UserProfile />} />
                     </Route>
 
                     {/* Fallback */}

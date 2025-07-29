@@ -299,9 +299,9 @@ export const AuthProvider = ({ children }) => {
 
     const fetchUserDetailsById = async (id) => {
         try {
-            console.log(id)
+            //console.log(id)
             const response = await getUserById(id);
-            console.log(response.data)
+            // console.log(response.data)
             return response.data
         } catch (err) {
             console.error("Error while fetching user by id: ", id, err);
