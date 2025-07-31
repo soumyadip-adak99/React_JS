@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
@@ -111,7 +112,7 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             const errorMessage = err.response?.data?.message || "Login failed";
             toast.error(errorMessage);
-            console.error('Login error:', err);
+            // console.error('Login error:', err);
             clearAuth();
             throw err;
         }
@@ -136,7 +137,7 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             const errorMessage = err.response?.data?.message || "Registration failed";
             toast.error(errorMessage);
-            console.error("Registration error:", err);
+            //console.error("Registration error:", err);
             throw err;
         }
     };
@@ -153,7 +154,7 @@ export const AuthProvider = ({ children }) => {
             navigate('/auth/sing-in');
             return response;
         } catch (error) {
-            console.error(error);
+            //console.error(error);
             toast.error(error.response?.data?.message || "Password reset failed");
             throw error;
         }
@@ -171,7 +172,7 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             const errorMessage = err.response?.data?.message || "OTP send failed";
             toast.error(errorMessage);
-            console.error('OTP send error:', err);
+            //.error('OTP send error:', err);
             throw err;
         }
     };
@@ -190,7 +191,7 @@ export const AuthProvider = ({ children }) => {
                 return response.data;
             }
         } catch (err) {
-            console.error('Error fetching user details:', err);
+            // console.error('Error fetching user details:', err);
 
             if (err.response?.status === 401) {
                 clearAuth();
@@ -211,8 +212,8 @@ export const AuthProvider = ({ children }) => {
             toast.success('Profile image upload successfully.');
             return response;
         } catch (error) {
-            console.error(error);
-            throw error;
+            //console.error(error);
+            throw new error;
         }
     }
 
@@ -222,7 +223,8 @@ export const AuthProvider = ({ children }) => {
             await apiLogout();
             toast.success("Logged out successfully");
         } catch (err) {
-            console.error('Logout error:', err);
+            throw new err;
+            //console.error('Logout error:', err);
         } finally {
             localStorage.removeItem("token")
             localStorage.clear();
@@ -256,8 +258,9 @@ export const AuthProvider = ({ children }) => {
             //toast.success("Successfully fetch user details.")
             return response.data
         } catch (error) {
-            console.log(error)
+            //  console.log(error)
             // toast.error("User details fetching faild")
+            throw new error
         }
     }
 
@@ -266,8 +269,8 @@ export const AuthProvider = ({ children }) => {
             const response = await getAllBlogs()
             return response.data
         } catch (error) {
-            console.log('error')
-            throw error
+            // console.log('error')
+            throw new error
         }
     }
 
@@ -277,8 +280,8 @@ export const AuthProvider = ({ children }) => {
             toast.success("User deleted successfully")
             return response
         } catch (error) {
-            console.log("Error while delete the user: ", error)
-            throw error
+            // console.log("Error while delete the user: ", error)
+            throw new error
         }
     }
 
@@ -288,8 +291,8 @@ export const AuthProvider = ({ children }) => {
             toast.success('Blog deleted successfully')
             return response
         } catch (error) {
-            console.log("Error while delete the blog: ", error)
-            throw error
+            //console.log("Error while delete the blog: ", error)
+            throw new error
         }
     }
 
@@ -304,8 +307,8 @@ export const AuthProvider = ({ children }) => {
             // console.log(response.data)
             return response.data
         } catch (err) {
-            console.error("Error while fetching user by id: ", id, err);
-            throw err
+            // console.error("Error while fetching user by id: ", id, err);
+            throw new err
         }
     }
 
@@ -315,8 +318,8 @@ export const AuthProvider = ({ children }) => {
             const response = await apiGetAllUsers()
             setAllUsers(response.data)
         } catch (err) {
-            console.log("Error: ", err)
-            throw err
+            // console.log("Error: ", err)
+            throw new err
         }
     }
 
@@ -327,8 +330,8 @@ export const AuthProvider = ({ children }) => {
             const response = await apiGetAllBlogs()
             setAllBlogs(response.data)
         } catch (err) {
-            console.log("error: ", err)
-            throw err
+            //console.log("error: ", err)
+            throw new err
         }
     }
 
@@ -348,11 +351,12 @@ export const AuthProvider = ({ children }) => {
             }
             //console.log(error.status)
             // console.log(error)
-            throw error
+            throw new error
         }
     }
 
     const fetchToUpdateBlogById = async (id, data) => {
+        // eslint-disable-next-line no-useless-catch
         try {
             const request = {
                 title: data.title,
@@ -373,8 +377,8 @@ export const AuthProvider = ({ children }) => {
             toast.success('Post deleted successfully');
             return response
         } catch (error) {
-            console.log(error)
-            throw error;
+            //console.log(error)
+            throw new error;
         }
     }
 
@@ -387,8 +391,8 @@ export const AuthProvider = ({ children }) => {
             navigate('/auth/register');
             return response
         } catch (error) {
-            console.log(error)
-            throw error
+            // console.log(error)
+            throw new error
         }
     }
 
@@ -445,6 +449,7 @@ export const AuthProvider = ({ children }) => {
         fetchResetPassword,
         fetchToDeleteAccount,
         fetchToUpdateBlogById,
+        currentBlog
         // getTotalBlogs,
         // getTotalUsers
     };
