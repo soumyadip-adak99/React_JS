@@ -73,7 +73,7 @@ const Contact = () => {
                         <span className="contact-icon"><RiMailLine /></span>
                         <div>
                             <h3 className="contact-title">Email</h3>
-                            <p className="contact-data">Email@mail.com</p>
+                            <p className="contact-data">soumyadipadakmailbox@gmail.com</p>
                         </div>
                     </div>
 

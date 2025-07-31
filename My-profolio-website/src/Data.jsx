@@ -3,7 +3,9 @@ import { RiBriefcase4Fill, RiGraduationCapFill } from 'react-icons/ri'
 
 import htmlLogo from './assets/html-logo.svg'
 import cssLogo from './assets/css-logo.svg'
+import tailwindLogo from "./assets/tailwind-css.svg"
 import javascriptLogo from './assets/js-logo.svg'
+import typescriptLogo from './assets/typescript-logo.svg'
 import reactLogo from './assets/react.svg'
 import javaLogo from './assets/java-logo.svg'
 import pythonLogo from './assets/python-logo.svg'
@@ -79,12 +81,8 @@ export const personalInfo = [
         description: 'India',
     },
     {
-        title: 'Phone : ',
-        description: '+23947239',
-    },
-    {
         title: 'Email : ',
-        description: 'gmail@mail.com',
+        description: 'soumyadipadakmailbox@gmail.com',
     },
     {
         title: 'Languages : ',
@@ -116,72 +114,74 @@ export const skill = [
         id: 1,
         img: htmlLogo,
         title: 'HTML',
-        level: 'Intermediate',
         category: 'developer',
     },
     {
         id: 2,
         img: cssLogo,
         title: 'CSS',
-        level: 'Intermediate',
         category: 'developer',
     },
     {
         id: 3,
-        img: javascriptLogo,
-        title: 'Java Script',
-        level: 'Intermediate',
+        img: tailwindLogo,
+        title: 'Tailwind CSS',
         category: 'developer',
     },
     {
         id: 4,
-        img: reactLogo,
-        title: 'React',
-        level: 'Intermediate',
+        img: javascriptLogo,
+        title: 'Java Script',
         category: 'developer',
     },
     {
         id: 5,
-        img: javaLogo,
-        title: 'Java',
-        level: 'Advance',
-        category: 'backend',
+        img: typescriptLogo,
+        title: 'Type Script',
+        category: 'developer',
     },
     {
         id: 6,
-        img: pythonLogo,
-        title: 'Python',
-        level: 'Intermediate',
-        category: 'backend',
+        img: reactLogo,
+        title: 'React',
+        category: 'developer',
     },
-
     {
         id: 7,
-        img: springBootLogo,
-        title: 'Spring Boot',
-        level: 'Intermediate',
-        category: 'backend',
+        img: javaLogo,
+        title: 'Java',
+        category: 'developer',
     },
     {
         id: 8,
-        img: mySqlLogo,
-        title: 'My SQL',
-        level: 'Intermediate',
-        category: 'backend',
+        img: pythonLogo,
+        title: 'Python',
+        category: 'developer',
     },
+
     {
         id: 9,
-        img: postgresql,
-        title: 'PostgreSQL',
-        level: 'Intermediate',
-        category: 'backend',
+        img: springBootLogo,
+        title: 'Spring Boot',
+        category: 'developer',
     },
     {
         id: 10,
+        img: mySqlLogo,
+        title: 'My SQL',
+        category: 'developer',
+    },
+    {
+        id: 11,
+        img: postgresql,
+        title: 'PostgreSQL',
+        category: 'developer',
+    },
+    {
+        id: 12,
         img: mongodbLogo,
         title: 'Mongo DB',
-        level: 'Intermediate',
-        category: 'backend',
+        category: 'developer',
     },
 
 ];
@@ -193,7 +193,7 @@ export const resume = [
         category: "experience",
         icon: <RiBriefcase4Fill />,
         year: "2023 - Present",
-        title: 'Web Development <span>Frontend & Backend</span>',
+        title: 'Web Development <span>Frontend & developer</span>',
         desc: "Working on multiple projects and developing skills in front-end and back-end development.",
     },
     {
@@ -227,9 +227,9 @@ export const portfolio = [
     {
         id: 1,
         img: jurnalApp,
-        title: "Journal Application with Secure Backend",
+        title: "Journal Application with Secure developer",
         description:
-            "Designed and developed a journal application with robust backend architecture using Spring Security and MongoDB.",
+            "Designed and developed a journal application with robust developer architecture using Spring Security and MongoDB.",
         skills: [springBootLogo, mongodbLogo, mySqlLogo],
         link: "https://github.com/soumyadip-adak99/Spring_Boot_Mini_Project/tree/main/Learning%20path/Spring%20boot"
     },
@@ -238,7 +238,7 @@ export const portfolio = [
         img: schoolDatabase,
         title: "School Database Management System",
         description:
-            "Built a full-stack web application for school database management, handling both frontend and backend development.",
+            "Built a full-stack web application for school database management, handling both frontend and developer development.",
         skills: [reactLogo, springBootLogo, mongodbLogo],
         link: "https://github.com/soumyadip-adak99/Spring_Boot_Mini_Project/tree/main/SpringMangoProjectDB"
     },

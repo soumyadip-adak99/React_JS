@@ -40,31 +40,13 @@ const About = () => {
 
                 <section className="skills">
                     <h3 className="section-subtitle subtitle-center">My Skills</h3>
-
-                    <div className="skills-container grid">
-
-                        <div className="skills-group">
-                            <h3 className="skills-title">Frontend Development</h3>
-                            <div className="skills-items grid">
-                                {skill.map((val) => {
-                                    if (val.category === 'developer') {
-                                        return <SkillsItem key={val.id} {...val} />
-                                    }
-                                })}
-                            </div>
-
-                        </div>
-
-                        <div className="skills-group">
-                            <h3 className="skills-title">Backend Development</h3>
-                            <div className="skills-items grid">
-                                {skill.map((val) => {
-                                    if (val.category === 'backend') {
-                                        return <SkillsItem key={val.id} {...val} />
-                                    }
-                                })}
-                            </div>
-
+                    <div className="skills-container">
+                        <div className="skills-items grid grid-cols-4 md:grid-cols-6 gap-4 justify-items-center">
+                            {skill
+                                .filter((val) => val.category === 'developer')
+                                .map((val) => (
+                                    <SkillsItem key={val.id} img={val.img} title={val.title} />
+                                ))}
                         </div>
                     </div>
                 </section>
