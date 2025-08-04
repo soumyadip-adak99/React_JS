@@ -62,7 +62,11 @@ function Profile() {
     }, [editedUser, profileImageFile, currentUser.userBlogs]);
 
     const [activeTab, setActiveTab] = useState('posts');
-    const userBlogs = currentUser.userBlogs || [];
+    const getAllUserBlogs = currentUser.userBlogs || [];
+
+    // TODO : remove in future
+    const userBlogs = [...getAllUserBlogs].reverse()
+
     const name = `${currentUser.firstname || ''} ${currentUser.lastName || ''}`.trim() || 'Anonymous';
 
     const handleEditToggle = () => {
