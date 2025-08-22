@@ -59,35 +59,30 @@ export const stats = [
 export const teamMembers = [
     {
         name: "Soumita Paul",
-        role: "Backend Enginner",
         image: assets.shoumitaPaulImage,
         gitHub: 'https://github.com/soumita-paul-90',
         linkdin: 'https://www.linkedin.com/in/soumita-paul-a5b5b2292?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
     },
     {
         name: "Arindom Pal",
-        role: "Backend Enginner",
         image: assets.arindomPaulImage,
         gitHub: 'https://github.com/MrPal28',
         linkdin: 'https://www.linkedin.com/in/arindam-pal-977318291',
     },
     {
         name: "Soumyadip Adak",
-        role: "Full Stack Developer",
         image: assets.soumyadipAdakImage,
         gitHub: 'https://github.com/soumyadip-adak99',
         linkdin: 'https://www.linkedin.com/in/soumyadip-adak-a19b03281/',
     },
     {
         name: "Aritra Das",
-        role: "Backend Engineer",
         image: assets.aritraDasImage,
         gitHub: 'https://github.com/Aritra7636',
         linkdin: 'https://www.linkedin.com/in/aritra-das-a69897212?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
     },
     {
         name: "Aritra Naskar",
-        role: "Backend Enginner",
         image: assets.aritraNaskarImage,
         gitHub: 'https://guthub.com',
         linkdin: 'https://linkedin.com',
