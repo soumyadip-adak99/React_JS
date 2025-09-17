@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { ArrowDown, Mail } from "lucide-react"
 import { FiGithub, FiLinkedin } from "react-icons/fi"
@@ -12,6 +13,13 @@ function HeroSection() {
 
     const { scrollY } = useScroll()
     const heroY = useTransform(scrollY, [0, 500], [0, -100])
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        if (window.location.hash) {
+            window.history.replaceState(null, document.title, window.location.pathname);
+        }
+    }, []);
 
     const scrollToSection = (id) => {
         const element = document.getElementById(id)
@@ -60,7 +68,7 @@ function HeroSection() {
             <motion.section
                 id="home"
                 style={{ y: heroY }}
-                className="min-h-screen flex items-center justify-center relative px-6 pt-10" // pt-10 optional
+                className="min-h-screen flex items-center justify-center relative px-6 pt-8" // pt-10 optional
             >
                 <div className="absolute inset-0 overflow-hidden">
                     <motion.div

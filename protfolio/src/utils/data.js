@@ -28,6 +28,8 @@ import PROJECT_IMG_1 from '../assets/project-1.png'
 import PROJECT_IMG_2 from '../assets/project-2.png'
 import PROJECT_IMG_3 from '../assets/project-3.png'
 import PROJECT_IMG_4 from '../assets/project-4.png'
+import PROJECT_IMG_5 from '../assets/project-5.png'
+import PROJECT_IMG_6 from '../assets/project-6.png'
 
 
 export const SKILLS_CATEGORY = [
@@ -36,12 +38,12 @@ export const SKILLS_CATEGORY = [
         icon: Code2,
         description: "Crafting beautiful, responsive user interfaces",
         skills: [
-            { name: "HTML", level: 80, color: "bg-red-500" },
-            { name: "CSS", level: 85, color: "bg-blue-600" },
-            { name: "JS", level: 90, color: "bg-yellow-700" },
-            { name: "Tailwind Css", level: 90, color: "bg-blue-600" },
-            { name: "React", level: 80, color: "bg-blue-500" },
-            { name: "TypeScript", level: 60, color: "bg-blue-600" },
+            // { name: "HTML", level: 80, color: "bg-red-500" },
+            // { name: "CSS", level: 85, color: "bg-blue-600" },
+            // { name: "JS", level: 90, color: "bg-yellow-400" },
+            { name: "React", level: 80, color: "bg-blue-800" },
+            { name: "Tailwind Css", level: 90, color: "bg-blue-400" },
+            { name: "TypeScript", level: 60, color: "bg-blue-700" },
         ]
     },
 
@@ -50,10 +52,22 @@ export const SKILLS_CATEGORY = [
         icon: Server,
         description: "Building robust server-side solutions",
         skills: [
-            { name: "Spring Boot", level: 90, color: "bg-green-400" },
-            { name: "Python", level: 70, color: "bg-green-400" },
-            { name: "Express.js", level: 60, color: "bg-green-500" },
+            { name: "Spring Boot", level: 90, color: "bg-green-500" },
+            // { name: "Python", level: 70, color: "bg-blue-500" },
+            { name: "Express.js", level: 60, color: "bg-gray-600" },
             { name: "REST APIs", level: 92, color: "bg-orange-500" }
+        ]
+    },
+
+    {
+        title: "Database",
+        icon: Database,
+        description: "Developing and scaling applications",
+        skills: [
+            { name: "MongoDB", level: 80, color: "bg-green-600" },
+            { name: "MySQL", level: 70, color: "bg-blue-700" },
+            { name: "PostgreSQL", level: 60, color: "bg-blue-400" },
+            // { name: "Redis", level: 65, color: "bg-red-500" }
         ]
     },
 
@@ -63,56 +77,70 @@ export const SKILLS_CATEGORY = [
         description: "Developing and scaling applications",
         skills: [
             { name: "Docker", level: 80, color: "bg-blue-600" },
-            { name: "Vercel", level: 70, color: "bg-gray-900" },
+            { name: "Vercel", level: 70, color: "bg-gray-600" },
             { name: "Git", level: 95, color: "bg-orange-700" }
         ]
     }
 ]
 
 export const TECH_STACK = [
-    "Java", "C", "Python", "JS", "HTML5", "CSS3", "React"
+    "Java", "Python", "JavaScript", "HTML5", "CSS3",
 ]
 
 export const STATS = [
-    { number: "8+", label: "Completed" },
+    { number: "8+", label: "Projects Completed" },
     { number: "2+", label: "Years Experience" },
     { number: "10+", label: "Technologies" },
+    { number: "100%", label: "Project Solution" },
 ]
 
 export const PROJECTS = [
     {
         id: 1,
-        title: "E-Commerce Platform",
-        description: "A full-stack e-commerce solution with advanced filtering, payment integration, and real-time inventor",
+        title: "Blog Application With AI Blog Scanner",
+        description: "A full-stack blog-application to share new ideas and post recent latest news and etc.",
         image: PROJECT_IMG_1,
-        tags: ["React", "Tailwind", "Framer motion"],
-        liveUrl: "#",
-        githubUrl: "#",
-        featured: false,
+        tags: ["Spring Boot", "React", "Tailwind", "MongoDB"],
+        liveUrl: "https://codescribeai.pages.dev",
+        githubUrl: "https://github.com/soumyadip-adak99/codescribe-ai/",
+        featured: true,
         category: "Full Stack",
     },
 
     {
         id: 2,
-        title: "Blog App with AI Post Generator",
-        description: "A full-stack blog app using the MERN stack - with full Markdown support, tag filtering",
+        title: "Remove Image Background",
+        description: "A full-stack remove image background - JAVA-FULLSTACK project",
         image: PROJECT_IMG_2,
-        tags: ["React", "Node.js", "MongoDB", "Tailwind"],
-        liveUrl: "https://youtu.be/tUnGudIBBjQ",
-        githubUrl: "#",
+        tags: ["Spring Boot", "React", "Tailwind", "PostgreSQL"],
+        liveUrl: '',
+        githubUrl: "https://github.com/soumyadip-adak99/Remove-image-background-spring-boot-project/",
         featured: true,
         category: "Full Stack",
     },
 
     {
         id: 3,
-        title: "Task Management App",
+        title: "Doctor Recommendation Web App",
         description:
-            "Collaborative project management tool with real-time updates, team chat, and advanced analytics dashboard",
+            "This is a Machine Learning project this project recommended doctors according to the desies",
         image: PROJECT_IMG_3,
-        tags: ["Next.js", "TypeScript", "Node.js", "MongoDb"],
-        liveUrl: "https://youtu.be/fZK57PXKC-0",
-        githubUrl: "#",
+        tags: ["Python", "Flask", "HTML", "CSS"],
+        liveUrl: "",
+        githubUrl: "https://github.com/MrPal28/medical-ai-recommendation?tab=readme-ov-file",
+        featured: true,
+        category: "Web App",
+    },
+
+    {
+        id: 4,
+        title: "Portfolio Website",
+        description:
+            "This is my own portfolio web site that show case my projects and tell about me",
+        image: PROJECT_IMG_4,
+        tags: ["React", "Tailwind", "motion"],
+        liveUrl: "https://soumyadip-adak.pages.dev/",
+        githubUrl: "https://github.com/soumyadip-adak99/React_JS/tree/main/protfolio",
         featured: true,
         category: "Web App",
     },
@@ -120,15 +148,28 @@ export const PROJECTS = [
 
     {
         id: 4,
-        title: "AI-Powered Interview Prep App",
+        title: "Tic Tac Toe game",
         description:
-            "A smart AI-powered Interview Preparation App using the MERN stack - along with the Gemini API for init",
-        image: PROJECT_IMG_4,
-        tags: ["Next.js", "TypeScript", "Node.js", "MongoDb"],
-        liveUrl: "https://youtu.be/yKB90yM-a04",
-        githubUrl: "#",
-        featured: false,
+            "Tic Tac Toe Game a basic react project for build under standing the react fundamentals",
+        image: PROJECT_IMG_5,
+        tags: ["React", "JavaScript", "css"],
+        liveUrl: "https://tic-tac-toe-12.vercel.app/",
+        githubUrl: "https://github.com/soumyadip-adak99/React_JS/tree/main/Tic-tac-toe",
+        featured: true,
         category: "Web App",
+    },
+
+    {
+        id: 5,
+        title: "Snake Game",
+        description:
+            "This is my first step in game development, to develop a Snake game using Java",
+        image: PROJECT_IMG_6,
+        tags: ["JAVA"],
+        liveUrl: '',
+        githubUrl: "https://github.com/soumyadip-adak99/Snake_Game",
+        featured: false,
+        category: "Application",
     }
 
 ]
