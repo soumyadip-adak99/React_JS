@@ -55,9 +55,9 @@ function HeroSection() {
 
 
     const SOCIAL_MEDIA_ELEMENTS = [
-        { icon: FiGithub, href: "#" },
-        { icon: FiLinkedin, href: "#" },
-        { icon: Mail, href: "#" },
+        { icon: FiGithub, href: "https://github.com/soumyadip-adak99" },
+        { icon: FiLinkedin, href: "https://www.linkedin.com/in/soumyadip-adak-a19b03281/" },
+        { icon: Mail, href: "" },
     ]
 
 
