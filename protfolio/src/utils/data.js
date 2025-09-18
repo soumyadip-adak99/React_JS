@@ -176,59 +176,60 @@ export const PROJECTS = [
 
 export const JOURNEY_STEPS = [
     {
-        year: "2021",
+        year: "2023",
         title: "Started Coding Journey",
         company: "Self-taught",
-        description:
-            "Began learning web development with HTML, CSS, and JavaScript. Built my first website and fell in love with coding.",
+        description: "Started programming with Java, explored problem solving, and began learning web development with HTML, CSS, and JavaScript.",
         icon: Code2,
         color: "bg-blue-500"
     },
     {
-        year: "2022",
+        year: "2024",
         title: "First Internship",
-        company: "TechStart Inc.",
+        company: "SPARK IIT.",
         description:
-            "Joined as a frontend intern, working with React and learning modern development practices. Contributed to multiple client projects.",
+            "Joined as a Full Stack Developer intern, working with React, Node.js, Express and learning modern development practices. Contributed to multiple client projects.",
         icon: Briefcase,
         color: "bg-green-500"
     },
     {
-        year: "2022",
-        title: "Computer Science Degree",
-        company: "University of Technology",
+        year: "2026",
+        title: "Bachelor of Computer Application Degree",
+        company: "Institute of Engineering and Management",
         description:
             "Graduated with honors, specializing in web technologies and software engineering. Led the final year project on scalable web applications.",
         icon: GraduationCap,
         color: "bg-purple-500"
     },
-    {
-        year: "2023",
-        title: "Full Stack Developer",
-        company: "Digital Solutions Ltd.",
-        description:
-            "Promoted to full-time developer role. Built end-to-end applications using MERN stack and led junior developers in agile projects.",
-        icon: Rocket,
-        color: "bg-orange-500"
-    },
-    {
-        year: "2024",
-        title: "Freelance & Open Source",
-        company: "Independent",
-        description:
-            "Started freelancing and contributing to open source projects. Launched 3 successful web applications for clients across industries.",
-        icon: Award,
-        color: "bg-pink-500"
-    },
+    // {
+    //     year: "2024",
+    //     title: "Python & Machine Learning Project",
+    //     company: "College Project",
+    //     description:
+    //         "Developed a machine learning project in Python during college, applying data analysis, model building, and real-world problem-solving skills.",
+    //     icon: Rocket,
+    //     color: "bg-orange-500"
+    // },
+
+    // {
+    //     year: "2025",
+    //     title: "Full-Stack AI Web Application",
+    //     company: "Independent",
+    //     description:
+    //         "Built a high-level full-stack web application using Advanced Java, Spring Boot, and AI integration. Delivered a fully functional project and received an award for excellence.",
+    //     icon: Award,
+    //     color: "bg-pink-500"
+    // },
     {
         year: "2025",
-        title: "Senior Developer",
+        title: "Innovation & Technology Enthusiast",
         company: "Innovate Tech",
         description:
-            "Currently building innovative solutions and exploring new technologies like AI integration and advanced system architecture.",
+            "Working on multiple projects showcased on my website, staying up-to-date with industry trends, and continuously learning new technologies.",
         icon: Zap,
         color: "bg-cyan-500"
     }
+
 ];
 
 export const PASSIONS = [
