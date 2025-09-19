@@ -36,7 +36,7 @@ export default function AboutSection() {
         <section
             id="about"
             ref={sectionRef}
-            className={`py-24 px-6 ${isDarkMode ? "bg-gray-950 text-white" : "bg-gray-50 text-gray-900"} relative overflow-hidden`}
+            className={`py-10 px-6 ${isDarkMode ? "bg-gray-950 text-white" : "bg-gray-50 text-gray-900"} relative overflow-hidden`}
         >
             {/* background element */}
             <motion.div style={{ y }} className="absolute inset-0 overflow-hidden">

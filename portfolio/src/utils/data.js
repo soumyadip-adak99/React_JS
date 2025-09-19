@@ -254,14 +254,14 @@ export const SOCIAL_LINKS = [
     {
         name: "GitHub",
         icon: FiGithub,
-        url: "https://github.com",
+        url: "https://github.com/soumyadip-adak99",
         color: "hover:text-gray-400",
         bgColor: "hover:bg-gray-800"
     },
     {
         name: "LinkedIn",
         icon: FiLinkedin,
-        url: "https://linkedin.com",
+        url: "https://www.linkedin.com/in/soumyadip-adak-a19b03281/",
         color: "hover:text-blue-400",
         bgColor: "hover:bg-blue-500/10"
     },
@@ -275,22 +275,40 @@ export const SOCIAL_LINKS = [
     {
         name: "Email",
         icon: Mail,
-        url: "mailto:alex@example.com",
+        url: "work.soumyadipadak@gmail.com",
         color: "hover:text-green-400",
         bgColor: "hover:bg-green-500/10"
     },
     {
         name: "Facebook",
         icon: FiFacebook,
-        url: "https://facebook.com",
+        url: "https://www.facebook.com/soumyadip.adak.99",
         color: "hover:text-blue-600",
         bgColor: "hover:bg-blue-600/10"
     },
     {
         name: "Instagram",
         icon: FiInstagram,
-        url: "https://instagram.com",
+        url: "https://www.instagram.com/soumyadip_adak8888/",
         color: "hover:text-pink-400",
         bgColor: "hover:bg-pink-400/10"
     }
+];
+
+export const CONTACT_INFO = [
+    {
+        icon: MapPin,
+        label: "Location",
+        value: "West Bengal, India",
+    },
+    {
+        icon: Mail,
+        label: "Email",
+        value: "work.soumyadipadak@gmail.com",
+    },
+    // {
+    //     icon: Phone,
+    //     label: "Phone",
+    //     value: "+91 (555) 123-4567",
+    // },
 ];

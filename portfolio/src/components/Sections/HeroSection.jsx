@@ -57,7 +57,7 @@ function HeroSection() {
     const SOCIAL_MEDIA_ELEMENTS = [
         { icon: FiGithub, href: "https://github.com/soumyadip-adak99" },
         { icon: FiLinkedin, href: "https://www.linkedin.com/in/soumyadip-adak-a19b03281/" },
-        { icon: Mail, href: "" },
+        { icon: Mail, href: "work.soumyadipadak@gmail.com" },
     ]
 
 
@@ -197,13 +197,14 @@ function HeroSection() {
                             >
                                 {
                                     [
-                                        { icon: FiGithub, href: "#" },
-                                        { icon: FiLinkedin, href: "#" },
-                                        { icon: Mail, href: "#" },
+                                        { icon: FiGithub, href: "https://github.com/soumyadip-adak99" },
+                                        { icon: FiLinkedin, href: "https://www.linkedin.com/in/soumyadip-adak-a19b03281/" },
+                                        { icon: Mail, href: "work.soumyadipadak@gmail.com" },
                                     ].map((social, index) => (
                                         <motion.a
                                             key={index}
                                             href={social.href}
+                                            target="_blank"
                                             whileHover={{ y: -3, scale: 1.1 }}
                                             className={`p-3 rounded-full transition-colors ${isDarkMode ?
                                                 "text-gray-400 hover:text-white hover:bg-gray-800"
@@ -301,6 +302,7 @@ function HeroSection() {
                                     <motion.a
                                         key={index}
                                         href={social.href}
+                                        target="_blank"
                                         whileHover={{ y: -3, scale: 1.1 }}
                                         className={`p-3 rounded-full transition-colors ${isDarkMode
                                             ? "text-gray-400 hover:text-white hover:bg-gray-800"
