@@ -1,27 +1,37 @@
-import { ThemeProvider } from './context/ThemeContext';
-import Navbar from './components/Navbar';
-import HeroSection from './components/Sections/HeroSection';
-import SkillsSection from './components/Sections/SkillsSection';
-import ProjectsSection from './components/Sections/ProjectsSection';
-import AboutSection from './components/Sections/AboutSection';
-import ContactSection from './components/Sections/ContactSection';
-import Footer from './components/Sections/Footer';
+import { useEffect } from "react";
+import { ThemeProvider } from "./context/ThemeContext";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import Index from "./pages/Index";
 
 const App = () => {
-    return (
-        <ThemeProvider>
+    useEffect(() => {
+        document.addEventListener("contextmenu", (e) => e.preventDefault());
 
-            <div>
-                <Navbar />
-                <HeroSection />
-                <SkillsSection />
-                <ProjectsSection />
-                <AboutSection />
-                <ContactSection />
-                <Footer />
-            </div>
-        </ThemeProvider>
+        document.addEventListener("keydown", (e) => {
+            if (
+                e.key === "F12" ||
+                (e.ctrlKey && e.shiftKey && e.key === "I") ||
+                (e.ctrlKey && e.shiftKey && e.key === "C") ||
+                (e.ctrlKey && e.shiftKey && e.key === "J") ||
+                (e.ctrlKey && e.key === "U")
+            ) {
+                e.preventDefault();
+            }
+        });
+    }, []);
+
+    return (
+        <>
+            <BrowserRouter>
+                <ThemeProvider>
+                    <Routes>
+                        <Route path="/" element={<Index />} />
+                        <Route path="*" element={<Navigate to="/" replace />} />
+                    </Routes>
+                </ThemeProvider>
+            </BrowserRouter>
+        </>
     );
 };
 
-export default App
+export default App;

@@ -1,12 +1,66 @@
-# React + Vite
+# 🚀 Soumyadip Adak — Personal Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live demo:** [https://soumyadip-adak.pages.dev/](https://soumyadip-adak.pages.dev/)
 
-Currently, two official plugins are available:
+A modern, responsive personal portfolio built with React and Vite. This site showcases projects, skills, and contact information with a clean, developer-first design and smooth interactions — ideal for job applications, client outreach, or personal branding.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## ✨ Highlights
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* **Fast, lightweight frontend** using **React + Vite** for instant reloads and snappy performance.
+* **Responsive design** that looks great on mobile, tablet, and desktop.
+* Clean, component-driven code structure in the `src/` folder for easy customization.
+
+---
+
+## 🧭 What’s included
+
+```
+PORTFOLIO-WEBSITE/
+├─ src/                 # React components and assets
+├─ index.html           # App entry HTML
+├─ package.json         # Scripts & dependencies
+├─ vite.config.js       # Vite configuration
+├─ eslint.config.js     # Linting rules
+└─ README.md            # (you’re reading it)
+```
+
+> Note: The `src/` folder contains the React app (components, styles, images). Open it to quickly locate and change sections like About, Projects, and Contact.
+
+---
+
+## 🛠️ Tech Stack
+
+* **React** — UI library
+* **Vite** — Development server + build
+* **ESLint** — Code quality
+
+---
+
+## 🚀 Run locally
+
+Clone the repo and run locally with npm:
+
+```bash
+# clone
+git clone https://github.com/soumyadip-adak99/PORTFOLIO-WEBSITE.git
+cd PORTFOLIO-WEBSITE
+
+# install dependencies
+npm install
+
+# start dev server
+npm run dev
+
+# build for production
+npm run build
+```
+
+> After running `npm run dev` open the URL shown in the terminal (usually `http://localhost:5173`) to preview the site.
+
+
+
+
+
+

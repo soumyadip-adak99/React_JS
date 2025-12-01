@@ -1,10 +1,9 @@
-import { useRef } from "react"
-import { motion, useInView } from "framer-motion"
-import { useTheme } from "../../context/ThemeContext"
-import { PROJECTS } from "../../utils/data"
-import ProjectCard from "../ProjectCard"
-import { containerVariants, itemVariants } from "../../utils/helper"
-
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { useTheme } from "../../context/ThemeContext";
+import { PROJECTS } from "../../utils/data";
+import ProjectCard from "../ProjectCard";
+import { containerVariants, itemVariants } from "../../utils/helper";
 
 function ProjectsSection() {
     const { isDarkMode } = useTheme();
@@ -15,18 +14,21 @@ function ProjectsSection() {
         <section
             id="work"
             ref={sectionRef}
-            className={`py-10 px-6 ${isDarkMode ? "bg-gray-950 text-white" : "bg-gray-50 text-gray-900"
-                } relative overflow-hidden`}
+            className={`py-10 px-6 ${
+                isDarkMode ? "bg-gray-950 text-white" : "bg-gray-50 text-gray-900"
+            } relative overflow-hidden`}
         >
             {/* Background elements */}
             <div className="absolute inset-0 overflow-hidden">
                 <div
-                    className={`absolute top-20 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-5 ${isDarkMode ? "bg-blue-500" : "bg-blue-400"
-                        }`}
+                    className={`absolute top-20 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-5 ${
+                        isDarkMode ? "bg-blue-500" : "bg-blue-400"
+                    }`}
                 />
                 <div
-                    className={`absolute bottom-20 right-1/4 w-80 h-80 rounded-full blur-3xl opacity-5 ${isDarkMode ? "bg-purple-500" : "bg-purple-400"
-                        }`}
+                    className={`absolute bottom-20 right-1/4 w-80 h-80 rounded-full blur-3xl opacity-5 ${
+                        isDarkMode ? "bg-purple-500" : "bg-purple-400"
+                    }`}
                 />
             </div>
 
@@ -40,8 +42,9 @@ function ProjectsSection() {
                 >
                     <motion.div
                         variants={itemVariants}
-                        className={`text-sm uppercase tracking-widest ${isDarkMode ? "text-gray-500" : "text-gray-600"
-                            } mb-4`}
+                        className={`text-sm uppercase tracking-widest ${
+                            isDarkMode ? "text-gray-500" : "text-gray-600"
+                        } mb-4`}
                     >
                         Featured Work
                     </motion.div>
@@ -56,11 +59,12 @@ function ProjectsSection() {
 
                     <motion.p
                         variants={itemVariants}
-                        className={`text-lg ${isDarkMode ? "text-gray-400" : "text-gray-600"
-                            } max-w-2xl mx-auto font-light`}
+                        className={`text-lg ${
+                            isDarkMode ? "text-gray-400" : "text-gray-600"
+                        } max-w-2xl mx-auto font-light`}
                     >
-                        A collection of projects that showcase my expertise in building modern
-                        web applications and solving complex problems.
+                        A collection of projects that showcase my expertise in building modern web
+                        applications and solving complex problems.
                     </motion.p>
                 </motion.div>
 
