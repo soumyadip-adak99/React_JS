@@ -9,7 +9,7 @@ interface todoState {
     todos: todoType[];
 }
 
-// load totods from localStorage
+// Load todos from localStorage
 const loadTodos = () => {
     try {
         const stored = localStorage.getItem("todos");
@@ -20,6 +20,11 @@ const loadTodos = () => {
     }
 };
 
+// Helper function to save todos to localStorage
+const saveTodos = (todos: todoType[]) => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+};
+
 const initialState: todoState = {
     todos: loadTodos(),
 };
@@ -27,24 +32,29 @@ const initialState: todoState = {
 export const todoSlice = createSlice({
     name: "todo",
     initialState,
-    // reducers take properties and functions
     reducers: {
         addTodo: (state, action) => {
-            const todo = {
+            const newTodo = {
                 id: nanoid(),
                 text: action.payload,
             };
+            state.todos.push(newTodo);
 
-            state.todos.push(todo);
+            saveTodos(state.todos);
         },
+
         removeTodo: (state, action) => {
             state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+
+            saveTodos(state.todos);
         },
 
         updateTodo: (state, action) => {
             state.todos = state.todos.map((todo) =>
                 todo.id === action.payload.id ? { ...todo, text: action.payload.text } : todo
             );
+
+            saveTodos(state.todos); 
         },
     },
 });

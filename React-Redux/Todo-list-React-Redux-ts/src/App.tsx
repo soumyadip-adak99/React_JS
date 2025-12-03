@@ -1,5 +1,13 @@
+import AddTodo from "./components/AddTodo";
+import Todos from "./components/Todos";
+
 function App() {
-    return <div className="text-2xl bg-green-300">App</div>;
+    return (
+        <div>
+            <AddTodo />
+            <Todos />
+        </div>
+    );
 }
 
 export default App;
