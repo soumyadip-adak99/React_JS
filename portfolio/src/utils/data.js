@@ -114,6 +114,18 @@ export const PROJECTS = [
 
     {
         id: 3,
+        title: "E-Commerce Website",
+        description: "A fully functional E-Commerce website build in MERN stack",
+        image: PROJECT_IMG_6,
+        tags: ["MongoDB", "Express", "React", "Node.JS", "Tailwind"],
+        liveUrl: "",
+        githubUrl: "https://github.com/soumyadip-adak99/mern-ecommerce-app",
+        featured: false,
+        category: "Web App",
+    },
+
+    {
+        id: 4,
         title: "Doctor Recommendation Web App",
         description:
             "This is a Machine Learning project this project recommended doctors according to the desies",
@@ -126,7 +138,7 @@ export const PROJECTS = [
     },
 
     {
-        id: 4,
+        id: 5,
         title: "Portfolio Website",
         description:
             "This is my own portfolio web site that show case my projects and tell about me",
@@ -139,7 +151,7 @@ export const PROJECTS = [
     },
 
     {
-        id: 4,
+        id: 6,
         title: "Personal Expense Tracker",
         description:
             "Personal Expense Tracker where you can track your daily and monthly expenses and vide the analytics",
@@ -149,19 +161,6 @@ export const PROJECTS = [
         githubUrl: "https://github.com/soumyadip-adak99/PERSONAL_EXPENSE_TRACKER",
         featured: true,
         category: "Web App",
-    },
-
-    {
-        id: 5,
-        title: "Snake Game",
-        description:
-            "This is my first step in game development, to develop a Snake game using Java",
-        image: PROJECT_IMG_6,
-        tags: ["JAVA"],
-        liveUrl: "",
-        githubUrl: "https://github.com/soumyadip-adak99/Snake_Game",
-        featured: false,
-        category: "Application",
     },
 ];
 
