@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { ThemeProvider } from "./context/ThemeContext";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
+import Scrolltop from "./utils/Scrolltop";
 
 const App = () => {
     useEffect(() => {
@@ -23,6 +24,7 @@ const App = () => {
     return (
         <>
             <BrowserRouter>
+                <Scrolltop />
                 <ThemeProvider>
                     <Routes>
                         <Route path="/" element={<Index />} />

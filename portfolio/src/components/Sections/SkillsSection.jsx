@@ -176,22 +176,40 @@ export default function SkillsSection() {
 
                     <motion.div
                         variants={itemVariants}
-                        className="flex flex-wrap justify-center gap-3"
+                        className="relative w-full overflow-x-hidden"
+                        style={{
+                            maskImage:
+                                "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+                            WebkitMaskImage:
+                                "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+                        }}
                     >
-                        {TECH_STACK.map((tech) => (
-                            <motion.span
-                                key={tech}
-                                whileHover={{ y: -2, scale: 1.05 }}
-                                className={`px-4 py-2 text-sm rounded-full border transition-all duration-100
-                                        ${
-                                            isDarkMode
-                                                ? "bg-gray-900 border-gray-700 text-gray-300 hover:border-gray-600"
-                                                : "bg-white border-gray-300 text-gray-700 hover:border-gray-400"
-                                        }`}
-                            >
-                                {tech}
-                            </motion.span>
-                        ))}
+                        <motion.div
+                            className="flex gap-3"
+                            animate={{
+                                translateX: ["0%", "-50%"],
+                            }}
+                            transition={{
+                                ease: "linear",
+                                duration: 25, // Adjust duration for speed
+                                repeat: Infinity,
+                                repeatType: "loop",
+                            }}
+                            whileHover={{ paused: true }}
+                        >
+                            {[...TECH_STACK, ...TECH_STACK].map((tech, index) => (
+                                <span
+                                    key={`${tech}-${index}`}
+                                    className={`px-4 py-2 text-sm rounded-full border whitespace-nowrap transition-colors duration-300 ${
+                                        isDarkMode
+                                            ? "bg-gray-900 border-gray-700 text-gray-300"
+                                            : "bg-white border-gray-200 text-gray-700"
+                                    }`}
+                                >
+                                    {tech}
+                                </span>
+                            ))}
+                        </motion.div>
                     </motion.div>
                 </motion.div>
 

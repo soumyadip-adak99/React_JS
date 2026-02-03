@@ -76,7 +76,20 @@ export const SKILLS_CATEGORY = [
     },
 ];
 
-export const TECH_STACK = ["Java", "Python", "JavaScript", "HTML5", "CSS3"];
+export const TECH_STACK = [
+    "Java",
+    "Python",
+    "JavaScript",
+    "Spring Boot",
+    "NodeJS",
+    "Express",
+    "React",
+    "HTML5",
+    "CSS3",
+    "MySQL",
+    "MongoDB",
+    "Redis",
+];
 
 export const STATS = [
     { number: "8+", label: "Projects Completed" },

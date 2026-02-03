@@ -34,6 +34,7 @@ export default function Navbar() {
                 {/* Logo */}
                 <motion.div
                     whileHover={{ scale: 1.05 }}
+                    // transition={{ type: "spring", stiffness: 400 }}
                     className="flex items-center space-x-2 cursor-pointer select-none"
                 >
                     <Code2 size={24} className="text-blue-500" />
@@ -45,6 +46,27 @@ export default function Navbar() {
                         Time to Code
                     </span>
                 </motion.div>
+
+                {/* <motion.div
+                    className="inline-flex items-center space-x-3"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 400 }}
+                >
+                    <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                        className="text-blue-500"
+                    >
+                        <Code2 size={28} />
+                    </motion.div>
+                    <span
+                        className={`text-lg ml-1 font-bold tracking-wide ${
+                            isDarkMode ? "text-gray-300" : "text-gray-700"
+                        }`}
+                    >
+                        Time to Code
+                    </span>
+                </motion.div> */}
 
                 {/* Desktop Navigation */}
                 <div className="hidden md:flex items-center space-x-8">
