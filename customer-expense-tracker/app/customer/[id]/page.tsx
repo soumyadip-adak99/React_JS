@@ -26,6 +26,7 @@ export default function CustomerPage() {
 
   const [isDueOpen, setIsDueOpen] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState<any | null>(null);
 
   if (customer === null) {
     return (
@@ -187,7 +188,11 @@ export default function CustomerPage() {
                 </TableRow>
               ) : (
                 customer.transactions.map((tx: any) => (
-                  <TableRow key={tx._id} className="group">
+                  <TableRow 
+                    key={tx._id} 
+                    className="group cursor-pointer hover:bg-muted/50 transition-colors"
+                    onClick={() => setSelectedTransaction(tx)}
+                  >
                     <TableCell className="font-medium text-sm">
                       {format(new Date(tx.date), "MMM d, yyyy")}
                     </TableCell>
@@ -205,7 +210,7 @@ export default function CustomerPage() {
                     <TableCell className={`text-right font-bold tracking-tight ${tx.type === "payment" ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"}`}>
                       {tx.type === "payment" ? "-" : "+"}₹{tx.amount.toLocaleString()}
                     </TableCell>
-                    <TableCell>
+                    <TableCell onClick={(e) => e.stopPropagation()}>
                       <DeleteTransactionDialog
                         transactionId={tx._id}
                         type={tx.type}
@@ -221,6 +226,45 @@ export default function CustomerPage() {
         </div>
       </Card>
 
+      {/* Transaction Details Dialog */}
+      <Dialog open={!!selectedTransaction} onOpenChange={(open) => !open && setSelectedTransaction(null)}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Transaction Details</DialogTitle>
+          </DialogHeader>
+          {selectedTransaction && (
+            <div className="space-y-4 pt-4">
+              <div className="flex justify-between items-center border-b border-border/50 pb-4">
+                <span className="text-muted-foreground">Type</span>
+                <Badge
+                  variant={selectedTransaction.type === "payment" ? "default" : "destructive"}
+                  className={selectedTransaction.type === "payment" ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300" : "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300"}
+                >
+                  {selectedTransaction.type === "payment" ? "Payment Received" : "Due Added"}
+                </Badge>
+              </div>
+              <div className="flex justify-between items-center border-b border-border/50 pb-4">
+                <span className="text-muted-foreground">Amount</span>
+                <span className={`text-xl font-bold tracking-tight ${selectedTransaction.type === "payment" ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"}`}>
+                  ₹{selectedTransaction.amount.toLocaleString()}
+                </span>
+              </div>
+              <div className="flex justify-between items-center border-b border-border/50 pb-4">
+                <span className="text-muted-foreground">Date</span>
+                <span className="font-medium">
+                  {format(new Date(selectedTransaction.date), "PPP")}
+                </span>
+              </div>
+              <div className="flex justify-between items-start pt-2">
+                <span className="text-muted-foreground">Note</span>
+                <span className="font-medium text-right max-w-[200px] break-words whitespace-pre-wrap">
+                  {selectedTransaction.note || "-"}
+                </span>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
     </div>
   );
