@@ -21,9 +21,9 @@ import { DeleteTransactionDialog } from "@/components/customers/DeleteTransactio
 export default function CustomerPage() {
   const params = useParams();
   const id = params.id as Id<"customers">;
-  
+
   const customer = useQuery(api.customers.getCustomerById, { id });
-  
+
   const [isDueOpen, setIsDueOpen] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
@@ -87,10 +87,10 @@ export default function CustomerPage() {
               </div>
             </div>
             {customer.notes && (
-               <div className="mt-6 pt-4 border-t border-border/50 text-sm text-muted-foreground bg-muted/30 p-4 rounded-lg">
-                 <strong className="text-foreground/80 font-medium block mb-1">Notes:</strong> 
-                 {customer.notes}
-               </div>
+              <div className="mt-6 pt-4 border-t border-border/50 text-sm text-muted-foreground bg-muted/30 p-4 rounded-lg">
+                <strong className="text-foreground/80 font-medium block mb-1">Notes:</strong>
+                {customer.notes}
+              </div>
             )}
           </CardContent>
         </Card>
@@ -118,7 +118,7 @@ export default function CustomerPage() {
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h2 className="text-xl font-semibold tracking-tight">Transaction History</h2>
-        
+
         <div className="flex gap-2 w-full sm:w-auto">
           <Dialog open={isPaymentOpen} onOpenChange={setIsPaymentOpen}>
             <DialogTrigger
@@ -132,10 +132,10 @@ export default function CustomerPage() {
               <DialogHeader>
                 <DialogTitle>Record Payment for {customer.name}</DialogTitle>
               </DialogHeader>
-              <AddTransactionForm 
-                customerId={id} 
-                type="payment" 
-                onSuccess={() => setIsPaymentOpen(false)} 
+              <AddTransactionForm
+                customerId={id}
+                type="payment"
+                onSuccess={() => setIsPaymentOpen(false)}
               />
             </DialogContent>
           </Dialog>
@@ -152,10 +152,10 @@ export default function CustomerPage() {
               <DialogHeader>
                 <DialogTitle>Add Due for {customer.name}</DialogTitle>
               </DialogHeader>
-              <AddTransactionForm 
-                customerId={id} 
-                type="due" 
-                onSuccess={() => setIsDueOpen(false)} 
+              <AddTransactionForm
+                customerId={id}
+                type="due"
+                onSuccess={() => setIsDueOpen(false)}
               />
             </DialogContent>
           </Dialog>
@@ -192,7 +192,7 @@ export default function CustomerPage() {
                       {format(new Date(tx.date), "MMM d, yyyy")}
                     </TableCell>
                     <TableCell>
-                      <Badge 
+                      <Badge
                         variant={tx.type === "payment" ? "default" : "destructive"}
                         className={tx.type === "payment" ? "bg-emerald-100 text-emerald-800 hover:bg-emerald-200 dark:bg-emerald-900/50 dark:text-emerald-300 pointer-events-none" : "bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/50 dark:text-red-300 pointer-events-none"}
                       >
@@ -220,25 +220,8 @@ export default function CustomerPage() {
           </Table>
         </div>
       </Card>
-      
-      {/* Mobile FABs */}
-      <div className="sm:hidden fixed bottom-6 right-6 flex flex-col gap-3 z-40">
-        <Button 
-          size="icon" 
-          variant="outline"
-          className="h-12 w-12 rounded-full shadow-lg border-emerald-200 bg-background text-emerald-600 dark:border-emerald-800"
-          onClick={() => setIsPaymentOpen(true)}
-        >
-          <CreditCard className="h-5 w-5" />
-        </Button>
-        <Button 
-          size="icon" 
-          className="h-14 w-14 rounded-full shadow-lg"
-          onClick={() => setIsDueOpen(true)}
-        >
-          <ReceiptIndianRupee className="h-6 w-6" />
-        </Button>
-      </div>
+
+
     </div>
   );
 }

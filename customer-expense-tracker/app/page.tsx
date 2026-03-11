@@ -134,16 +134,7 @@ export default function Dashboard() {
         )}
       </div>
       
-      {/* Mobile FAB */}
-      <div className="sm:hidden fixed bottom-6 right-6 z-40">
-        <Button 
-          size="icon" 
-          className="h-14 w-14 rounded-full shadow-lg"
-          onClick={() => setIsAddCustomerOpen(true)}
-        >
-          <Plus className="h-6 w-6" />
-        </Button>
-      </div>
+
     </div>
   );
 }
