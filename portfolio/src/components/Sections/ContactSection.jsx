@@ -76,19 +76,19 @@ export default function ContactSection() {
             id="contact"
             ref={sectionRef}
             className={`py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 ${
-                isDarkMode ? "bg-gray-950 text-white" : "bg-gray-50 text-gray-900"
+                isDarkMode ? "bg-black text-white" : "bg-gray-50 text-gray-900"
             } relative overflow-hidden`}
         >
             {/* background element */}
             <motion.div style={{ y }} className="absolute inset-0 overflow-hidden">
                 <div
-                    className={`absolute top-10 sm:top-20 left-1/4 w-48 h-48 sm:w-72 sm:h-72 rounded-full blur-3xl opacity-5 ${
-                        isDarkMode ? "bg-blue-500" : "bg-blue-400"
+                    className={`absolute top-10 sm:top-20 left-1/4 w-48 h-48 sm:w-72 sm:h-72 rounded-full blur-3xl ${
+                        isDarkMode ? "opacity-8 bg-orange-500" : "opacity-5 bg-orange-400"
                     }`}
                 />
                 <div
-                    className={`absolute bottom-20 sm:bottom-40 right-1/4 w-56 h-56 sm:w-80 sm:h-80 rounded-full blur-3xl opacity-5 ${
-                        isDarkMode ? "bg-purple-500" : "bg-purple-400"
+                    className={`absolute bottom-20 sm:bottom-40 right-1/4 w-56 h-56 sm:w-80 sm:h-80 rounded-full blur-3xl ${
+                        isDarkMode ? "opacity-5 bg-amber-500" : "opacity-5 bg-amber-400"
                     }`}
                 />
             </motion.div>
@@ -115,7 +115,7 @@ export default function ContactSection() {
                         className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light mb-4 sm:mb-6 px-2"
                     >
                         Get in
-                        <span className="text-blue-500 font-medium"> Touch</span>
+                        <span className="text-orange-500 font-medium"> Touch</span>
                     </motion.h2>
 
                     <motion.p
@@ -141,7 +141,7 @@ export default function ContactSection() {
                             variants={itemVariants}
                             className={`p-4 sm:p-6 lg:p-8 rounded-2xl border ${
                                 isDarkMode
-                                    ? "bg-gray-800/50 border-gray-700 backdrop-blur-sm"
+                                    ? "bg-zinc-900/60 border-white/5 backdrop-blur-sm"
                                     : "bg-gray-50/80 border-gray-200 backdrop-blur-sm"
                             }`}
                         >
@@ -185,7 +185,7 @@ export default function ContactSection() {
                                     whileTap={isFormValid ? { scale: 0.98 } : {}}
                                     className={`w-full py-3 sm:py-4 rounded-xl text-xs sm:text-sm uppercase tracking-wider font-medium transition-all duration-200 flex items-center justify-center space-x-2 ${
                                         isFormValid && !isSubmitting
-                                            ? "bg-blue-500 hover:bg-blue-600 text-white cursor-pointer"
+                                            ? "bg-orange-500 hover:bg-orange-600 text-white cursor-pointer shadow-lg shadow-orange-500/25"
                                             : "bg-gray-400 text-gray-200 cursor-not-allowed"
                                     }`}
                                 >
@@ -233,18 +233,18 @@ export default function ContactSection() {
                                         whileHover={{ x: 4 }}
                                         className={`flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 rounded-xl ${
                                             isDarkMode
-                                                ? "bg-gray-800/30 hover:bg-gray-800/50"
+                                                ? "bg-zinc-900/40 hover:bg-zinc-800/60"
                                                 : "bg-gray-200/50 hover:bg-gray-300/50"
                                         } transition-all duration-200`}
                                     >
                                         <div
                                             className={`p-2 sm:p-3 rounded-lg ${
-                                                isDarkMode ? "bg-gray-700" : "bg-white"
+                                                isDarkMode ? "bg-zinc-800" : "bg-white"
                                             } shrink-0`}
                                         >
                                             <info.icon
                                                 size={16}
-                                                className="sm:w-5 sm:h-5 text-blue-500"
+                                                className="sm:w-5 sm:h-5 text-orange-500"
                                             />
                                         </div>
                                         <div className="flex-1 min-w-0">
@@ -283,7 +283,7 @@ export default function ContactSection() {
                                         className={`flex items-center space-x-3 p-3 sm:p-4 rounded-xl border transition-all duration-200
                                             ${
                                                 isDarkMode
-                                                    ? "bg-gray-800/50 border-gray-700 hover:border-gray-600"
+                                                    ? "bg-zinc-900/60 border-white/5 hover:border-orange-500/30"
                                                     : "bg-white/80 border-gray-200 hover:border-gray-300"
                                             } ${social.bgColor} ${social.color}`}
                                     >

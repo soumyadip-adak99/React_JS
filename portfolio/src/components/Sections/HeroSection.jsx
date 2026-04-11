@@ -59,7 +59,7 @@ function HeroSection() {
     return (
         <div
             className={`min-h-screen transition-all duration-500 ${
-                isDarkMode ? "bg-gray-950 text-white" : "bg-gray-50 text-gray-900"
+                isDarkMode ? "bg-black text-white" : "bg-gray-50 text-gray-900"
             }`}
         >
             {/* Hero section */}
@@ -67,9 +67,10 @@ function HeroSection() {
             <motion.section
                 id="home"
                 style={{ y: heroY }}
-                className="min-h-screen flex items-center justify-center relative px-6 pt-8" // pt-10 optional
+                className="min-h-screen flex items-center justify-center relative px-6 pt-8"
             >
                 <div className="absolute inset-0 overflow-hidden">
+                    {/* Orange ambient glow – top right */}
                     <motion.div
                         animate={{
                             scale: [1, 1.1, 1],
@@ -80,10 +81,11 @@ function HeroSection() {
                             repeat: Infinity,
                             ease: "linear",
                         }}
-                        className={`absolute top-20 right-20 w-64 h-64 rounded-full blur-3xl opacity-10
-                            ${isDarkMode ? "bg-blue-500" : "bg-blue-400"}`}
+                        className={`absolute top-20 right-20 w-64 h-64 rounded-full blur-3xl
+                            ${isDarkMode ? "opacity-15 bg-orange-500" : "opacity-10 bg-orange-400"}`}
                     />
 
+                    {/* Amber ambient glow – bottom left */}
                     <motion.div
                         animate={{
                             scale: [1.1, 1, 1.1],
@@ -94,8 +96,8 @@ function HeroSection() {
                             repeat: Infinity,
                             ease: "linear",
                         }}
-                        className={`absolute bottom-20 left-20 w-48 h-48 rounded-full blur-3xl opacity-10
-                            ${isDarkMode ? "bg-purple-500" : "bg-purple-400"}`}
+                        className={`absolute bottom-20 left-20 w-48 h-48 rounded-full blur-3xl
+                            ${isDarkMode ? "opacity-10 bg-amber-500" : "opacity-8 bg-amber-400"}`}
                     />
                 </div>
 
@@ -116,7 +118,7 @@ function HeroSection() {
                                         whileHover={{ scale: 1.05 }}
                                         className={`w-full h-32 rounded-2xl overflow-hidden border-4 
                                             ${
-                                                isDarkMode ? "border-gray-800" : "border-gray-300"
+                                                isDarkMode ? "border-white/10" : "border-gray-300"
                                             } shadow-2xl`}
                                     >
                                         {isDarkMode ? (
@@ -132,10 +134,9 @@ function HeroSection() {
                                                 className="w-full h-full object-cover"
                                             />
                                         )}{" "}
-                                        {/*w-full h-full object-cover (optional)*/}
                                     </motion.div>
 
-                                    {/* Decorative ring */}
+                                    {/* Decorative ring – orange */}
                                     <motion.div
                                         animate={{ rotate: 360 }}
                                         transition={{
@@ -143,7 +144,7 @@ function HeroSection() {
                                             repeat: Infinity,
                                             ease: "linear",
                                         }}
-                                        className="absolute -inset-2 rounded-2xl border border-blue-500/20"
+                                        className="absolute -inset-2 rounded-2xl border border-orange-500/30"
                                     />
                                 </div>
                             </motion.div>
@@ -164,7 +165,7 @@ function HeroSection() {
                                 <span className={isDarkMode ? "text-white" : "text-gray-900"}>
                                     Building digital
                                 </span>
-                                <span className="text-blue-500 font-medium ml-2">experiences</span>
+                                <span className="text-orange-500 font-medium ml-2">experiences</span>
                                 <br />
 
                                 <span className={isDarkMode ? "text-white" : "text-gray-900"}>
@@ -192,7 +193,7 @@ function HeroSection() {
                                     whileHover={{ y: -2 }}
                                     whileTap={{ scale: 0.98 }}
                                     onClick={() => scrollToSection("work")}
-                                    className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full text-sm uppercase tracking-wider font-medium transition-all duration-300"
+                                    className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full text-sm uppercase tracking-wider font-medium transition-all duration-300 shadow-lg shadow-orange-500/25"
                                 >
                                     View Work
                                 </motion.button>
@@ -203,8 +204,8 @@ function HeroSection() {
                                     onClick={() => scrollToSection("contact")}
                                     className={`border ${
                                         isDarkMode
-                                            ? "border-gray-700 hover:border-gray-600 text-gray-300"
-                                            : "border-gray-300 hover:border-gray-400 text-gray-700"
+                                            ? "border-white/15 hover:border-orange-500/50 text-gray-300 hover:text-orange-400"
+                                            : "border-gray-300 hover:border-orange-400 text-gray-700 hover:text-orange-500"
                                     } px-8 py-3 rounded-full text-sm uppercase 
                                         tracking-wider font-medium transition-all duration-300`}
                                 >
@@ -232,8 +233,8 @@ function HeroSection() {
                                         whileHover={{ y: -3, scale: 1.1 }}
                                         className={`p-3 rounded-full transition-colors ${
                                             isDarkMode
-                                                ? "text-gray-400 hover:text-white hover:bg-gray-800"
-                                                : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+                                                ? "text-gray-400 hover:text-orange-400 hover:bg-orange-500/10"
+                                                : "text-gray-600 hover:text-orange-500 hover:bg-orange-100"
                                         }`}
                                     >
                                         <social.icon size={20} />
@@ -255,8 +256,6 @@ function HeroSection() {
                                 <span className={isDarkMode ? "text-gray-600" : "text-gray-500"}>
                                     React
                                 </span>
-                                {/* <span className={isDarkMode ? "text-gray-700" : "text-gray-400"}>.</span>
-                                <span className={isDarkMode ? "text-gray-600" : "text-gray-500"}>MySQL</span> */}
                                 <span className={isDarkMode ? "text-gray-700" : "text-gray-400"}>
                                     .
                                 </span>
@@ -292,7 +291,7 @@ function HeroSection() {
                                     Building digital
                                 </span>{" "}
                                 <br />
-                                <span className="text-blue-500  font-medium">experiences</span>{" "}
+                                <span className="text-orange-500 font-medium">experiences</span>{" "}
                                 <br />
                                 <span className={isDarkMode ? "text-white" : "text-gray-900"}>
                                     that matter
@@ -315,7 +314,7 @@ function HeroSection() {
                                     whileHover={{ y: -2 }}
                                     whileTap={{ scale: 0.98 }}
                                     onClick={() => scrollToSection("work")}
-                                    className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-full text-sm uppercase tracking-wider font-medium transition-all duration-300"
+                                    className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-full text-sm uppercase tracking-wider font-medium transition-all duration-300 shadow-lg shadow-orange-500/25"
                                 >
                                     View Work
                                 </motion.button>
@@ -326,8 +325,8 @@ function HeroSection() {
                                     onClick={() => scrollToSection("contact")}
                                     className={`border ${
                                         isDarkMode
-                                            ? "border-gray-700 hover:border-gray-600 text-gray-300"
-                                            : "border-gray-300 hover:border-gray-400 text-gray-700"
+                                            ? "border-white/15 hover:border-orange-500/50 text-gray-300 hover:text-orange-400"
+                                            : "border-gray-300 hover:border-orange-400 text-gray-700 hover:text-orange-500"
                                     } px-8 py-4 rounded-full text-sm uppercase tracking-wider font-medium transition-all duration-300`}
                                 >
                                     Get in Touch
@@ -344,8 +343,8 @@ function HeroSection() {
                                         whileHover={{ y: -3, scale: 1.1 }}
                                         className={`p-3 rounded-full transition-colors ${
                                             isDarkMode
-                                                ? "text-gray-400 hover:text-white hover:bg-gray-800"
-                                                : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+                                                ? "text-gray-400 hover:text-orange-400 hover:bg-orange-500/10"
+                                                : "text-gray-600 hover:text-orange-500 hover:bg-orange-100"
                                         }`}
                                     >
                                         <social.icon size={20} />
@@ -407,8 +406,8 @@ function HeroSection() {
                                 <motion.div
                                     whileHover={{ scale: 1.02 }}
                                     className={`w-80 h-96 rounded-2xl overflow-hidden border-4 ${
-                                        isDarkMode ? "border-gray-800" : "border-gray-300"
-                                    } shadow-2xl`}
+                                        isDarkMode ? "border-white/10" : "border-gray-300"
+                                    } shadow-2xl ${isDarkMode ? "shadow-orange-500/10" : ""}`}
                                 >
                                     {isDarkMode ? (
                                         <img
@@ -425,7 +424,7 @@ function HeroSection() {
                                     )}
                                 </motion.div>
 
-                                {/* decorative element */}
+                                {/* decorative rings – orange */}
                                 <motion.div
                                     animate={{ rotate: 360 }}
                                     transition={{
@@ -433,7 +432,7 @@ function HeroSection() {
                                         repeat: Infinity,
                                         ease: "linear",
                                     }}
-                                    className="absolute -inset-4 rounded-3xl border border-blue-500/20"
+                                    className="absolute -inset-4 rounded-3xl border border-orange-500/25"
                                 />
 
                                 <motion.div
@@ -443,7 +442,7 @@ function HeroSection() {
                                         repeat: Infinity,
                                         ease: "linear",
                                     }}
-                                    className="absolute -inset-8 rounded-3xl border border-purple-500/10"
+                                    className="absolute -inset-8 rounded-3xl border border-amber-500/10"
                                 />
                             </div>
                         </motion.div>

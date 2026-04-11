@@ -23,7 +23,7 @@ export default function Footer() {
             name: "LinkedIn",
             icon: FiLinkedin,
             url: "https://www.linkedin.com/in/soumyadip-adak-a19b03281/",
-            color: "hover:text-blue-400",
+            color: "hover:text-orange-400",
         },
         {
             name: "Twitter",
@@ -48,8 +48,8 @@ export default function Footer() {
             <motion.div
                 className={`h-px bg-linear-to-r ${
                     isDarkMode
-                        ? "from-transparent via-blue-500 to-transparent"
-                        : "from-transparent via-blue-600 to-transparent"
+                        ? "from-transparent via-orange-500 to-transparent"
+                        : "from-transparent via-orange-400 to-transparent"
                 }`}
                 initial={{ width: "0%", opacity: 0 }}
                 animate={isInView ? { width: "100%", opacity: 1 } : {}}
@@ -60,8 +60,8 @@ export default function Footer() {
                 className={`absolute top-0 h-px w-32 bg-linear-to-r 
                     ${
                         isDarkMode
-                            ? "from-blue-400 via-purple-500 to-blue-400"
-                            : "from-blue-500 via-purple-600 to-blue-500"
+                            ? "from-orange-400 via-amber-500 to-orange-400"
+                            : "from-orange-400 via-amber-400 to-orange-400"
                     } blur-sm`}
                 animate={{ x: ["-50%", "calc(100vw + 50%)"] }}
                 transition={{
@@ -81,7 +81,7 @@ export default function Footer() {
         <footer
             ref={footerRef}
             className={`relative ${
-                isDarkMode ? "bg-gray-950 text-white" : "bg-white text-gray-900"
+                isDarkMode ? "bg-black text-white" : "bg-white text-gray-900"
             } overflow-hidden `}
         >
             {/* Animated wave/gradient line */}
@@ -93,13 +93,13 @@ export default function Footer() {
                 className="absolute inset-0 overflow pointer-events-none"
             >
                 <div
-                    className={`absolute bottom-10 left-1/4 w-64 h-64 rounded-full blur-3xl opacity-30 ${
-                        isDarkMode ? "bg-blue-500" : "bg-blue-400"
+                    className={`absolute bottom-10 left-1/4 w-64 h-64 rounded-full blur-3xl ${
+                        isDarkMode ? "opacity-15 bg-orange-500" : "opacity-10 bg-orange-400"
                     }`}
                 />
                 <div
-                    className={`absolute top-10 right-1/4 w-48 h-48 rounded-full blur-3xl opacity-30 ${
-                        isDarkMode ? "bg-purple-500" : "bg-purple-400"
+                    className={`absolute top-10 right-1/4 w-48 h-48 rounded-full blur-3xl ${
+                        isDarkMode ? "opacity-8 bg-amber-500" : "opacity-10 bg-amber-400"
                     }`}
                 />
             </motion.div>
@@ -123,7 +123,7 @@ export default function Footer() {
                                 <motion.div
                                     animate={{ rotate: 360 }}
                                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                                    className="text-blue-500"
+                                    className="text-orange-500"
                                 >
                                     <Code2 size={28} />
                                 </motion.div>
@@ -152,7 +152,9 @@ export default function Footer() {
                                     href={link.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className={`text-xl transition-colors duration-200 ${link.color}`}
+                                    className={`text-xl transition-colors duration-200 ${
+                                        isDarkMode ? "text-gray-500" : "text-gray-400"
+                                    } ${link.color}`}
                                 >
                                     <link.icon />
                                 </a>
@@ -167,8 +169,8 @@ export default function Footer() {
                             whileTap={{ scale: 0.95 }}
                             className={`mx-auto flex items-center space-x-2 text-sm font-medium border px-4 py-2 rounded-full transition-colors duration-200 ${
                                 isDarkMode
-                                    ? "border-gray-700 hover:border-blue-500 hover:text-blue-400"
-                                    : "border-gray-300 hover:border-blue-500 hover:text-blue-600"
+                                    ? "border-white/10 hover:border-orange-500/50 hover:text-orange-400"
+                                    : "border-gray-300 hover:border-orange-400 hover:text-orange-500"
                             }`}
                         >
                             <ArrowUp size={16} />
@@ -178,7 +180,7 @@ export default function Footer() {
                         {/* Copyright */}
                         <motion.p
                             variants={itemVariants}
-                            className={`text-xs ${isDarkMode ? "text-gray-500" : "text-gray-500"}`}
+                            className={`text-xs ${isDarkMode ? "text-gray-600" : "text-gray-500"}`}
                         >
                             © {new Date().getFullYear()} Soumyadip Adak. All rights reserved.
                         </motion.p>

@@ -34,9 +34,9 @@ export const SKILLS_CATEGORY = [
             // { name: "HTML", level: 80, color: "bg-red-500" },
             // { name: "CSS", level: 85, color: "bg-blue-600" },
             // { name: "JS", level: 90, color: "bg-yellow-400" },
-            { name: "React", level: 80, color: "bg-blue-800" },
-            { name: "Tailwind Css", level: 90, color: "bg-blue-400" },
-            { name: "TypeScript", level: 60, color: "bg-blue-700" },
+            { name: "React", level: 80, color: "bg-orange-600" },
+            { name: "Tailwind Css", level: 90, color: "bg-orange-400" },
+            { name: "TypeScript", level: 60, color: "bg-orange-700" },
         ],
     },
 
@@ -58,8 +58,8 @@ export const SKILLS_CATEGORY = [
         description: "Developing and scaling applications",
         skills: [
             { name: "MongoDB", level: 80, color: "bg-green-600" },
-            { name: "MySQL", level: 70, color: "bg-blue-700" },
-            { name: "PostgreSQL", level: 60, color: "bg-blue-400" },
+            { name: "MySQL", level: 70, color: "bg-orange-700" },
+            { name: "PostgreSQL", level: 60, color: "bg-orange-400" },
             // { name: "Redis", level: 65, color: "bg-red-500" }
         ],
     },
@@ -69,7 +69,7 @@ export const SKILLS_CATEGORY = [
         icon: Cloud,
         description: "Developing and scaling applications",
         skills: [
-            { name: "Docker", level: 80, color: "bg-blue-600" },
+            { name: "Docker", level: 80, color: "bg-orange-500" },
             { name: "Vercel", level: 70, color: "bg-gray-600" },
             { name: "Git", level: 95, color: "bg-orange-700" },
         ],
@@ -185,7 +185,7 @@ export const JOURNEY_STEPS = [
         description:
             "Started programming with Java, explored problem solving, and began learning web development with HTML, CSS, and JavaScript.",
         icon: Code2,
-        color: "bg-blue-500",
+        color: "bg-orange-500",
     },
     {
         year: "2025",
@@ -265,8 +265,8 @@ export const SOCIAL_LINKS = [
         name: "LinkedIn",
         icon: FiLinkedin,
         url: "https://www.linkedin.com/in/soumyadip-adak-a19b03281/",
-        color: "hover:text-blue-400",
-        bgColor: "hover:bg-blue-500/10",
+        color: "hover:text-orange-400",
+        bgColor: "hover:bg-orange-500/10",
     },
     {
         name: "Twitter",
@@ -286,7 +286,7 @@ export const SOCIAL_LINKS = [
         name: "Facebook",
         icon: FiFacebook,
         url: "https://www.facebook.com/soumyadip.adak.99",
-        color: "hover:text-blue-600",
+        color: "hover:text-blue-500",
         bgColor: "hover:bg-blue-600/10",
     },
     {

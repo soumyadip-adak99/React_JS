@@ -37,19 +37,19 @@ export default function AboutSection() {
             id="about"
             ref={sectionRef}
             className={`py-10 px-6 ${
-                isDarkMode ? "bg-gray-950 text-white" : "bg-gray-50 text-gray-900"
+                isDarkMode ? "bg-black text-white" : "bg-gray-50 text-gray-900"
             } relative overflow-hidden`}
         >
             {/* background element */}
             <motion.div style={{ y }} className="absolute inset-0 overflow-hidden">
                 <div
-                    className={`absolute top-40 right-1/3 w-80 rounded-full blur-3xl opacity-5 ${
-                        isDarkMode ? "bg-blue-500" : "bg-blue-400"
+                    className={`absolute top-40 right-1/3 w-80 rounded-full blur-3xl ${
+                        isDarkMode ? "opacity-8 bg-orange-500" : "opacity-5 bg-orange-400"
                     }`}
                 />
                 <div
-                    className={`absolute bottom-20 left-1/3 w-96 rounded-full blur-3xl opacity-5 ${
-                        isDarkMode ? "bg-purple-500" : "bg-purple-400"
+                    className={`absolute bottom-20 left-1/3 w-96 rounded-full blur-3xl ${
+                        isDarkMode ? "opacity-5 bg-amber-500" : "opacity-5 bg-amber-400"
                     }`}
                 />
             </motion.div>
@@ -75,7 +75,7 @@ export default function AboutSection() {
                         variants={itemVariants}
                         className="text-3xl md:text-5xl font-light mb-6"
                     >
-                        About <span className="text-blue-500 font-medium">Me</span>
+                        About <span className="text-orange-500 font-medium">Me</span>
                     </motion.h2>
                 </motion.div>
 
@@ -91,7 +91,7 @@ export default function AboutSection() {
                             variants={itemVariants}
                             className={`p-8 rounded-2xl border ${
                                 isDarkMode
-                                    ? "bg-gray-800/50 border-gray-700 backdrop-blur-sm"
+                                    ? "bg-zinc-900/60 border-white/5 backdrop-blur-sm"
                                     : "bg-gray-100/80 border-gray-200 backdrop-blur-sm"
                             }`}
                         >
@@ -129,16 +129,16 @@ export default function AboutSection() {
                                         whileHover={{ x: 4 }}
                                         className={`flex items-center space-x-4 p-4 rounded-xl ${
                                             isDarkMode
-                                                ? "bg-gray-800/30 hover:bg-gray-800/50"
+                                                ? "bg-zinc-900/40 hover:bg-zinc-800/60"
                                                 : "bg-gray-200/50 hover:bg-gray-300/50"
                                         } transition-all duration-300`}
                                     >
                                         <div
                                             className={`p-3 rounded-lg ${
-                                                isDarkMode ? "bg-gray-700" : "bg-white"
+                                                isDarkMode ? "bg-zinc-800" : "bg-white"
                                             }`}
                                         >
-                                            <passion.icon size={20} className="text-blue-500" />
+                                            <passion.icon size={20} className="text-orange-500" />
                                         </div>
                                         <div>
                                             <h4 className="font-medium mb-1">{passion.title}</h4>
@@ -167,7 +167,7 @@ export default function AboutSection() {
                             <div className="flex justify-center">
                                 <img src={SIGNATURE} alt="soumya" className="w-70" />
                             </div>
-                            <div className="text-2xl font-medium text-blue-500 mt-2">
+                            <div className="text-2xl font-medium text-orange-500 mt-2">
                                 Soumyadip Adak
                             </div>
                         </motion.div>
@@ -188,7 +188,7 @@ export default function AboutSection() {
                         {/* timeline line */}
                         <div
                             className={`absolute left-8 lg:left-8 top-16 bottom-0 w-px z-0 ${
-                                isDarkMode ? "bg-gray-700" : "bg-gray-300"
+                                isDarkMode ? "bg-white/10" : "bg-gray-300"
                             }`}
                         />
 
@@ -211,7 +211,7 @@ export default function AboutSection() {
                                     <div
                                         className={`grow p-6 rounded-xl border transition-all duration-300 ${
                                             isDarkMode
-                                                ? "bg-gray-800/50 border-gray-700 group-hover:border-gray-600 group-hover:bg-gray-800/70"
+                                                ? "bg-zinc-900/60 border-white/5 group-hover:border-orange-500/20 group-hover:bg-zinc-900/80"
                                                 : "bg-white/80 border-gray-200 group-hover:border-gray-300 group-hover:bg-white"
                                         } backdrop-blur-sm`}
                                     >
@@ -220,7 +220,7 @@ export default function AboutSection() {
                                             <span
                                                 className={`text-sm px-3 py-1 rounded-full ${
                                                     isDarkMode
-                                                        ? "bg-gray-700 text-gray-300"
+                                                        ? "bg-zinc-800 text-gray-300"
                                                         : "bg-gray-100 text-gray-700"
                                                 }`}
                                             >
@@ -229,7 +229,7 @@ export default function AboutSection() {
                                         </div>
                                         <div
                                             className={`text-sm font-medium ${
-                                                isDarkMode ? "text-blue-400" : "text-blue-600"
+                                                isDarkMode ? "text-orange-400" : "text-orange-600"
                                             } mb-3`}
                                         >
                                             {step.company}
@@ -266,7 +266,7 @@ export default function AboutSection() {
                         <motion.button
                             whileHover={{ y: -2, scale: 1.05 }}
                             whileTap={{ scale: 0.98 }}
-                            className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full text-sm uppercase tracking-wider font-medium transition-all duration-100 cursor-pointer"
+                            className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full text-sm uppercase tracking-wider font-medium transition-all duration-100 cursor-pointer shadow-lg shadow-orange-500/25"
                         >
                             Let's Work Together
                         </motion.button>

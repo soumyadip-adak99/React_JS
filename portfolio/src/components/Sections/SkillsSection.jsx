@@ -34,20 +34,20 @@ export default function SkillsSection() {
             ref={sectionRef}
             id="skills"
             className={`scroll-mt-24 py-4 px-10 ${
-                isDarkMode ? "bg-gray-950 text-white" : "bg-gray-50 text-gray-900"
+                isDarkMode ? "bg-black text-white" : "bg-gray-50 text-gray-900"
             } relative overflow-hidden`}
         >
             {/* Background elements */}
             <motion.div style={{ y }} className="absolute inset-0 overflow-hidden">
                 <div
-                    className={`absolute top-40 right-1/4 w-full h-64 rounded-full blur-3xl opacity-5 ${
-                        isDarkMode ? "bg-blue-500" : "bg-blue-500"
+                    className={`absolute top-40 right-1/4 w-full h-64 rounded-full blur-3xl ${
+                        isDarkMode ? "opacity-8 bg-orange-500" : "opacity-5 bg-orange-400"
                     }`}
                 />
 
                 <div
-                    className={`absolute bottom-40 left-1/4 w-64 h-64 rounded-full blur-3xl opacity-5 ${
-                        isDarkMode ? "bg-purple-500" : "bg-purple-400"
+                    className={`absolute bottom-40 left-1/4 w-64 h-64 rounded-full blur-3xl ${
+                        isDarkMode ? "opacity-5 bg-amber-500" : "opacity-5 bg-amber-400"
                     }`}
                 />
             </motion.div>
@@ -73,7 +73,7 @@ export default function SkillsSection() {
                         variants={itemVariants}
                         className="text-3xl md:text-5xl font-light mb-6"
                     >
-                        Skills & <span className="text-blue-500 font-medium">Technologies</span>
+                        Skills & <span className="text-orange-500 font-medium">Technologies</span>
                     </motion.h2>
 
                     <motion.p
@@ -100,17 +100,17 @@ export default function SkillsSection() {
                             variants={itemVariants}
                             className={`p-8 rounded-2xl border ${
                                 isDarkMode
-                                    ? "bg-gray-900/50 border-gray-800 backdrop-blur-sm"
+                                    ? "bg-zinc-900/60 border-white/5 backdrop-blur-sm"
                                     : "bg-white/80 border-gray-200 backdrop-blur-sm"
                             }`}
                         >
                             <div className="flex items-center mb-6">
                                 <div
                                     className={`p-3 rounded-xl ${
-                                        isDarkMode ? "bg-gray-800" : "bg-gray-100"
+                                        isDarkMode ? "bg-zinc-800" : "bg-gray-100"
                                     } mr-4`}
                                 >
-                                    <category.icon size={20} className="text-blue-500" />
+                                    <category.icon size={20} className="text-orange-500" />
                                 </div>
                                 <div>
                                     <h3 className="text-xl font-medium mb-1">{category.title}</h3>
@@ -143,7 +143,7 @@ export default function SkillsSection() {
 
                                         <div
                                             className={`h-2 rounded-full overflow-hidden ${
-                                                isDarkMode ? "bg-gray-800" : "bg-gray-200"
+                                                isDarkMode ? "bg-zinc-800" : "bg-gray-200"
                                             }`}
                                         >
                                             <motion.div
@@ -191,7 +191,7 @@ export default function SkillsSection() {
                             }}
                             transition={{
                                 ease: "linear",
-                                duration: 25, // Adjust duration for speed
+                                duration: 25,
                                 repeat: Infinity,
                                 repeatType: "loop",
                             }}
@@ -202,8 +202,8 @@ export default function SkillsSection() {
                                     key={`${tech}-${index}`}
                                     className={`px-4 py-2 text-sm rounded-full border whitespace-nowrap transition-colors duration-300 ${
                                         isDarkMode
-                                            ? "bg-gray-900 border-gray-700 text-gray-300"
-                                            : "bg-white border-gray-200 text-gray-700"
+                                            ? "bg-zinc-900 border-white/10 text-gray-300 hover:border-orange-500/40 hover:text-orange-400"
+                                            : "bg-white border-gray-200 text-gray-700 hover:border-orange-300 hover:text-orange-500"
                                     }`}
                                 >
                                     {tech}
@@ -226,7 +226,7 @@ export default function SkillsSection() {
                             variants={itemVariants}
                             className="flex flex-col items-center justify-center"
                         >
-                            <div className="text-2xl md:text-3xl font-light text-blue-500 mb-2">
+                            <div className="text-2xl md:text-3xl font-light text-orange-500 mb-2">
                                 {stat.number}
                             </div>
 

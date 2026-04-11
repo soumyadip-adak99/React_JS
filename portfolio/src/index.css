@@ -1,17 +1,83 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────
+   ORANGE DESIGN SYSTEM – CSS Custom Props
+   ───────────────────────────────────────── */
 :root {
     --font-display: "Urbanist", sans-serif;
+
+    /* Orange Palette */
+    --color-accent:         #f97316; /* orange-500 */
+    --color-accent-light:   #fb923c; /* orange-400 */
+    --color-accent-dark:    #ea580c; /* orange-600 */
+    --color-accent-muted:   #fdba74; /* orange-300 */
+    --color-accent-glow:    rgba(249, 115, 22, 0.35);
+
+    /* Light Mode tokens */
+    --color-bg:             #f9fafb; /* gray-50  */
+    --color-bg-secondary:   #ffffff;
+    --color-bg-card:        rgba(255, 255, 255, 0.85);
+    --color-border:         #e5e7eb; /* gray-200 */
+    --color-border-hover:   #d1d5db; /* gray-300 */
+    --color-text-primary:   #111827; /* gray-900 */
+    --color-text-secondary: #4b5563; /* gray-600 */
+    --color-text-muted:     #6b7280; /* gray-500 */
+    --color-icon-bg:        #f3f4f6; /* gray-100 */
+    --color-tag-bg:         #f3f4f6;
+    --color-tag-text:       #374151; /* gray-700 */
+    --glow-intensity:       0.08;
 }
 
+/* Dark Mode overrides */
+.dark {
+    --color-bg:             #000000;
+    --color-bg-secondary:   #0a0a0a;
+    --color-bg-card:        rgba(17, 17, 17, 0.75);
+    --color-border:         #1f1f1f;
+    --color-border-hover:   #2a2a2a;
+    --color-text-primary:   #ffffff;
+    --color-text-secondary: #9ca3af; /* gray-400 */
+    --color-text-muted:     #6b7280; /* gray-500 */
+    --color-icon-bg:        #1a1a1a;
+    --color-tag-bg:         #1a1a1a;
+    --color-tag-text:       #d1d5db; /* gray-300 */
+    --glow-intensity:       0.25;
+}
+
+/* ─────────────────────────────────────────
+   Global Resets
+   ───────────────────────────────────────── */
 @layer {
     html {
         font-family: var(--font-display);
+        color-scheme: dark light;
     }
 
     body {
-        background-color: #000000;
+        background-color: var(--color-bg);
+        color: var(--color-text-primary);
         overflow-x: hidden;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Orange glow utility */
+    .glow-orange {
+        box-shadow: 0 0 30px var(--color-accent-glow);
+    }
+
+    /* Smooth scrollbar */
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: var(--color-bg);
+    }
+    ::-webkit-scrollbar-thumb {
+        background: var(--color-accent-dark);
+        border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--color-accent);
     }
 }

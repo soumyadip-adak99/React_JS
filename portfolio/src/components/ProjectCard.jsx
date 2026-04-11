@@ -28,8 +28,8 @@ function ProjectCard({ project, index, isDarkMode }) {
             <div
                 className={`rounded-2xl overflow-hidden border transition-all duration-500 ${
                     isDarkMode
-                        ? "bg-gray-900/50 border-gray-800 hover:border-gray-700 hover:shadow-2xl hover:shadow-blue-500/10"
-                        : "bg-white/80 border-gray-200 hover:border-gray-300 hover:shadow-2xl hover:shadow-blue-500/10"
+                        ? "bg-zinc-900/60 border-white/5 hover:border-orange-500/20 hover:shadow-2xl hover:shadow-orange-500/10"
+                        : "bg-white/80 border-gray-200 hover:border-gray-300 hover:shadow-2xl hover:shadow-orange-500/10"
                 } backdrop-blur-sm`}
             >
                 {/* Project image */}
@@ -43,7 +43,7 @@ function ProjectCard({ project, index, isDarkMode }) {
                     {/* Featured badge */}
                     {project.featured && (
                         <div className="absolute top-4 left-4">
-                            <span className="bg-blue-500 text-white text-xs px-3 py-1 rounded-full">
+                            <span className="bg-orange-500 text-white text-xs px-3 py-1 rounded-full">
                                 Featured
                             </span>
                         </div>
@@ -54,7 +54,7 @@ function ProjectCard({ project, index, isDarkMode }) {
                         <span
                             className={`text-xs px-3 py-1 rounded-full font-medium ${
                                 isDarkMode
-                                    ? "bg-gray-800/80 text-gray-300"
+                                    ? "bg-black/70 text-gray-300"
                                     : "bg-white/80 text-gray-700"
                             } backdrop-blur-sm`}
                         >
@@ -75,7 +75,7 @@ function ProjectCard({ project, index, isDarkMode }) {
                                 href={project.liveUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full flex items-center space-x-2 text-sm font-medium transition-colors"
+                                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full flex items-center space-x-2 text-sm font-medium transition-colors"
                             >
                                 <ExternalLink size={16} />
                                 <span>Live Demo</span>
@@ -96,7 +96,7 @@ function ProjectCard({ project, index, isDarkMode }) {
 
                 {/* Project details */}
                 <div className="p-6">
-                    <h3 className="text-xl font-medium mb-2 group-hover:text-blue-500 transition-colors">
+                    <h3 className="text-xl font-medium mb-2 group-hover:text-orange-500 transition-colors">
                         {project.title}
                     </h3>
                     <p
@@ -114,7 +114,7 @@ function ProjectCard({ project, index, isDarkMode }) {
                                 key={tagIndex}
                                 className={`text-xs px-3 py-1 rounded-full ${
                                     isDarkMode
-                                        ? "bg-gray-800 text-gray-300"
+                                        ? "bg-zinc-800 text-gray-300 border border-white/5"
                                         : "bg-gray-100 text-gray-700"
                                 }`}
                             >
@@ -130,7 +130,7 @@ function ProjectCard({ project, index, isDarkMode }) {
                                 href={project.liveUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full flex items-center justify-center space-x-2 text-sm font-medium"
+                                className="flex-1 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full flex items-center justify-center space-x-2 text-sm font-medium"
                             >
                                 <ExternalLink size={16} />
                                 <span>Live Demo</span>
@@ -141,9 +141,11 @@ function ProjectCard({ project, index, isDarkMode }) {
                             href={project.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`flex-1 border-2 border-gray-300 ${
-                                isDarkMode ? "text-gray-400" : "text-gray-700"
-                            } hover:bg-gray-200 px-4 py-2 rounded-full flex items-center justify-center space-x-2 text-sm font-medium`}
+                            className={`flex-1 border-2 ${
+                                isDarkMode
+                                    ? "border-white/15 text-gray-400 hover:bg-white/5"
+                                    : "border-gray-300 text-gray-700 hover:bg-gray-200"
+                            } px-4 py-2 rounded-full flex items-center justify-center space-x-2 text-sm font-medium`}
                         >
                             <FiGithub size={16} />
                             <span>GitHub</span>

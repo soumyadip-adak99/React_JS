@@ -15,19 +15,19 @@ function ProjectsSection() {
             id="work"
             ref={sectionRef}
             className={`py-10 px-6 ${
-                isDarkMode ? "bg-gray-950 text-white" : "bg-gray-50 text-gray-900"
+                isDarkMode ? "bg-black text-white" : "bg-gray-50 text-gray-900"
             } relative overflow-hidden`}
         >
             {/* Background elements */}
             <div className="absolute inset-0 overflow-hidden">
                 <div
-                    className={`absolute top-20 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-5 ${
-                        isDarkMode ? "bg-blue-500" : "bg-blue-400"
+                    className={`absolute top-20 left-1/4 w-96 h-96 rounded-full blur-3xl ${
+                        isDarkMode ? "opacity-8 bg-orange-500" : "opacity-5 bg-orange-400"
                     }`}
                 />
                 <div
-                    className={`absolute bottom-20 right-1/4 w-80 h-80 rounded-full blur-3xl opacity-5 ${
-                        isDarkMode ? "bg-purple-500" : "bg-purple-400"
+                    className={`absolute bottom-20 right-1/4 w-80 h-80 rounded-full blur-3xl ${
+                        isDarkMode ? "opacity-5 bg-amber-500" : "opacity-5 bg-amber-400"
                     }`}
                 />
             </div>
@@ -54,7 +54,7 @@ function ProjectsSection() {
                         className="text-3xl md:text-5xl font-light mb-6"
                     >
                         Recent
-                        <span className="text-blue-500 font-medium"> Projects</span>
+                        <span className="text-orange-500 font-medium"> Projects</span>
                     </motion.h2>
 
                     <motion.p
