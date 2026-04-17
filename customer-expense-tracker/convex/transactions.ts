@@ -24,3 +24,15 @@ export const deleteTransaction = mutation({
     await ctx.db.delete(args.id);
   },
 });
+
+export const deleteAllTransactionsByCustomer = mutation({
+  args: { customerId: v.id("customers") },
+  handler: async (ctx, args) => {
+    const transactions = await ctx.db
+      .query("transactions")
+      .withIndex("by_customer", (q) => q.eq("customerId", args.customerId))
+      .collect();
+      
+    await Promise.all(transactions.map((tx) => ctx.db.delete(tx._id)));
+  },
+});

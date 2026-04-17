@@ -17,6 +17,7 @@ import { format } from "date-fns";
 import { useParams } from "next/navigation";
 import { DeleteCustomerDialog } from "@/components/customers/DeleteCustomerDialog";
 import { DeleteTransactionDialog } from "@/components/customers/DeleteTransactionDialog";
+import { DeleteAllTransactionsDialog } from "@/components/customers/DeleteAllTransactionsDialog";
 
 export default function CustomerPage() {
   const params = useParams();
@@ -120,7 +121,12 @@ export default function CustomerPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h2 className="text-xl font-semibold tracking-tight">Transaction History</h2>
 
-        <div className="flex gap-2 w-full sm:w-auto">
+        <div className="flex gap-2 w-full sm:w-auto flex-wrap">
+          <DeleteAllTransactionsDialog
+            customerId={id}
+            customerName={customer.name}
+            hasTransactions={customer.transactions.length > 0}
+          />
           <Dialog open={isPaymentOpen} onOpenChange={setIsPaymentOpen}>
             <DialogTrigger
               render={
