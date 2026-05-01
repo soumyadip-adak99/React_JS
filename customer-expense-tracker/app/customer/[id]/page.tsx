@@ -17,17 +17,15 @@ import { format } from "date-fns";
 import { useParams } from "next/navigation";
 import { DeleteCustomerDialog } from "@/components/customers/DeleteCustomerDialog";
 import { DeleteTransactionDialog } from "@/components/customers/DeleteTransactionDialog";
-import { DeleteAllTransactionsDialog } from "@/components/customers/DeleteAllTransactionsDialog";
 
 export default function CustomerPage() {
   const params = useParams();
   const id = params.id as Id<"customers">;
-
+  
   const customer = useQuery(api.customers.getCustomerById, { id });
-
+  
   const [isDueOpen, setIsDueOpen] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
-  const [selectedTransaction, setSelectedTransaction] = useState<any | null>(null);
 
   if (customer === null) {
     return (
@@ -89,10 +87,10 @@ export default function CustomerPage() {
               </div>
             </div>
             {customer.notes && (
-              <div className="mt-6 pt-4 border-t border-border/50 text-sm text-muted-foreground bg-muted/30 p-4 rounded-lg">
-                <strong className="text-foreground/80 font-medium block mb-1">Notes:</strong>
-                {customer.notes}
-              </div>
+               <div className="mt-6 pt-4 border-t border-border/50 text-sm text-muted-foreground bg-muted/30 p-4 rounded-lg">
+                 <strong className="text-foreground/80 font-medium block mb-1">Notes:</strong> 
+                 {customer.notes}
+               </div>
             )}
           </CardContent>
         </Card>
@@ -120,13 +118,8 @@ export default function CustomerPage() {
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h2 className="text-xl font-semibold tracking-tight">Transaction History</h2>
-
-        <div className="flex gap-2 w-full sm:w-auto flex-wrap">
-          <DeleteAllTransactionsDialog
-            customerId={id}
-            customerName={customer.name}
-            hasTransactions={customer.transactions.length > 0}
-          />
+        
+        <div className="flex gap-2 w-full sm:w-auto">
           <Dialog open={isPaymentOpen} onOpenChange={setIsPaymentOpen}>
             <DialogTrigger
               render={
@@ -139,10 +132,10 @@ export default function CustomerPage() {
               <DialogHeader>
                 <DialogTitle>Record Payment for {customer.name}</DialogTitle>
               </DialogHeader>
-              <AddTransactionForm
-                customerId={id}
-                type="payment"
-                onSuccess={() => setIsPaymentOpen(false)}
+              <AddTransactionForm 
+                customerId={id} 
+                type="payment" 
+                onSuccess={() => setIsPaymentOpen(false)} 
               />
             </DialogContent>
           </Dialog>
@@ -159,10 +152,10 @@ export default function CustomerPage() {
               <DialogHeader>
                 <DialogTitle>Add Due for {customer.name}</DialogTitle>
               </DialogHeader>
-              <AddTransactionForm
-                customerId={id}
-                type="due"
-                onSuccess={() => setIsDueOpen(false)}
+              <AddTransactionForm 
+                customerId={id} 
+                type="due" 
+                onSuccess={() => setIsDueOpen(false)} 
               />
             </DialogContent>
           </Dialog>
@@ -194,16 +187,12 @@ export default function CustomerPage() {
                 </TableRow>
               ) : (
                 customer.transactions.map((tx: any) => (
-                  <TableRow 
-                    key={tx._id} 
-                    className="group cursor-pointer hover:bg-muted/50 transition-colors"
-                    onClick={() => setSelectedTransaction(tx)}
-                  >
+                  <TableRow key={tx._id} className="group">
                     <TableCell className="font-medium text-sm">
                       {format(new Date(tx.date), "MMM d, yyyy")}
                     </TableCell>
                     <TableCell>
-                      <Badge
+                      <Badge 
                         variant={tx.type === "payment" ? "default" : "destructive"}
                         className={tx.type === "payment" ? "bg-emerald-100 text-emerald-800 hover:bg-emerald-200 dark:bg-emerald-900/50 dark:text-emerald-300 pointer-events-none" : "bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/50 dark:text-red-300 pointer-events-none"}
                       >
@@ -216,7 +205,7 @@ export default function CustomerPage() {
                     <TableCell className={`text-right font-bold tracking-tight ${tx.type === "payment" ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"}`}>
                       {tx.type === "payment" ? "-" : "+"}₹{tx.amount.toLocaleString()}
                     </TableCell>
-                    <TableCell onClick={(e) => e.stopPropagation()}>
+                    <TableCell>
                       <DeleteTransactionDialog
                         transactionId={tx._id}
                         type={tx.type}
@@ -231,47 +220,25 @@ export default function CustomerPage() {
           </Table>
         </div>
       </Card>
-
-      {/* Transaction Details Dialog */}
-      <Dialog open={!!selectedTransaction} onOpenChange={(open) => !open && setSelectedTransaction(null)}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Transaction Details</DialogTitle>
-          </DialogHeader>
-          {selectedTransaction && (
-            <div className="space-y-4 pt-4">
-              <div className="flex justify-between items-center border-b border-border/50 pb-4">
-                <span className="text-muted-foreground">Type</span>
-                <Badge
-                  variant={selectedTransaction.type === "payment" ? "default" : "destructive"}
-                  className={selectedTransaction.type === "payment" ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300" : "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300"}
-                >
-                  {selectedTransaction.type === "payment" ? "Payment Received" : "Due Added"}
-                </Badge>
-              </div>
-              <div className="flex justify-between items-center border-b border-border/50 pb-4">
-                <span className="text-muted-foreground">Amount</span>
-                <span className={`text-xl font-bold tracking-tight ${selectedTransaction.type === "payment" ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"}`}>
-                  ₹{selectedTransaction.amount.toLocaleString()}
-                </span>
-              </div>
-              <div className="flex justify-between items-center border-b border-border/50 pb-4">
-                <span className="text-muted-foreground">Date</span>
-                <span className="font-medium">
-                  {format(new Date(selectedTransaction.date), "PPP")}
-                </span>
-              </div>
-              <div className="flex justify-between items-start pt-2">
-                <span className="text-muted-foreground">Note</span>
-                <span className="font-medium text-right max-w-[200px] break-words whitespace-pre-wrap">
-                  {selectedTransaction.note || "-"}
-                </span>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
-
+      
+      {/* Mobile FABs */}
+      <div className="sm:hidden fixed bottom-6 right-6 flex flex-col gap-3 z-40">
+        <Button 
+          size="icon" 
+          variant="outline"
+          className="h-12 w-12 rounded-full shadow-lg border-emerald-200 bg-background text-emerald-600 dark:border-emerald-800"
+          onClick={() => setIsPaymentOpen(true)}
+        >
+          <CreditCard className="h-5 w-5" />
+        </Button>
+        <Button 
+          size="icon" 
+          className="h-14 w-14 rounded-full shadow-lg"
+          onClick={() => setIsDueOpen(true)}
+        >
+          <ReceiptIndianRupee className="h-6 w-6" />
+        </Button>
+      </div>
     </div>
   );
 }

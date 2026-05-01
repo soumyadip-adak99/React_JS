@@ -3,20 +3,18 @@
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Plus, Users, ArrowUpRight, ArrowDownRight, Search } from "lucide-react";
+import { Loader2, Plus, Users, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { AddCustomerForm } from "@/components/forms/AddCustomerForm";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
 
 export default function Dashboard() {
   const stats = useQuery(api.customers.getDashboardStats);
   const customers = useQuery(api.customers.getCustomers);
   const [isAddCustomerOpen, setIsAddCustomerOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
 
   if (stats === undefined || customers === undefined) {
     return (
@@ -25,10 +23,6 @@ export default function Dashboard() {
       </div>
     );
   }
-
-  const filteredCustomers = customers.filter(customer =>
-    customer.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
@@ -89,19 +83,7 @@ export default function Dashboard() {
       </div>
 
       <div>
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
-          <h2 className="text-xl font-semibold">Customer Directory</h2>
-          <div className="relative w-full sm:w-64 max-w-sm">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search customers..."
-              className="w-full pl-8 bg-background"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-        </div>
+        <h2 className="text-xl font-semibold mb-4">Customer Directory</h2>
         {customers.length === 0 ? (
           <div className="text-center py-12 border rounded-lg bg-muted/20">
             <Users className="mx-auto h-12 w-12 text-muted-foreground/50 mb-3" />
@@ -111,18 +93,9 @@ export default function Dashboard() {
               <Plus className="mr-2 h-4 w-4" /> Add Customer
             </Button>
           </div>
-        ) : filteredCustomers.length === 0 ? (
-          <div className="text-center py-12 border rounded-lg bg-muted/20">
-            <Search className="mx-auto h-12 w-12 text-muted-foreground/50 mb-3" />
-            <h3 className="text-lg font-medium">No customers found</h3>
-            <p className="text-muted-foreground text-sm mt-1">Try adjusting your search query.</p>
-            <Button variant="outline" className="mt-4" onClick={() => setSearchQuery("")}>
-              Clear Search
-            </Button>
-          </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredCustomers.map((customer) => (
+            {customers.map((customer) => (
               <Link key={customer._id} href={`/customer/${customer._id}`}>
                 <Card className="hover:border-primary/50 transition-colors cursor-pointer h-full group relative overflow-hidden">
                   <CardHeader className="pb-2 flex flex-row items-start justify-between space-y-0">
@@ -161,7 +134,16 @@ export default function Dashboard() {
         )}
       </div>
       
-
+      {/* Mobile FAB */}
+      <div className="sm:hidden fixed bottom-6 right-6 z-40">
+        <Button 
+          size="icon" 
+          className="h-14 w-14 rounded-full shadow-lg"
+          onClick={() => setIsAddCustomerOpen(true)}
+        >
+          <Plus className="h-6 w-6" />
+        </Button>
+      </div>
     </div>
   );
 }
