@@ -24,3 +24,17 @@ export const deleteTransaction = mutation({
     await ctx.db.delete(args.id);
   },
 });
+
+export const deleteAllTransactions = mutation({
+  args: { customerId: v.id("customers") },
+  handler: async (ctx, args) => {
+    const transactions = await ctx.db
+      .query("transactions")
+      .withIndex("by_customer", (q) => q.eq("customerId", args.customerId))
+      .collect();
+
+    for (const tx of transactions) {
+      await ctx.db.delete(tx._id);
+    }
+  },
+});

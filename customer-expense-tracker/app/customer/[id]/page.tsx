@@ -18,6 +18,8 @@ import { useParams } from "next/navigation";
 import { DeleteCustomerDialog } from "@/components/customers/DeleteCustomerDialog";
 import { DeleteTransactionDialog } from "@/components/customers/DeleteTransactionDialog";
 
+import { DeleteAllTransactionsDialog } from "@/components/customers/DeleteAllTransactionsDialog";
+
 export default function CustomerPage() {
   const params = useParams();
   const id = params.id as Id<"customers">;
@@ -120,6 +122,12 @@ export default function CustomerPage() {
         <h2 className="text-xl font-semibold tracking-tight">Transaction History</h2>
         
         <div className="flex gap-2 w-full sm:w-auto">
+          <DeleteAllTransactionsDialog 
+            customerId={id} 
+            customerName={customer.name} 
+            transactionCount={customer.transactions.length} 
+          />
+          
           <Dialog open={isPaymentOpen} onOpenChange={setIsPaymentOpen}>
             <DialogTrigger
               render={

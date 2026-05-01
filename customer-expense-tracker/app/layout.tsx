@@ -15,9 +15,6 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "PayTrack",
   description: "Track your customer dues and payments easily",
-  icons: {
-    icon: "/logo.svg",
-  },
 };
 
 export default function RootLayout({
